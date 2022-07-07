@@ -1,5 +1,5 @@
 interface Props {
-  type: string;
+  type?: string;
   value: string | number;
   placeholder: string;
   onChange: (e: any) => void;

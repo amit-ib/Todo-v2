@@ -5,38 +5,7 @@ body {
 .container {
   margin: 20px auto 20px auto;
   max-width: 500px;
-  .todo-form {
-    display: flex;
-    input {
-      flex-grow: 1;
-      padding: 10px;
-      margin-right: 5px;
-      font-size: 16px;
-    }
-    button {
-      font-size: 16px;
-    }
-  }
-  .list-item {
-    display: flex;
-    background: $primary-color;
-    padding: 10px;
-    margin: 3px 0px;
-    .list-item-text,
-    input {
-      flex-grow: 1;
-    }
-    .action-icons span {
-      display: inline-block;
-      margin: 0px 5px;
-      cursor: pointer;
-    }
-    .task-done {
-      text-decoration: line-through;
-    }
-  }
 }
-
 .text-center {
   text-align: center;
 }

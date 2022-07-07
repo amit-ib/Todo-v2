@@ -1,0 +1,18 @@
+.list-item {
+  display: flex;
+  background: $primary-color;
+  padding: 10px;
+  margin: 3px 0px;
+  .list-item-text,
+  input {
+    flex-grow: 1;
+  }
+  .action-icons span {
+    display: inline-block;
+    margin: 0px 5px;
+    cursor: pointer;
+  }
+  .task-done {
+    text-decoration: line-through;
+  }
+}

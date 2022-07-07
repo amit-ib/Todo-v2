@@ -4,12 +4,14 @@ import Button from "../shared/form/Button";
 
 const TodoForm = () => {
   const [todotext, setTodoText] = useState<string>("");
+  const handelInputChange = (e: React.ChangeEvent<any>) => {
+    setTodoText(e.target.value);
+  };
   return (
     <form className="todo-form">
       <Input
-        type="text"
         value={todotext}
-        onChange={(e) => setTodoText(e.target.value)}
+        onChange={handelInputChange}
         placeholder="Please enter task"
       />
       <Button />

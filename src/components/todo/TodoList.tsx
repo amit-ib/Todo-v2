@@ -1,6 +1,6 @@
 import React from "react";
 import { TodoModal } from "../../models";
-import SingleTodo from "./SingleTodo";
+import SingleTodo from "./TodoTaskItem";
 
 interface Props {
   todos: TodoModal[];
