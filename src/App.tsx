@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="container">
       <h3 className="text-center">Todo List</h3>
-      <TodoForm />
+      <TodoForm todos={todos} setTodos={setTodos} />
       <TodoList todos={todos} setTodos={setTodos} />
     </div>
   );

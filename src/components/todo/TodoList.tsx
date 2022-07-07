@@ -2,7 +2,7 @@ import React from "react";
 import { TodoModal } from "../../models";
 import SingleTodo from "./TodoTaskItem";
 
-interface Props {
+export interface Props {
   todos: TodoModal[];
   setTodos: React.Dispatch<React.SetStateAction<TodoModal[]>>; // copied from setTodos state
 }
