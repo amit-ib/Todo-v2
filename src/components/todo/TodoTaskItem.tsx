@@ -13,6 +13,7 @@ const SingleTodo = ({
   setTodos,
   index,
 }: Props) => {
+  // function to handel task done
   const handleTaskDone = (index: number) => {
     let todos = [...todoArrayOfObj];
 
@@ -20,6 +21,11 @@ const SingleTodo = ({
       todos[index].isDone = !todos[index].isDone;
     }
     setTodos(todos);
+  };
+
+  // function to handel delete task
+  const handleTaskDelete = (id: number) => {
+    setTodos(todoArrayOfObj.filter((todoItem) => todoItem.id !== id));
   };
 
   return (
@@ -34,7 +40,8 @@ const SingleTodo = ({
         )}
 
         <div className="action-icons">
-          <span onClick={() => handleTaskDone(index)}>Mark Done</span>
+          <span onClick={() => handleTaskDone(index)}>Mark Done</span> |
+          <span onClick={() => handleTaskDelete(todoSingleObj.id)}>Delete</span>
         </div>
       </div>
     </form>
