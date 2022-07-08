@@ -7,11 +7,16 @@ export interface Props {
   setTodos: React.Dispatch<React.SetStateAction<TodoModal[]>>; // copied from setTodos state
 }
 
-const TodoList = ({ todos }: Props) => {
+const TodoList = ({ todos, setTodos }: Props) => {
   return (
     <div>
-      {todos.map((allTodo) => (
-        <SingleTodo todoSingleObj={allTodo} />
+      {todos.map((allTodo, index) => (
+        <SingleTodo
+          todoSingleObj={allTodo}
+          todoArrayOfObj={todos}
+          setTodos={setTodos}
+          index={index}
+        />
       ))}
     </div>
   );
