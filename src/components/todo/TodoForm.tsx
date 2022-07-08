@@ -5,11 +5,17 @@ import { Props } from "./TodoList";
 
 const TodoForm = ({ todos, setTodos }: Props) => {
   const [todotext, setTodoText] = useState<string>("");
-  // instead of using "e:any" always use "e:React.FormEvent"
+
+  const handelInputChange = (e: any) => {
+    setTodoText(e.target.value);
+  };
   const handleAdd = (e: React.FormEvent) => {
     e.preventDefault();
     if (todotext) {
-      setTodos([...todos, { id: Date.now(), todo: todotext, isDone: false }]);
+      const updatedTodos = [...todos];
+      const todo = { id: Date.now(), todo: todotext, isDone: false };
+      updatedTodos.push(todo);
+      setTodos(updatedTodos);
       setTodoText("");
     }
   };
@@ -18,7 +24,7 @@ const TodoForm = ({ todos, setTodos }: Props) => {
     <form className="todo-form" onSubmit={handleAdd}>
       <Input
         value={todotext}
-        onChange={(e) => setTodoText(e.target.value)}
+        onChange={handelInputChange}
         placeholder="Please enter task"
       />
       <Button />
