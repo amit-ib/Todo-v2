@@ -11,12 +11,7 @@ const TodoList = ({ todos, setTodos }: Props) => {
   return (
     <div>
       {todos.map((allTodo, index) => (
-        <SingleTodo
-          todoSingleObj={allTodo}
-          todoArrayOfObj={todos}
-          setTodos={setTodos}
-          index={index}
-        />
+        <SingleTodo todoArrayOfObj={todos} setTodos={setTodos} index={index} />
       ))}
     </div>
   );
