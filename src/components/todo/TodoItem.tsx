@@ -1,14 +1,14 @@
 import { TodoModal } from "../../models";
 
 interface Props {
-  todoArrayOfObj: TodoModal[];
+  todoItems: TodoModal[];
   setTodos: React.Dispatch<React.SetStateAction<TodoModal[]>>; // is a function - copied from setTodos state
   index: number;
 }
 
-const SingleTodo = ({ todoArrayOfObj, setTodos, index }: Props) => {
+const TodoItem = ({ todoItems, setTodos, index }: Props) => {
   const handleTaskDone = (index: number) => {
-    let todos = [...todoArrayOfObj];
+    let todos = [...todoItems];
 
     if (todos[index]) {
       todos[index].isDone = !todos[index].isDone;
@@ -21,10 +21,10 @@ const SingleTodo = ({ todoArrayOfObj, setTodos, index }: Props) => {
       <div className="list-item">
         <span
           className={`list-item-text 
-            ${todoArrayOfObj[index].isDone ? "task-done" : ""}
+            ${todoItems[index].isDone ? "task-done" : ""}
           `}
         >
-          {todoArrayOfObj[index].todo}
+          {todoItems[index].todo}
         </span>
 
         <div className="action-icons">
@@ -35,4 +35,4 @@ const SingleTodo = ({ todoArrayOfObj, setTodos, index }: Props) => {
   );
 };
 
-export default SingleTodo;
+export default TodoItem;

@@ -1,6 +1,6 @@
 import React from "react";
 import { TodoModal } from "../../models";
-import SingleTodo from "./TodoTaskItem";
+import TodoItem from "./TodoItem";
 
 export interface Props {
   todos: TodoModal[];
@@ -11,7 +11,7 @@ const TodoList = ({ todos, setTodos }: Props) => {
   return (
     <div>
       {todos.map((allTodo, index) => (
-        <SingleTodo todoArrayOfObj={todos} setTodos={setTodos} index={index} />
+        <TodoItem todoItems={todos} setTodos={setTodos} index={index} />
       ))}
     </div>
   );
