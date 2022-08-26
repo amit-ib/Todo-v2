@@ -1,11 +1,48 @@
 body {
   font-family: verdana;
   font-size: 16px;
+  background: #3f94ff;
 }
 .container {
   margin: 20px auto 20px auto;
   max-width: 500px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 2px 15px 15px;
 }
 .text-center {
   text-align: center;
+}
+
+.button-login {
+  text-align: center;
+  padding-bottom: 10px;
+  button {
+    border-radius: 5px !important;
+    border: solid 1px #ccc !important;
+    padding-right: 10px !important;
+  }
+}
+
+.welcome-text {
+  color: $white-color;
+  padding-top: 20px;
+  text-align: center;
+  .button-login {
+    text-align: left;
+    display: inline-block;
+    button {
+      padding: 0 !important;
+      display: inline-block !important;
+      background: none !important;
+      box-shadow: none !important;
+      border: 0px !important;
+      color: $white-color !important;
+      text-decoration: underline;
+      font-size: 16px;
+      div {
+        display: none;
+      }
+    }
+  }
 }
