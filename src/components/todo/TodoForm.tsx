@@ -21,14 +21,21 @@ const TodoForm = ({ todos, setTodos }: Props) => {
   };
 
   return (
-    <form className="todo-form" onSubmit={handleAdd}>
-      <Input
-        value={todotext}
-        onChange={handelInputChange}
-        placeholder="Please enter task"
-      />
-      <Button />
-    </form>
+    <>
+      <form className="todo-form" onSubmit={handleAdd}>
+        <Input
+          value={todotext}
+          onChange={handelInputChange}
+          placeholder="Please enter task"
+        />
+        <Button />
+      </form>
+      <div className="filters">
+        <span className="active filter-type">All</span>
+        <span className="filter-type">Pending</span>
+        <span className="filter-type">Completed</span>
+      </div>
+    </>
   );
 };
 

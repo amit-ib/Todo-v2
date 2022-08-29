@@ -16,22 +16,33 @@ const TodoItem = ({ todoItems, setTodos, index }: Props) => {
     setTodos(todos);
   };
 
+  // function to handel delete task
+  const handleTaskDelete = (id: number) => {
+    setTodos(todoItems.filter((todoItem) => todoItem.id !== id));
+  };
+
   return (
-    <form>
-      <div className="list-item">
-        <span
-          className={`list-item-text 
+    <div className="list-item">
+      <span
+        className={`list-item-text 
             ${todoItems[index].isDone ? "task-done" : ""}
           `}
-        >
-          {todoItems[index].todo}
-        </span>
+      >
+        {todoItems[index].todo}
+        <div className="date">13-07-2022</div>
+      </span>
 
-        <div className="action-icons">
-          <span onClick={() => handleTaskDone(index)}>Mark Done</span>
-        </div>
+      <div className="action-icons">
+        <span onClick={() => handleTaskDone(index)}>Mark Done</span>
+        <span className="button-edit">Edit</span>
+        <span
+          className="button-delete"
+          onClick={() => handleTaskDelete(todoItems[index].id)}
+        >
+          Delete
+        </span>
       </div>
-    </form>
+    </div>
   );
 };
 

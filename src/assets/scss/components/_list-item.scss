@@ -1,18 +1,32 @@
 .list-item {
   display: flex;
-  background: $primary-color;
+  background: #ededed;
   padding: 10px;
-  margin: 3px 0px;
+  margin: 12px 0px 3px;
+  box-shadow: 0px 0px 3px -1px #000;
+  border-radius: 5px;
   .list-item-text,
   input {
     flex-grow: 1;
   }
-  .action-icons span {
-    display: inline-block;
-    margin: 0px 5px;
-    cursor: pointer;
+  .action-icons {
+    display: flex;
+    span {
+      display: flex;
+      margin: 0px 5px;
+      font-size: 12px;
+      align-items: center;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
+
   .task-done {
     text-decoration: line-through;
+  }
+  .date {
+    font-size: 13px;
   }
 }

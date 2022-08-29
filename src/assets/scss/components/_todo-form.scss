@@ -4,3 +4,22 @@
     flex-grow: 1;
   }
 }
+.filters {
+  display: flex;
+  justify-content: center;
+  font-size: 13px;
+
+  .filter-type {
+    padding: 8px 10px 0px;
+    display: inline-block;
+    cursor: pointer;
+    &.active {
+      color: $blue-color;
+      text-decoration: underline;
+      cursor: default;
+    }
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
