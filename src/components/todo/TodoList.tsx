@@ -9,11 +9,11 @@ export interface Props {
 
 const TodoList = ({ todos, setTodos }: Props) => {
   return (
-    <div>
+    <>
       {todos.map((allTodo, index) => (
         <TodoItem todoItems={todos} setTodos={setTodos} index={index} />
       ))}
-    </div>
+    </>
   );
 };
 
