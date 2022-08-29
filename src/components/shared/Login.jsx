@@ -1,8 +1,7 @@
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 import { useState, useEffect } from "react";
 
-const clientId =
-  "900579528323-mam6vmpqms78uujugfmfhqbuhrv0f5n6.apps.googleusercontent.com";
+const clientId = process.env.REACT_APP_CLIENTID;
 
 const Login = (props) => {
   const [showLoginButton, setShowLoginButton] = useState(true);

@@ -8,12 +8,12 @@ import { staticTodo } from "./mock-data/todo";
 import Login from "./components/shared/Login";
 import { gapi } from "gapi-script";
 
-const clientId =
-  "900579528323-mam6vmpqms78uujugfmfhqbuhrv0f5n6.apps.googleusercontent.com";
+const clientId = process.env.REACT_APP_CLIENTID;
 
 function App() {
   const [isLogedin, setIsLogedin] = useState({});
   var accessToken = window.localStorage.getItem("accessToken");
+  console.log(clientId);
   useEffect(() => {
     function start() {
       gapi.client.init({
@@ -33,7 +33,7 @@ function App() {
   const [userProfile, setuserProfile] = useState<UserModal | null>();
 
   return (
-    <div>
+    <>
       <div className="welcome-text">
         {isLogedin && (
           <span>
@@ -64,7 +64,7 @@ function App() {
           />
         )}
       </div>
-    </div>
+    </>
   );
 }
 
