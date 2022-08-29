@@ -9,7 +9,6 @@ const Login = (props) => {
   const [showLogoutButton, setShowLogoutButton] = useState(false);
 
   const onSuccess = (res) => {
-    //res.profileObj
     console.log("Login Success! Current user: ", res);
     window.localStorage.setItem("accessToken", res.accessToken);
     props.setuserProfile(res.profileObj);

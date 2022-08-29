@@ -6,7 +6,6 @@ import { TodoModal } from "./models";
 import { UserModal } from "./models/user";
 import { staticTodo } from "./mock-data/todo";
 import Login from "./components/shared/Login";
-//import Logout from "./components/shared/Logout";
 import { gapi } from "gapi-script";
 
 const clientId =
