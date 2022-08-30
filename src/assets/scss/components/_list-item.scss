@@ -5,10 +5,22 @@
   margin: 12px 0px 3px;
   box-shadow: 0px 0px 3px -1px #000;
   border-radius: 5px;
-  .list-item-text,
-  input {
+  .list-item-text {
     flex-grow: 1;
   }
+  .edit-task-container {
+    flex-grow: 1;
+    width: 65%;
+    input {
+      border-radius: 5px;
+      border: solid 1px $gray-color;
+      width: 100%;
+      &[type="date"] {
+        margin-top: 10px;
+      }
+    }
+  }
+
   .action-icons {
     display: flex;
     span {

@@ -13,7 +13,12 @@ const TodoForm = ({ todos, setTodos }: Props) => {
     e.preventDefault();
     if (todotext) {
       const updatedTodos = [...todos];
-      const todo = { id: Date.now(), todo: todotext, isDone: false };
+      const todo = {
+        id: Date.now(),
+        todo: todotext,
+        date: new Date(),
+        isDone: false,
+      };
       updatedTodos.push(todo);
       setTodos(updatedTodos);
       setTodoText("");
