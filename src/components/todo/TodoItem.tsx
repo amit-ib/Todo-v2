@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Moment from "react-moment";
+import moment from "moment";
 import { TodoModal } from "../../models";
 
 interface Props {
@@ -19,6 +19,8 @@ const TodoItem = ({ todoItems, todoItem, setTodos, index }: Props) => {
     }
     setTodos(todos);
   };
+
+  const taskItem = todoItems[index];
 
   // State to check edit state(if already in edit mode)
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -45,14 +47,24 @@ const TodoItem = ({ todoItems, todoItem, setTodos, index }: Props) => {
   };
 
   // function to handel enter key in edit task textbox
-  const editTask = (e: any) => {
+  const finishEditingTask = (e: any) => {
     console.log("User pressed: ", e.key);
     if (e.key === "Enter") {
       handleTaskEdit(e, todoItem.id, index);
     }
   };
 
-  const defaultDate = new Date(editDate).toISOString().split("T")[0]; // yyyy-mm-dd
+  // Enabeling edit mode
+  const enableEditing = () => {
+    if (!editMode && !taskItem.isDone) {
+      setEditMode(!editMode);
+    }
+  };
+
+  //const defaultDate = new Date(editDate).toISOString().split("T")[0]; // yyyy-mm-dd
+  const defaultDate = moment(new Date(editDate)).format("YYYY-MM-DD");
+
+  console.log("Date:", defaultDate);
   return (
     <div className="list-item">
       {editMode ? (
@@ -61,7 +73,7 @@ const TodoItem = ({ todoItems, todoItem, setTodos, index }: Props) => {
           <input
             value={editTodo}
             onChange={(e) => setEditTodo(e.target.value)}
-            onKeyPress={editTask}
+            onKeyPress={finishEditingTask}
           />
           <input
             type="date"
@@ -73,17 +85,17 @@ const TodoItem = ({ todoItems, todoItem, setTodos, index }: Props) => {
           />
         </div>
       ) : (
-        <span
+        <div
           className={`list-item-text 
-            ${todoItems[index].isDone ? "task-done" : ""}
+            ${taskItem.isDone ? "task-done" : ""}
           `}
         >
-          {todoItems[index].todo}
+          {taskItem.todo}
 
           <div className="date">
-            <Moment format="DD/MM/YYYY">{todoItems[index].date}</Moment>
+            {moment(taskItem.date).format("DD/MM/YYYY")}
           </div>
-        </span>
+        </div>
       )}
 
       <div className="action-icons">
@@ -91,16 +103,14 @@ const TodoItem = ({ todoItems, todoItem, setTodos, index }: Props) => {
         <span
           className="button-edit"
           onClick={() => {
-            if (!editMode && !todoItems[index].isDone) {
-              setEditMode(!editMode);
-            }
+            enableEditing();
           }}
         >
           Edit
         </span>
         <span
           className="button-delete"
-          onClick={() => handleTaskDelete(todoItems[index].id)}
+          onClick={() => handleTaskDelete(taskItem.id)}
         >
           Delete
         </span>

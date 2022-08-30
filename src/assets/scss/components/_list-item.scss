@@ -12,12 +12,8 @@
     flex-grow: 1;
     width: 65%;
     input {
-      border-radius: 5px;
-      border: solid 1px $gray-color;
       width: 100%;
-      &[type="date"] {
-        margin-top: 10px;
-      }
+      margin: 4px 0px;
     }
   }
 
