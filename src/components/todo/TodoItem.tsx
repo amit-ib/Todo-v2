@@ -1,12 +1,18 @@
 import { useState } from "react";
 import moment from "moment";
 import { TodoModal } from "../../models";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 interface Props {
   todoItems: TodoModal[];
   todoItem: TodoModal;
   setTodos: React.Dispatch<React.SetStateAction<TodoModal[]>>; // is a function - copied from setTodos state
   index: number;
+}
+
+interface editForm {
+  task: string;
+  date: string;
 }
 
 const TodoItem = ({ todoItems, todoItem, setTodos, index }: Props) => {
@@ -22,36 +28,34 @@ const TodoItem = ({ todoItems, todoItem, setTodos, index }: Props) => {
 
   const taskItem = todoItems[index];
 
-  // State to check edit state(if already in edit mode)
-  const [editMode, setEditMode] = useState<boolean>(false);
-  //state to store edit value
-  const [editTodo, setEditTodo] = useState<string>(todoItem.todo);
-  //state to store date value
-  const [editDate, setEditDate] = useState<Date>(todoItem.date);
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<editForm>({
+    defaultValues: {
+      task: todoItems[index].todo,
+      date: moment(new Date(todoItems[index].date)).format("YYYY-MM-DD"),
+    },
+  });
 
-  // function to handel delete task
-  const handleTaskDelete = (id: number) => {
-    setTodos(todoItems.filter((todoItem) => todoItem.id !== id));
-  };
-
-  // function to handel Edit icon // passing id //
-  const handleTaskEdit = (e: React.FormEvent, id: number, index: number) => {
-    e.preventDefault();
+  const onSubmit: SubmitHandler<editForm> = (data) => {
+    console.log(data);
     let todos = [...todoItems];
     if (todos[index]) {
-      todos[index].todo = editTodo;
-      todos[index].date = editDate;
+      todos[index].todo = data.task;
+      todos[index].date = new Date(data.date);
     }
     setTodos(todos);
     setEditMode(false);
   };
 
-  // function to handel enter key in edit task textbox
-  const finishEditingTask = (e: any) => {
-    console.log("User pressed: ", e.key);
-    if (e.key === "Enter") {
-      handleTaskEdit(e, todoItem.id, index);
-    }
+  // State to check edit state(if already in edit mode)
+  const [editMode, setEditMode] = useState<boolean>(false);
+
+  // function to handel delete task
+  const handleTaskDelete = (id: number) => {
+    setTodos(todoItems.filter((todoItem) => todoItem.id !== id));
   };
 
   // Enabeling edit mode
@@ -61,28 +65,17 @@ const TodoItem = ({ todoItems, todoItem, setTodos, index }: Props) => {
     }
   };
 
-  //const defaultDate = new Date(editDate).toISOString().split("T")[0]; // yyyy-mm-dd
-  const defaultDate = moment(new Date(editDate)).format("YYYY-MM-DD");
-
-  console.log("Date:", defaultDate);
   return (
     <div className="list-item">
       {editMode ? (
         //If in edit mode then display Textbox
         <div className="edit-task-container">
-          <input
-            value={editTodo}
-            onChange={(e) => setEditTodo(e.target.value)}
-            onKeyPress={finishEditingTask}
-          />
-          <input
-            type="date"
-            name=""
-            id=""
-            value={defaultDate}
-            onChange={(e) => setEditDate(new Date(e.target.value))}
-            onBlur={(e) => handleTaskEdit(e, todoItem.id, index)}
-          />
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <input {...register("task", { required: true })} />
+            {errors.task?.type === "required" && "Please enter task"}
+            <input {...register("date", { required: true })} type="date" />
+            <input type="submit" value="Update" className="button-primary" />
+          </form>
         </div>
       ) : (
         <div

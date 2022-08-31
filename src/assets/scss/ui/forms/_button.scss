@@ -27,3 +27,10 @@ button {
     padding-right: 10px !important;
   }
 }
+.button-primary {
+  font-size: 14px;
+  background: $blue-color;
+  border-radius: 5px;
+  color: $white-color;
+  border: 0px;
+}
