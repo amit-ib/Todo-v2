@@ -11,7 +11,8 @@
   .edit-task-container {
     flex-grow: 1;
     width: 65%;
-    input {
+    input,
+    .button {
       width: 100%;
       margin: 4px 0px;
     }

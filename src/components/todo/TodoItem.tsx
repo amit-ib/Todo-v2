@@ -2,6 +2,8 @@ import { useState } from "react";
 import moment from "moment";
 import { TodoModal } from "../../models";
 import { useForm, SubmitHandler } from "react-hook-form";
+import Button from "../shared/form/Button";
+import { dateConverter } from "../../utils/helper";
 
 interface Props {
   todoItems: TodoModal[];
@@ -36,6 +38,7 @@ const TodoItem = ({ todoItems, todoItem, setTodos, index }: Props) => {
     defaultValues: {
       task: todoItems[index].todo,
       date: moment(new Date(todoItems[index].date)).format("YYYY-MM-DD"),
+      //date: dateConverter(new Date(todoItems[index].date)),
     },
   });
 
@@ -60,8 +63,8 @@ const TodoItem = ({ todoItems, todoItem, setTodos, index }: Props) => {
 
   // Enabeling edit mode
   const enableEditing = () => {
-    if (!editMode && !taskItem.isDone) {
-      setEditMode(!editMode);
+    if (!taskItem.isDone) {
+      setEditMode(true);
     }
   };
 
@@ -74,7 +77,7 @@ const TodoItem = ({ todoItems, todoItem, setTodos, index }: Props) => {
             <input {...register("task", { required: true })} />
             {errors.task?.type === "required" && "Please enter task"}
             <input {...register("date", { required: true })} type="date" />
-            <input type="submit" value="Update" className="button-primary" />
+            <Button type="submit" label="Update" className="button primary" />
           </form>
         </div>
       ) : (
@@ -86,19 +89,15 @@ const TodoItem = ({ todoItems, todoItem, setTodos, index }: Props) => {
           {taskItem.todo}
 
           <div className="date">
-            {moment(taskItem.date).format("DD/MM/YYYY")}
+            {/* {moment(taskItem.date).format("DD/MM/YYYY")} */}
+            {dateConverter(taskItem.date)}
           </div>
         </div>
       )}
 
       <div className="action-icons">
         <span onClick={() => handleTaskDone(index)}>Mark Done</span>
-        <span
-          className="button-edit"
-          onClick={() => {
-            enableEditing();
-          }}
-        >
+        <span className="button-edit" onClick={enableEditing}>
           Edit
         </span>
         <span

@@ -14,7 +14,7 @@ const TodoForm = ({ todos, setTodos }: Props) => {
     if (todotext) {
       const updatedTodos = [...todos];
       const todo = {
-        id: Date.now(),
+        id: todos.length + 1,
         todo: todotext,
         date: new Date(),
         isDone: false,
@@ -33,7 +33,7 @@ const TodoForm = ({ todos, setTodos }: Props) => {
           onChange={handelInputChange}
           placeholder="Please enter task"
         />
-        <Button />
+        <Button className="button-plus" label="+" />
       </form>
       <div className="filters">
         <span className="active filter-type">All</span>
