@@ -31,6 +31,10 @@ function App() {
   const [todos, setTodos] = useState<TodoModal[]>(staticTodo);
   const [userProfile, setuserProfile] = useState<UserModal | null>();
 
+  // state to handle filters
+  const [filter, setFilter] = useState<string>("");
+  console.log(filter);
+
   return (
     <>
       <div className="welcome-text">
@@ -50,8 +54,8 @@ function App() {
 
         {isLogedin && (
           <div>
-            <TodoForm todos={todos} setTodos={setTodos} />
-            <TodoList todos={todos} setTodos={setTodos} />
+            <TodoForm todos={todos} setTodos={setTodos} setFilter={setFilter} />
+            <TodoList todos={todos} setTodos={setTodos} filter={filter} />
           </div>
         )}
 

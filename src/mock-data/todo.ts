@@ -5,7 +5,7 @@ export const staticTodo: TodoModal[] = [
     id: 1,
     todo: "First Todo",
     date: new Date(),
-    isDone: false,
+    isDone: true,
   },
   {
     id: 2,

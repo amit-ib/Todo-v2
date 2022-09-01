@@ -2,9 +2,15 @@ import React, { useState } from "react";
 import Input from "../shared/form/Input";
 import Button from "../shared/form/Button";
 import { Props } from "./TodoList";
+import moment from "moment";
 
-const TodoForm = ({ todos, setTodos }: Props) => {
+const TodoForm = ({ todos, setTodos, setFilter }: Props) => {
   const [todotext, setTodoText] = useState<string>("");
+  const [isActive, setIsActive] = useState(false);
+
+  const changeStyle = () => {
+    setIsActive((current) => !current);
+  };
 
   const handelInputChange = (e: any) => {
     setTodoText(e.target.value);
@@ -16,7 +22,7 @@ const TodoForm = ({ todos, setTodos }: Props) => {
       const todo = {
         id: todos.length + 1,
         todo: todotext,
-        date: new Date(),
+        date: moment().toDate(),
         isDone: false,
       };
       updatedTodos.push(todo);
@@ -36,9 +42,39 @@ const TodoForm = ({ todos, setTodos }: Props) => {
         <Button className="button-plus" label="+" />
       </form>
       <div className="filters">
-        <span className="active filter-type">All</span>
-        <span className="filter-type">Pending</span>
-        <span className="filter-type">Completed</span>
+        <span
+          className="active filter-type"
+          onClick={() => {
+            if (setFilter) {
+              setFilter("all");
+              changeStyle();
+            }
+          }}
+        >
+          All
+        </span>
+        <span
+          className={`filter-type ${isActive ? "active" : ""}`}
+          onClick={() => {
+            if (setFilter) {
+              setFilter("pending");
+              changeStyle();
+            }
+          }}
+        >
+          Pending
+        </span>
+        <span
+          className={`filter-type ${isActive ? "active" : ""}`}
+          onClick={() => {
+            if (setFilter) {
+              setFilter("done");
+              changeStyle();
+            }
+          }}
+        >
+          Completed
+        </span>
       </div>
     </>
   );

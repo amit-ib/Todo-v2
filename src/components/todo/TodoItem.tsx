@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import moment from "moment";
 import { TodoModal } from "../../models";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -7,6 +7,7 @@ import { dateConverter } from "../../utils/helper";
 
 interface Props {
   todoItems: TodoModal[];
+  filteredItems: TodoModal[];
   todoItem: TodoModal;
   setTodos: React.Dispatch<React.SetStateAction<TodoModal[]>>; // is a function - copied from setTodos state
   index: number;
@@ -17,37 +18,69 @@ interface editForm {
   date: string;
 }
 
-const TodoItem = ({ todoItems, todoItem, setTodos, index }: Props) => {
-  // function to handel done icon
-  const handleTaskDone = (index: number) => {
-    let todos = [...todoItems];
-
-    if (todos[index]) {
-      todos[index].isDone = !todos[index].isDone;
-    }
-    setTodos(todos);
-  };
-
-  const taskItem = todoItems[index];
-
+const TodoItem = ({
+  todoItems,
+  todoItem,
+  setTodos,
+  index,
+  filteredItems,
+}: Props) => {
+  // const [defaultVal, setDefaultVal] = useState<editForm>({
+  //   task: todoItem.todo,
+  //   date: moment(new Date(todoItem.date)).format("YYYY-MM-DD"),
+  // });
+  // useEffect(() => {
+  //   if (todoItem) {
+  //     setDefaultVal({
+  //       task: todoItem.todo,
+  //       date: moment(new Date(todoItem.date)).format("YYYY-MM-DD"),
+  //       //date: dateConverter(new Date(todoItem.date)),
+  //     });
+  //   }
+  // }, [todoItem]);
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm<editForm>({
     defaultValues: {
-      task: todoItems[index].todo,
-      date: moment(new Date(todoItems[index].date)).format("YYYY-MM-DD"),
-      //date: dateConverter(new Date(todoItems[index].date)),
+      task: todoItem.todo,
+      date: moment(moment(todoItem.date)).format("YYYY-MM-DD"),
+      //date: dateConverter(new Date(todoItem.date)),
     },
+    // defaultValues: defaultVal,
   });
+
+  // function to handel done icon
+  const handleTaskDone = (id: number) => {
+    let todos = [...todoItems];
+
+    todos.forEach((item) => {
+      if (item.id === id) {
+        item.isDone = !item.isDone;
+      }
+    });
+    setTodos(todos);
+    // if (todos[index]) {
+    //   todos[index].isDone = !todos[index].isDone;
+    // }
+    //setTodos(todos);
+  };
+
+  const taskItem = todoItem;
 
   const onSubmit: SubmitHandler<editForm> = (data) => {
     let todos = [...todoItems];
-    if (todos[index]) {
-      todos[index].todo = data.task;
-      todos[index].date = new Date(data.date);
-    }
+    todos.forEach((item) => {
+      if (todoItem.id === item.id) {
+        item.todo = data.task;
+        item.date = moment(data.date).toDate();
+      }
+    });
+    // if (todos[index]) {
+    //   todos[index].todo = data.task;
+    //   todos[index].date = new Date(data.date);
+    // }
     setTodos(todos);
     setEditMode(false);
   };
@@ -61,12 +94,14 @@ const TodoItem = ({ todoItems, todoItem, setTodos, index }: Props) => {
   };
 
   // Enabeling edit mode
-  const enableEditing = () => {
+  const enableEditing = (id: number) => {
     if (!taskItem.isDone) {
       setEditMode(true);
     }
   };
 
+  //console.log(todoItem);
+  //console.log("ABC:", todoItem.todo);
   return (
     <div className="list-item">
       {editMode ? (
@@ -95,8 +130,11 @@ const TodoItem = ({ todoItems, todoItem, setTodos, index }: Props) => {
       )}
 
       <div className="action-icons">
-        <span onClick={() => handleTaskDone(index)}>Mark Done</span>
-        <span className="button-edit" onClick={enableEditing}>
+        <span onClick={() => handleTaskDone(taskItem.id)}>Mark Done</span>
+        <span
+          className="button-edit"
+          onClick={() => enableEditing(taskItem.id)}
+        >
           Edit
         </span>
         <span
