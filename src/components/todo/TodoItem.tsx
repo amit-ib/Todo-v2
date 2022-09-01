@@ -43,7 +43,6 @@ const TodoItem = ({ todoItems, todoItem, setTodos, index }: Props) => {
   });
 
   const onSubmit: SubmitHandler<editForm> = (data) => {
-    console.log(data);
     let todos = [...todoItems];
     if (todos[index]) {
       todos[index].todo = data.task;
