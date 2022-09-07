@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import moment from "moment";
 import { TodoModal } from "../../models";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -25,19 +25,6 @@ const TodoItem = ({
   index,
   filteredItems,
 }: Props) => {
-  // const [defaultVal, setDefaultVal] = useState<editForm>({
-  //   task: todoItem.todo,
-  //   date: moment(new Date(todoItem.date)).format("YYYY-MM-DD"),
-  // });
-  // useEffect(() => {
-  //   if (todoItem) {
-  //     setDefaultVal({
-  //       task: todoItem.todo,
-  //       date: moment(new Date(todoItem.date)).format("YYYY-MM-DD"),
-  //       //date: dateConverter(new Date(todoItem.date)),
-  //     });
-  //   }
-  // }, [todoItem]);
   const {
     register,
     formState: { errors },
@@ -47,9 +34,7 @@ const TodoItem = ({
     defaultValues: {
       task: todoItem.todo,
       date: moment(moment(todoItem.date)).format("YYYY-MM-DD"),
-      //date: dateConverter(new Date(todoItem.date)),
     },
-    // defaultValues: defaultVal,
   });
 
   // function to handel done icon
@@ -62,10 +47,6 @@ const TodoItem = ({
       }
     });
     setTodos(todos);
-    // if (todos[index]) {
-    //   todos[index].isDone = !todos[index].isDone;
-    // }
-    //setTodos(todos);
   };
 
   const taskItem = todoItem;
@@ -99,8 +80,6 @@ const TodoItem = ({
     console.log(watch());
   };
 
-  //console.log(todoItem);
-  //console.log("ABC:", todoItem.todo);
   return (
     <div className="list-item">
       {editMode ? (
@@ -136,19 +115,12 @@ const TodoItem = ({
           className="button edit"
           onClick={() => enableEditing(taskItem.id)}
         />
-        {/* <Button
+        <Button
           label="Delete"
-          className="button delete"
-          onClick={() => handleTaskDelete(taskItem.id)}
-        /> */}
-        <button
-          type="button"
           className="button delete"
           data-bs-toggle="modal"
           data-bs-target="#exampleModal"
-        >
-          Delete
-        </button>
+        />
       </div>
 
       <div
@@ -187,7 +159,6 @@ const TodoItem = ({
                 data-bs-dismiss="modal"
                 onClick={() => {
                   handleTaskDelete(taskItem.id);
-                  //handleClose();
                 }}
               >
                 Delete

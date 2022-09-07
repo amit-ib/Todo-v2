@@ -3,16 +3,11 @@ import Input from "../shared/form/Input";
 import Button from "../shared/form/Button";
 import { Props } from "./TodoList";
 import moment from "moment";
+import { filters } from "../../mock-data/filters";
 
 const TodoForm = ({ todos, setTodos, setFilter }: Props) => {
   const [todotext, setTodoText] = useState<string>("");
 
-  // Filter Options
-  const filters = [
-    { id: 1, filter: "all", text: "All", defaultActive: "active" },
-    { id: 2, filter: "pending", text: "Pending" },
-    { id: 3, filter: "done", text: "Completed" },
-  ];
   // Handeling filter active state
   const [activeId, setActiveId] = useState(Number);
 
