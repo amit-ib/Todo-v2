@@ -42,6 +42,7 @@ const TodoItem = ({
     register,
     formState: { errors },
     handleSubmit,
+    watch,
   } = useForm<editForm>({
     defaultValues: {
       task: todoItem.todo,
@@ -77,10 +78,6 @@ const TodoItem = ({
         item.date = moment(data.date).toDate();
       }
     });
-    // if (todos[index]) {
-    //   todos[index].todo = data.task;
-    //   todos[index].date = new Date(data.date);
-    // }
     setTodos(todos);
     setEditMode(false);
   };
@@ -90,6 +87,7 @@ const TodoItem = ({
 
   // function to handel delete task
   const handleTaskDelete = (id: number) => {
+    //setTodos(todoItems.filter((todoItem) => todoItem.id !== id));
     setTodos(todoItems.filter((todoItem) => todoItem.id !== id));
   };
 
@@ -98,6 +96,7 @@ const TodoItem = ({
     if (!taskItem.isDone) {
       setEditMode(true);
     }
+    console.log(watch());
   };
 
   //console.log(todoItem);
@@ -122,27 +121,80 @@ const TodoItem = ({
         >
           {taskItem.todo}
 
-          <div className="date">
-            {/* {moment(taskItem.date).format("DD/MM/YYYY")} */}
-            {dateConverter(taskItem.date)}
-          </div>
+          <div className="date">{dateConverter(taskItem.date)}</div>
         </div>
       )}
 
       <div className="action-icons">
-        <span onClick={() => handleTaskDone(taskItem.id)}>Mark Done</span>
-        <span
-          className="button-edit"
+        <Button
+          label="Mark Done"
+          className="button"
+          onClick={() => handleTaskDone(taskItem.id)}
+        />
+        <Button
+          label="Edit"
+          className="button edit"
           onClick={() => enableEditing(taskItem.id)}
-        >
-          Edit
-        </span>
-        <span
-          className="button-delete"
+        />
+        {/* <Button
+          label="Delete"
+          className="button delete"
           onClick={() => handleTaskDelete(taskItem.id)}
+        /> */}
+        <button
+          type="button"
+          className="button delete"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
         >
           Delete
-        </span>
+        </button>
+      </div>
+
+      <div
+        className="modal fade"
+        id="exampleModal"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                Delete Task Confirmation
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              Are you sure, you want to delete this task?
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                data-bs-dismiss="modal"
+                onClick={() => {
+                  handleTaskDelete(taskItem.id);
+                  //handleClose();
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

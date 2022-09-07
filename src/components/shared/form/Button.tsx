@@ -6,6 +6,7 @@ const Button = (props: ButtonModel) => {
     <button
       type={props.type}
       className={`${props.className ? props.className : ""}`}
+      onClick={props.onClick}
     >
       {props.label}
     </button>

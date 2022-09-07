@@ -6,10 +6,7 @@ input {
   &:focus {
     outline: none;
   }
-}
-
-.todo-form {
-  input {
+  &.input-task {
     border-right: 0px;
     border-radius: 5px 0px 0px 5px;
   }

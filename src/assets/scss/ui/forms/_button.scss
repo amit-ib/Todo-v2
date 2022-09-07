@@ -1,34 +1,3 @@
-.button-plus {
-  font-size: 16px;
-  border: solid 1px $gray-color;
-  border-left: 0px;
-  background: $white-color;
-  border-radius: 0px 5px 5px 0px;
-  font-size: 25px;
-  padding-right: 10px;
-  cursor: pointer;
-  &:focus {
-    outline: none;
-  }
-}
-
-.button-delete {
-  color: $red-color;
-}
-.button-edit {
-  color: $blue-color;
-}
-
-.button-login {
-  text-align: center;
-  padding-bottom: 10px;
-  button {
-    border-radius: 5px !important;
-    border: solid 1px #ccc !important;
-    padding-right: 10px !important;
-  }
-}
-
 .button {
   border-radius: 5px;
   font-size: 14px;
@@ -37,5 +6,35 @@
   &.primary {
     background: $blue-color;
     color: $white-color;
+  }
+  &.plus {
+    font-size: 16px;
+    border: solid 1px $gray-color;
+    border-left: 0px;
+    background: $white-color;
+    border-radius: 0px 5px 5px 0px;
+    font-size: 25px;
+    padding-right: 10px;
+    cursor: pointer;
+    &:focus {
+      outline: none;
+    }
+  }
+  &.delete {
+    color: $red-color;
+  }
+  &.edit {
+    color: $blue-color;
+  }
+}
+
+// For Google Button 3rd party button
+.button-login {
+  text-align: center;
+  padding-bottom: 10px;
+  button {
+    border-radius: 5px !important;
+    border: solid 1px #ccc !important;
+    padding-right: 10px !important;
   }
 }

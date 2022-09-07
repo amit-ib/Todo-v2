@@ -20,12 +20,14 @@
 
   .action-icons {
     display: flex;
-    span {
+    .button {
       display: flex;
       margin: 0px 5px;
       font-size: 12px;
       align-items: center;
       cursor: pointer;
+      background: transparent;
+      padding: 0px;
       &:hover {
         text-decoration: underline;
       }

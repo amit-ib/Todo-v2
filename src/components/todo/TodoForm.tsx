@@ -6,10 +6,22 @@ import moment from "moment";
 
 const TodoForm = ({ todos, setTodos, setFilter }: Props) => {
   const [todotext, setTodoText] = useState<string>("");
-  const [isActive, setIsActive] = useState(false);
 
-  const changeStyle = () => {
-    setIsActive((current) => !current);
+  // Filter Options
+  const filters = [
+    { id: 1, filter: "all", text: "All", defaultActive: "active" },
+    { id: 2, filter: "pending", text: "Pending" },
+    { id: 3, filter: "done", text: "Completed" },
+  ];
+  // Handeling filter active state
+  const [activeId, setActiveId] = useState(Number);
+
+  // Function to handel filter functionality
+  const handleFilters = (id: number, filter: string) => {
+    if (setFilter) {
+      setFilter(filter);
+    }
+    setActiveId(id);
   };
 
   const handelInputChange = (e: any) => {
@@ -38,43 +50,23 @@ const TodoForm = ({ todos, setTodos, setFilter }: Props) => {
           value={todotext}
           onChange={handelInputChange}
           placeholder="Please enter task"
+          className="input-task"
         />
-        <Button className="button-plus" label="+" />
+        <Button className="button plus" label="+" />
       </form>
       <div className="filters">
-        <span
-          className="active filter-type"
-          onClick={() => {
-            if (setFilter) {
-              setFilter("all");
-              changeStyle();
-            }
-          }}
-        >
-          All
-        </span>
-        <span
-          className={`filter-type ${isActive ? "active" : ""}`}
-          onClick={() => {
-            if (setFilter) {
-              setFilter("pending");
-              changeStyle();
-            }
-          }}
-        >
-          Pending
-        </span>
-        <span
-          className={`filter-type ${isActive ? "active" : ""}`}
-          onClick={() => {
-            if (setFilter) {
-              setFilter("done");
-              changeStyle();
-            }
-          }}
-        >
-          Completed
-        </span>
+        {filters.map((fiterItem) => (
+          <span
+            className={`filter-type ${
+              activeId === 0 ? fiterItem.defaultActive : ""
+            }  ${activeId === fiterItem.id ? "active" : ""}`}
+            onClick={() => {
+              handleFilters(fiterItem.id, fiterItem.filter);
+            }}
+          >
+            {fiterItem.text}
+          </span>
+        ))}
       </div>
     </>
   );
