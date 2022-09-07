@@ -52,6 +52,7 @@ const TodoForm = ({ todos, setTodos, setFilter }: Props) => {
       <div className="filters">
         {filters.map((fiterItem) => (
           <span
+            key={fiterItem.id}
             className={`filter-type ${
               activeId === 0 ? fiterItem.defaultActive : ""
             }  ${activeId === fiterItem.id ? "active" : ""}`}

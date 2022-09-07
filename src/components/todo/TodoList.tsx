@@ -23,6 +23,7 @@ const TodoList = ({ todos, setTodos, filter }: Props) => {
     <>
       {filteredList.map((todoItem, index) => (
         <TodoItem
+          key={todoItem.id}
           todoItem={todoItem}
           todoItems={todos}
           filteredItems={filteredList}
