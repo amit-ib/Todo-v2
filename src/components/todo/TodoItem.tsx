@@ -4,13 +4,18 @@ import { TodoModal } from "../../models";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Button from "../shared/form/Button";
 import { dateConverter } from "../../utils/helper";
+import Modal from "react-bootstrap/Modal";
 
 interface Props {
-  todoItems: TodoModal[];
-  filteredItems: TodoModal[];
+  //filteredItems: TodoModal[];
   todoItem: TodoModal;
-  setTodos: React.Dispatch<React.SetStateAction<TodoModal[]>>; // is a function - copied from setTodos state
-  index: number;
+  //setTodos: React.Dispatch<React.SetStateAction<TodoModal[]>>; // is a function - copied from setTodos state
+  //index: number;
+  handleTaskDelete: (id: number) => void;
+  handleTaskDone: (id: number) => void;
+  //onSubmit: SubmitHandler;
+  handleEdit: (data: editForm, id: number) => void;
+  id: number;
 }
 
 interface editForm {
@@ -19,12 +24,17 @@ interface editForm {
 }
 
 const TodoItem = ({
-  todoItems,
+  //todoItems,
   todoItem,
-  setTodos,
-  index,
-  filteredItems,
-}: Props) => {
+  id,
+  //onSubmit,
+  handleTaskDelete,
+  handleTaskDone,
+  handleEdit,
+}: //setTodos,
+//index,
+//filteredItems,
+Props) => {
   const {
     register,
     formState: { errors },
@@ -36,30 +46,27 @@ const TodoItem = ({
       date: moment(moment(todoItem.date)).format("YYYY-MM-DD"),
     },
   });
+  console.log("todoItem.todo", todoItem.todo);
+  const [show, setShow] = useState(false);
 
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   // function to handel done icon
-  const handleTaskDone = (id: number) => {
-    let todos = [...todoItems];
+  // const handleTaskDone = (id: number) => {
+  //   let todos = [...todoItems];
 
-    todos.forEach((item) => {
-      if (item.id === id) {
-        item.isDone = !item.isDone;
-      }
-    });
-    setTodos(todos);
-  };
+  //   todos.forEach((item) => {
+  //     if (item.id === id) {
+  //       item.isDone = !item.isDone;
+  //     }
+  //   });
+  //   setTodos(todos);
+  // };
 
-  const taskItem = todoItem;
+  //const taskItem = todoItem;
 
   const onSubmit: SubmitHandler<editForm> = (data) => {
-    let todos = [...todoItems];
-    todos.forEach((item) => {
-      if (todoItem.id === item.id) {
-        item.todo = data.task;
-        item.date = moment(data.date).toDate();
-      }
-    });
-    setTodos(todos);
+    handleEdit(data, id);
     setEditMode(false);
   };
 
@@ -67,25 +74,26 @@ const TodoItem = ({
   const [editMode, setEditMode] = useState<boolean>(false);
 
   // function to handel delete task
-  const handleTaskDelete = (id: number) => {
-    //setTodos(todoItems.filter((todoItem) => todoItem.id !== id));
-    setTodos(todoItems.filter((todoItem) => todoItem.id !== id));
-  };
+  // const handleTaskDelete = (id: number) => {
+  //   //setTodos(todoItems.filter((todoItem) => todoItem.id !== id));
+  // };
 
   // Enabeling edit mode
   const enableEditing = (id: number) => {
-    if (!taskItem.isDone) {
+    if (!todoItem.isDone) {
       setEditMode(true);
     }
-    console.log(watch());
+    //console.log(watch());
   };
-
+  //console.log(todoItem.id);
   return (
     <div className="list-item">
       {editMode ? (
         //If in edit mode then display Textbox
         <div className="edit-task-container">
           <form onSubmit={handleSubmit(onSubmit)}>
+            {id} - {todoItem.todo}
+            <input value={todoItem.todo} />
             <input {...register("task", { required: true })} />
             {errors.task?.type === "required" && "Please enter task"}
             <input {...register("date", { required: true })} type="date" />
@@ -95,12 +103,12 @@ const TodoItem = ({
       ) : (
         <div
           className={`list-item-text 
-            ${taskItem.isDone ? "task-done" : ""}
+            ${todoItem.isDone ? "task-done" : ""}
           `}
         >
-          {taskItem.todo}
+          {todoItem.todo}
 
-          <div className="date">{dateConverter(taskItem.date)}</div>
+          <div className="date">{dateConverter(todoItem.date)}</div>
         </div>
       )}
 
@@ -108,22 +116,48 @@ const TodoItem = ({
         <Button
           label="Mark Done"
           className="button"
-          onClick={() => handleTaskDone(taskItem.id)}
+          onClick={() => handleTaskDone(todoItem.id)}
         />
         <Button
           label="Edit"
           className="button edit"
-          onClick={() => enableEditing(taskItem.id)}
+          onClick={() => enableEditing(todoItem.id)}
         />
         <Button
           label="Delete"
           className="button delete"
           data-bs-toggle="modal"
           data-bs-target="#exampleModal"
+          onClick={handleShow}
+          //onClick={() => handleTaskDelete(todoItem.id)}
         />
       </div>
 
-      <div
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Task Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this task?</Modal.Body>
+        <Modal.Footer>
+          <Button
+            label="Close"
+            className="btn btn-secondary"
+            onClick={() => {
+              handleClose();
+            }}
+          />
+          <Button
+            label="Delete"
+            className="btn btn-primary"
+            onClick={() => {
+              handleTaskDelete(todoItem.id);
+              handleClose();
+            }}
+          />
+        </Modal.Footer>
+      </Modal>
+
+      {/* <div
         className="modal fade"
         id="exampleModal"
         aria-labelledby="exampleModalLabel"
@@ -158,7 +192,7 @@ const TodoItem = ({
                 className="btn btn-primary"
                 data-bs-dismiss="modal"
                 onClick={() => {
-                  handleTaskDelete(taskItem.id);
+                  handleTaskDelete(todoItem.id);
                 }}
               >
                 Delete
@@ -166,7 +200,7 @@ const TodoItem = ({
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

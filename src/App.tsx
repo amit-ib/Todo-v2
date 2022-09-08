@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./assets/scss/styles.scss";
 import TodoForm from "./components/todo/TodoForm";
 import TodoList from "./components/todo/TodoList";
 import { TodoModal } from "./models";
