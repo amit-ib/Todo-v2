@@ -1,8 +1,6 @@
-import { useState } from "react";
 import { TodoModal } from "../../models";
 import TodoItem from "./TodoItem";
 import moment from "moment";
-import { SubmitHandler } from "react-hook-form";
 export interface Props {
   todos: TodoModal[];
   setTodos: React.Dispatch<React.SetStateAction<TodoModal[]>>; // copied from setTodos state
@@ -24,7 +22,6 @@ const TodoList = ({ todos, setTodos, filter }: Props) => {
   } else {
     filteredList = todos;
   }
-  //console.log(filteredList);
 
   // function to handel done icon
   const handleTaskDone = (id: number) => {
@@ -43,9 +40,6 @@ const TodoList = ({ todos, setTodos, filter }: Props) => {
     setTodos(todos.filter((todoItem) => todoItem.id !== id));
   };
 
-  // State to check edit state(if already in edit mode)
-  //const [editMode, setEditMode] = useState<boolean>(false);
-
   const onSubmit = (data: editForm, id: number) => {
     let todoList = [...todos];
     todoList.forEach((item) => {
@@ -56,7 +50,7 @@ const TodoList = ({ todos, setTodos, filter }: Props) => {
     });
     setTodos(todoList);
   };
-  console.log(todos);
+
   return (
     <>
       {filteredList.map((todoItem) => (
@@ -66,10 +60,6 @@ const TodoList = ({ todos, setTodos, filter }: Props) => {
           handleTaskDelete={handleTaskDelete}
           handleTaskDone={handleTaskDone}
           handleEdit={onSubmit}
-          //todoItems={todos}
-          //filteredItems={filteredList}
-          //setTodos={setTodos}
-          //index={index}
         />
       ))}
     </>
