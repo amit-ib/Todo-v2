@@ -20,16 +20,24 @@
 
   .action-icons {
     display: flex;
-    .button {
+    .link {
       display: flex;
       margin: 0px 5px;
-      font-size: 12px;
       align-items: center;
       cursor: pointer;
+      font-size: 12px;
+      border: 0px;
+      padding: 0;
       background: transparent;
       padding: 0px;
       &:hover {
         text-decoration: underline;
+      }
+      &.red {
+        color: $red-color;
+      }
+      &.blue {
+        color: $blue-color;
       }
     }
   }
