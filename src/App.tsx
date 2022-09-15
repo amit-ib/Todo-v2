@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import TodoForm from "./components/todo/TodoForm";
 import TodoList from "./components/todo/TodoList";
-import { TodoModal } from "./models";
 import { UserModal } from "./models/user";
-import { staticTodo } from "./mock-data/todo";
 import Login from "./components/shared/Login";
 import { gapi } from "gapi-script";
 import { useSelector } from "react-redux";
@@ -30,7 +28,6 @@ function App() {
     setIsLogedin(accessToken ? true : false);
   }, []);
 
-  //const [todos, setTodos] = useState<TodoModal[]>(staticTodo);
   const [userProfile, setuserProfile] = useState<UserModal | null>();
 
   // state to handle filters
@@ -57,7 +54,7 @@ function App() {
         {isLogedin && (
           <div>
             <TodoForm todos={state.tasks} setFilter={setFilter} />
-            <TodoList todos={state.tasks} filter={filter} />
+            <TodoList todos={state.tasks} />
           </div>
         )}
 
