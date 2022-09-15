@@ -6,10 +6,13 @@ import { UserModal } from "./models/user";
 import { staticTodo } from "./mock-data/todo";
 import Login from "./components/shared/Login";
 import { gapi } from "gapi-script";
+import { useSelector } from "react-redux";
+import { todoList } from "./redux/todoReducer";
 
 const clientId = process.env.REACT_APP_CLIENTID;
 
 function App() {
+  const state = useSelector((state: todoList) => state);
   const [isLogedin, setIsLogedin] = useState({});
   var accessToken = window.localStorage.getItem("accessToken");
   console.log(clientId);
@@ -27,7 +30,7 @@ function App() {
     setIsLogedin(accessToken ? true : false);
   }, []);
 
-  const [todos, setTodos] = useState<TodoModal[]>(staticTodo);
+  //const [todos, setTodos] = useState<TodoModal[]>(staticTodo);
   const [userProfile, setuserProfile] = useState<UserModal | null>();
 
   // state to handle filters
@@ -53,8 +56,8 @@ function App() {
 
         {isLogedin && (
           <div>
-            <TodoForm todos={todos} setTodos={setTodos} setFilter={setFilter} />
-            <TodoList todos={todos} setTodos={setTodos} filter={filter} />
+            <TodoForm todos={state.tasks} setFilter={setFilter} />
+            <TodoList todos={state.tasks} filter={filter} />
           </div>
         )}
 

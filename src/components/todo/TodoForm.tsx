@@ -5,7 +5,7 @@ import { Props } from "./TodoList";
 import moment from "moment";
 import { filters } from "../../mock-data/filters";
 
-const TodoForm = ({ todos, setTodos, setFilter }: Props) => {
+const TodoForm = ({ todos, setFilter }: Props) => {
   const [todotext, setTodoText] = useState<string>("");
 
   // Handeling filter active state
@@ -33,7 +33,7 @@ const TodoForm = ({ todos, setTodos, setFilter }: Props) => {
         isDone: false,
       };
       updatedTodos.push(todo);
-      setTodos(updatedTodos);
+      //setTodos(updatedTodos);
       setTodoText("");
     }
   };

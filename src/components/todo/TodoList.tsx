@@ -3,7 +3,7 @@ import TodoItem from "./TodoItem";
 import moment from "moment";
 export interface Props {
   todos: TodoModal[];
-  setTodos: React.Dispatch<React.SetStateAction<TodoModal[]>>; // copied from setTodos state
+  //setTodos: React.Dispatch<React.SetStateAction<TodoModal[]>>; // copied from setTodos state
   setFilter?: React.Dispatch<React.SetStateAction<string>>; // copied from setTodos state
   filter?: string;
 }
@@ -13,7 +13,7 @@ interface editForm {
   date: string;
 }
 
-const TodoList = ({ todos, setTodos, filter }: Props) => {
+const TodoList = ({ todos, filter }: Props) => {
   let filteredList = todos;
   if (filter === "done") {
     filteredList = todos.filter((todoItem) => todoItem.isDone === true);
@@ -32,12 +32,12 @@ const TodoList = ({ todos, setTodos, filter }: Props) => {
         item.isDone = !item.isDone;
       }
     });
-    setTodos(todoList);
+    //setTodos(todoList);
   };
 
   // function to handel delete task
   const handleTaskDelete = (id: number) => {
-    setTodos(todos.filter((todoItem) => todoItem.id !== id));
+    //setTodos(todos.filter((todoItem) => todoItem.id !== id));
   };
 
   const onSubmit = (data: editForm, id: number) => {
@@ -48,7 +48,7 @@ const TodoList = ({ todos, setTodos, filter }: Props) => {
         item.date = moment(data.date).toDate();
       }
     });
-    setTodos(todoList);
+    //setTodos(todoList);
   };
 
   return (
