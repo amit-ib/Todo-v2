@@ -13,16 +13,6 @@ const todoReducer = (
   action: { type: string; payload: TodoModal }
 ) => {
   switch (action.type) {
-    case "DELETE_TODO":
-      //console.log("ACTION", state);
-      let remainingTasks = state.tasks.filter(
-        (todoItem) => todoItem.id !== action.payload.id
-      );
-      return {
-        ...state, // copy origenal state and update only required
-        tasks: remainingTasks,
-      };
-
     default:
       return state;
   }
