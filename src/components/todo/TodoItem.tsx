@@ -58,6 +58,7 @@ const TodoItem = ({ todoItem }: Props) => {
             label="Delete"
             className="btn btn-primary"
             onClick={() => {
+              dispatch(deleteTodo(todoItem));
               handleClose();
             }}
           />
