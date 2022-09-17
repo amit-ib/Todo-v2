@@ -1,17 +1,15 @@
-import React from "react";
 import { TodoModal } from "../../models";
 import TodoItem from "./TodoItem";
-
 export interface Props {
   todos: TodoModal[];
-  setTodos: React.Dispatch<React.SetStateAction<TodoModal[]>>; // copied from setTodos state
+  setFilter?: React.Dispatch<React.SetStateAction<string>>; // copied from setTodos state
 }
-
-const TodoList = ({ todos, setTodos }: Props) => {
+const TodoList = ({ todos }: Props) => {
+  let filteredList = todos;
   return (
     <>
-      {todos.map((allTodo, index) => (
-        <TodoItem todoItems={todos} setTodos={setTodos} index={index} />
+      {filteredList.map((todoItem) => (
+        <TodoItem id={todoItem.id} todoItem={todoItem} />
       ))}
     </>
   );
