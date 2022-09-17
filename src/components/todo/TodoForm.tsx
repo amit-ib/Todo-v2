@@ -1,16 +1,27 @@
 import React, { useState } from "react";
 import Input from "../shared/form/Input";
 import Button from "../shared/form/Button";
+import { useDispatch } from "react-redux";
+import { addTodo } from "../../redux";
 
 const TodoForm = () => {
+  const dispatch = useDispatch();
   const [todotext, setTodoText] = useState<string>("");
 
   const handelInputChange = (e: any) => {
     setTodoText(e.target.value);
   };
+
+  const handleAdd = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (todotext) {
+      dispatch(addTodo(todotext));
+    }
+  };
+  
   return (
     <>
-    <form className="todo-form">
+    <form className="todo-form" onSubmit={handleAdd}>
     <Input
           value={todotext}
           onChange={handelInputChange}
