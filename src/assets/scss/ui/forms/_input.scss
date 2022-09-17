@@ -2,9 +2,12 @@ input {
   padding: 10px;
   font-size: 16px;
   border: solid 1px $gray-color;
-  border-right: 0px;
-  border-radius: 5px 0px 0px 5px;
+  border-radius: 5px;
   &:focus {
     outline: none;
+  }
+  &.input-task {
+    border-right: 0px;
+    border-radius: 5px 0px 0px 5px;
   }
 }
