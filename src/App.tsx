@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import "./assets/scss/styles.scss";
 import TodoForm from "./components/todo/TodoForm";
 import TodoList from "./components/todo/TodoList";
-import { TodoModal } from "./models";
 import { UserModal } from "./models/user";
-import { staticTodo } from "./mock-data/todo";
 import Login from "./components/shared/Login";
+import { useSelector } from "react-redux";
 import { gapi } from "gapi-script";
+import { todoList } from "./redux/todoReducer";
 
 const clientId = process.env.REACT_APP_CLIENTID;
 
 function App() {
+  const state = useSelector((state: todoList) => state);
   const [isLogedin, setIsLogedin] = useState({});
   var accessToken = window.localStorage.getItem("accessToken");
   console.log(clientId);
@@ -25,11 +26,10 @@ function App() {
   });
 
   useEffect(() => {
-    setIsLogedin(accessToken ? true : false);
+    setIsLogedin(accessToken ? true : true);
     console.log("isLogedin", isLogedin, accessToken);
   }, []);
 
-  const [todos, setTodos] = useState<TodoModal[]>(staticTodo);
   const [userProfile, setuserProfile] = useState<UserModal | null>();
 
   return (
@@ -51,8 +51,8 @@ function App() {
 
         {isLogedin && (
           <div>
-            <TodoForm todos={todos} setTodos={setTodos} />
-            <TodoList todos={todos} setTodos={setTodos} />
+            <TodoForm  />
+            <TodoList todos={state.tasks} />
           </div>
         )}
 
