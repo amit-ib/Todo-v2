@@ -3,6 +3,7 @@ import Input from "../shared/form/Input";
 import Button from "../shared/form/Button";
 import { useDispatch } from "react-redux";
 import { addTodo } from "../../redux";
+import moment from "moment";
 
 const TodoForm = () => {
   const dispatch = useDispatch();
@@ -15,7 +16,13 @@ const TodoForm = () => {
   const handleAdd = (e: React.FormEvent) => {
     e.preventDefault();
     if (todotext) {
-      dispatch(addTodo(todotext));
+
+      dispatch(addTodo({
+          id: Math.random(),
+          todo: todotext,
+          date: moment().toDate(),
+          isDone: false,
+        }));
     }
   };
   
