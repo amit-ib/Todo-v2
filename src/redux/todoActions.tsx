@@ -5,3 +5,11 @@ export const addTodo = (data: TodoModal) => {
       payload: data,
     };
   };
+
+  export const deleteTodo = (data: TodoModal) => {
+    console.log("deleteTodo", data);
+    return {
+      type: "DELETE_TODO", // returned type property
+      payload: data,
+    };
+  };

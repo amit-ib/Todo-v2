@@ -1,11 +1,20 @@
+import Button from "../shared/form/Button";
 import { TodoModal } from "../../models";
 import { dateConverter } from "../../utils/helper";
+import { useDispatch } from "react-redux";
+import { useState } from "react"
+import Modal from "react-bootstrap/Modal";
+import { deleteTodo } from "../../redux";
 interface Props {
   todoItem: TodoModal;
   id: number;
 }
 
 const TodoItem = ({ todoItem }: Props) => {
+  const dispatch = useDispatch();
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   return (
     <div className="list-item">
@@ -20,10 +29,39 @@ const TodoItem = ({ todoItem }: Props) => {
       </div>
 
       <div className="action-icons">
-        <span>Mark Done</span>
-        <span className="button-edit">Edit</span>
-        <span className="button-delete">Delete</span>
+        <Button label="Mark Done" className="link" />
+        <Button label="Edit" className="link red" />
+        <Button
+          label="Delete"
+          className="link blue"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+          onClick={handleShow}
+        />
       </div>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Task Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this task?</Modal.Body>
+        <Modal.Footer>
+          <Button
+            label="Close"
+            className="btn btn-secondary"
+            onClick={() => {
+              handleClose();
+            }}
+          />
+          <Button
+            label="Delete"
+            className="btn btn-primary"
+            onClick={() => {
+              dispatch(deleteTodo(todoItem));
+              handleClose();
+            }}
+          />
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
