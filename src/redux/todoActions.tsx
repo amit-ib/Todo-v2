@@ -7,9 +7,15 @@ export const addTodo = (data: TodoModal) => {
   };
 
   export const deleteTodo = (data: TodoModal) => {
-    console.log("deleteTodo", data);
     return {
-      type: "DELETE_TODO", // returned type property
+      type: "DELETE_TODO",
+      payload: data,
+    };
+  };
+
+  export const markDoneTodo = (data: TodoModal) => {
+    return {
+      type: "MARK_DONE_TODO", 
       payload: data,
     };
   };
