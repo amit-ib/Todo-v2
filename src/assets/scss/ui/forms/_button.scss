@@ -1,23 +1,28 @@
-button {
-  font-size: 16px;
-  border: solid 1px $gray-color;
-  border-left: 0px;
-  background: $white-color;
-  border-radius: 0px 5px 5px 0px;
-  font-size: 25px;
-  padding-right: 10px;
-  cursor: pointer;
-  &:focus {
-    outline: none;
+.button {
+  border-radius: 5px;
+  font-size: 14px;
+  border: 0px;
+  padding: 10px;
+  &.primary {
+    background: $blue-color;
+    color: $white-color;
+  }
+  &.plus {
+    font-size: 16px;
+    border: solid 1px $gray-color;
+    border-left: 0px;
+    background: $white-color;
+    border-radius: 0px 5px 5px 0px;
+    font-size: 25px;
+    padding-right: 10px;
+    cursor: pointer;
+    &:focus {
+      outline: none;
+    }
   }
 }
-.button-delete {
-  color: $red-color;
-}
-.button-edit {
-  color: $blue-color;
-}
 
+// For Google Button 3rd party button
 .button-login {
   text-align: center;
   padding-bottom: 10px;

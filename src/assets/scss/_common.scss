@@ -1,13 +1,15 @@
+* {
+  box-sizing: border-box;
+}
 body {
   font-family: verdana;
   font-size: 16px;
-  background: #3f94ff;
+  background: $light-blue-color;
 }
-
 .container {
   margin: 20px auto 20px auto;
   max-width: 500px;
-  background: #fff;
+  background: $white-color;
   border-radius: 10px;
   padding: 2px 15px 15px;
 }
