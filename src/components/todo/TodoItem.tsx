@@ -2,9 +2,8 @@ import Button from "../shared/form/Button";
 import { TodoModal } from "../../models";
 import { dateConverter } from "../../utils/helper";
 import { useDispatch } from "react-redux";
-import { useState } from "react"
-import Modal from "react-bootstrap/Modal";
-import { deleteTodo } from "../../redux";
+import { useState } from "react";
+import { deleteTodo, markDoneTodo } from "../../redux";
 import Confirm from "../shared/Confirm";
 interface Props {
   todoItem: TodoModal;
@@ -17,11 +16,10 @@ const TodoItem = ({ todoItem }: Props) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const dispatchDelete = () =>
-  {
+  const dispatchDelete = () => {
     dispatch(deleteTodo(todoItem));
     handleClose();
-  }
+  };
 
   return (
     <div className="list-item">
@@ -36,7 +34,13 @@ const TodoItem = ({ todoItem }: Props) => {
       </div>
 
       <div className="action-icons">
-        <Button label="Mark Done" className="link" />
+        <Button
+          label="Mark Done"
+          className="link"
+          onClick={() => {
+            dispatch(markDoneTodo(todoItem));
+          }}
+        />
         <Button label="Edit" className="link red" />
         <Button
           label="Delete"
@@ -46,7 +50,14 @@ const TodoItem = ({ todoItem }: Props) => {
           onClick={handleShow}
         />
       </div>
-      <Confirm show={show} onHide={handleClose} text="Are you sure you want to delete this task?" title="Delete Task Confirmation" buttonLabel="Delete" buttonAction={dispatchDelete} />
+      <Confirm
+        show={show}
+        onHide={handleClose}
+        text="Are you sure you want to delete this task?"
+        title="Delete Task Confirmation"
+        buttonLabel="Delete"
+        buttonAction={dispatchDelete}
+      />
     </div>
   );
 };

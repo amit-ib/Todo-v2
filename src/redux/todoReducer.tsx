@@ -17,20 +17,32 @@ const todoReducer = (state: todoList = initialState, action: any) => {
       if (action.payload) {
         updatedTodos.push(action.payload);
       }
-     
+
       return {
         ...state, // copy origenal state and update only required
-       tasks:updatedTodos
+        tasks: updatedTodos,
       };
 
-      case "DELETE_TODO":
-        let remainingTasks = state.tasks.filter(
-          (todoItem) => todoItem.id !== action.payload.id
-        );
-        return {
-          ...state, // copy origenal state and update only required
-          tasks: remainingTasks,
-        };
+    case "DELETE_TODO":
+      let remainingTasks = state.tasks.filter(
+        (todoItem) => todoItem.id !== action.payload.id
+      );
+      return {
+        ...state, // copy origenal state and update only required
+        tasks: remainingTasks,
+      };
+
+    case "MARK_DONE_TODO":
+      let todoList = [...state.tasks];
+      todoList.forEach((item) => {
+        if (item.id === action.payload.id) {
+          item.isDone = !item.isDone;
+        }
+      });
+      return {
+        ...state,
+        tasks: todoList,
+      };
     default:
       return state;
   }
