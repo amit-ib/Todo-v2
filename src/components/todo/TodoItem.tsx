@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { useState } from "react"
 import Modal from "react-bootstrap/Modal";
 import { deleteTodo } from "../../redux";
+import Confirm from "../shared/Confirm";
 interface Props {
   todoItem: TodoModal;
   id: number;
@@ -15,6 +16,12 @@ const TodoItem = ({ todoItem }: Props) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const dispatchDelete = () =>
+  {
+    dispatch(deleteTodo(todoItem));
+    handleClose();
+  }
 
   return (
     <div className="list-item">
@@ -39,7 +46,8 @@ const TodoItem = ({ todoItem }: Props) => {
           onClick={handleShow}
         />
       </div>
-      <Modal show={show} onHide={handleClose}>
+      <Confirm show={show} onHide={handleClose} text="Are you sure you want to delete this task?" title="Delete Task Confirmation" buttonLabel="Delete" buttonAction={dispatchDelete} />
+      {/* <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Delete Task Confirmation</Modal.Title>
         </Modal.Header>
@@ -61,7 +69,7 @@ const TodoItem = ({ todoItem }: Props) => {
             }}
           />
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
     </div>
   );
 };
