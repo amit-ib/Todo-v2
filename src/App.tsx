@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./assets/scss/styles.scss";
 import TodoForm from "./components/todo/TodoForm";
 import TodoList from "./components/todo/TodoList";
 import { UserModal } from "./models/user";
@@ -14,7 +13,6 @@ function App() {
   const state = useSelector((state: todoList) => state);
   const [isLogedin, setIsLogedin] = useState({});
   var accessToken = window.localStorage.getItem("accessToken");
-  console.log(clientId);
   useEffect(() => {
     function start() {
       gapi.client.init({
