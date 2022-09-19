@@ -47,29 +47,6 @@ const TodoItem = ({ todoItem }: Props) => {
         />
       </div>
       <Confirm show={show} onHide={handleClose} text="Are you sure you want to delete this task?" title="Delete Task Confirmation" buttonLabel="Delete" buttonAction={dispatchDelete} />
-      {/* <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Delete Task Confirmation</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Are you sure you want to delete this task?</Modal.Body>
-        <Modal.Footer>
-          <Button
-            label="Close"
-            className="btn btn-secondary"
-            onClick={() => {
-              handleClose();
-            }}
-          />
-          <Button
-            label="Delete"
-            className="btn btn-primary"
-            onClick={() => {
-              dispatch(deleteTodo(todoItem));
-              handleClose();
-            }}
-          />
-        </Modal.Footer>
-      </Modal> */}
     </div>
   );
 };
