@@ -4,7 +4,7 @@ import Button from "../shared/form/Button";
 import { dateConverter } from "../../utils/helper";
 import Modal from "react-bootstrap/Modal";
 import { useDispatch } from "react-redux";
-import { deleteTodo } from "../../redux";
+import { deleteTodo, doneTodo } from "../../redux";
 
 interface Props {
   todoItem: TodoModal;
@@ -30,7 +30,11 @@ const TodoItem = ({ todoItem }: Props) => {
       </div>
 
       <div className="action-icons">
-        <Button label="Mark Done" className="link" />
+        <Button
+          label="Mark Done"
+          className="link"
+          onClick={() => dispatch(doneTodo(todoItem))}
+        />
         <Button label="Edit" className="link red" />
         <Button
           label="Delete"
