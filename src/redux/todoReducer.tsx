@@ -41,6 +41,19 @@ const todoReducer = (state: todoList = initialState, action: any) => {
           ...state, 
           tasks:todoList
         };
+
+        case "EDIT_TODO":
+          let taskList = [...state.tasks];
+          taskList.forEach((item) => {
+            if (item.id === action.payload.id) {
+              item.todo = action.payload.todo;
+              item.date = action.payload.date;
+            }
+          });
+        return {
+          ...state, 
+          tasks:taskList
+        };
     default:
       return state;
   }

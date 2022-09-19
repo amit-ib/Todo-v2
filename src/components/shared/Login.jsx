@@ -29,7 +29,7 @@ const Login = (props) => {
   };
 
   return (
-    <div class="button-login">
+    <div className="button-login">
       {showLoginButton ? (
         <GoogleLogin
           clientId={clientId}

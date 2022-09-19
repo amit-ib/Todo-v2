@@ -5,6 +5,7 @@ export interface ButtonModel {
   type?: "button" | "submit";
   onClick?: MouseEventHandler;
   className?: string;
+  disabled?:boolean;
 }
 
 export enum ButtonType {

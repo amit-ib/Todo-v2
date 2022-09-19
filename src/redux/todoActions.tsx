@@ -19,3 +19,10 @@ export const addTodo = (data: TodoModal) => {
       payload: data,
     };
   };
+
+  export const editTodo = (data: TodoModal) => {
+    return {
+      type: "EDIT_TODO", 
+      payload: data,
+    };
+  };
