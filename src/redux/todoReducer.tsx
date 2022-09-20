@@ -1,7 +1,11 @@
 import { TodoModal } from "../models";
 import { staticTodo } from "../mock-data/todo";
+import {
+  actionAddTask,
+  actionDeleteTask,
+  actionCompleteTask,
+} from "./actionList";
 //import { v4 as uuidv4 } from "uuid";
-import moment from "moment";
 export interface todoList {
   tasks: TodoModal[];
 }
@@ -12,7 +16,7 @@ const initialState = {
 //(previousState, action) => newState
 const todoReducer = (state: todoList = initialState, action: any) => {
   switch (action.type) {
-    case "ADD_TODO":
+    case actionAddTask:
       const updatedTodos = [...state.tasks];
       if (action.payload) {
         updatedTodos.push(action.payload);
@@ -23,7 +27,7 @@ const todoReducer = (state: todoList = initialState, action: any) => {
         tasks: updatedTodos,
       };
 
-    case "DELETE_TODO":
+    case actionDeleteTask:
       let remainingTasks = state.tasks.filter(
         (todoItem) => todoItem.id !== action.payload.id
       );
@@ -32,13 +36,12 @@ const todoReducer = (state: todoList = initialState, action: any) => {
         tasks: remainingTasks,
       };
 
-    case "MARK_DONE_TODO":
+    case actionCompleteTask:
       let todoList = [...state.tasks];
-      todoList.forEach((item) => {
-        if (item.id === action.payload.id) {
-          item.isDone = !item.isDone;
-        }
-      });
+      let todoIndex = todoList.findIndex(
+        (element) => element.id === action.payload.id
+      );
+      todoList[todoIndex].isDone = !todoList[todoIndex].isDone;
       return {
         ...state,
         tasks: todoList,

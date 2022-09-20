@@ -21,6 +21,10 @@ const TodoItem = ({ todoItem }: Props) => {
     handleClose();
   };
 
+  const handleDone = () => {
+    dispatch(markDoneTodo(todoItem));
+  };
+
   return (
     <div className="list-item">
       <div
@@ -34,13 +38,7 @@ const TodoItem = ({ todoItem }: Props) => {
       </div>
 
       <div className="action-icons">
-        <Button
-          label="Mark Done"
-          className="link"
-          onClick={() => {
-            dispatch(markDoneTodo(todoItem));
-          }}
-        />
+        <Button label="Mark Done" className="link" onClick={handleDone} />
         <Button label="Edit" className="link red" />
         <Button
           label="Delete"
