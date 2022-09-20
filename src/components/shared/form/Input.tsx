@@ -1,7 +1,7 @@
 interface Props {
   type?: string;
   value: string | number;
-  placeholder: string;
+  placeholder?: string;
   onChange: (e: any) => void;
   className?: string;
 }

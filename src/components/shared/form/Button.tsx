@@ -5,8 +5,11 @@ const Button = (props: ButtonModel) => {
   return (
     <button
       type={props.type}
-      className={`${props.className ? props.className : ""}${props.styles ? "button "+props.styles : ''}`}
+      className={`${props.className ? props.className : ""}${
+        props.styles ? "button " + props.styles : ""
+      }`}
       onClick={props.onClick}
+      disabled={props.disabled}
       {...props}
     >
       {props.label}
