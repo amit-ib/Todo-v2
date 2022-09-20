@@ -16,7 +16,7 @@ const TodoItem = ({ todoItem }: Props) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const dispatchDelete = () => {
+  const handleDelete = () => {
     dispatch(deleteTodo(todoItem));
     handleClose();
   };
@@ -54,7 +54,7 @@ const TodoItem = ({ todoItem }: Props) => {
         text="Are you sure you want to delete this task?"
         title="Delete Task Confirmation"
         buttonLabel="Delete"
-        buttonAction={dispatchDelete}
+        buttonAction={handleDelete}
       />
     </div>
   );
