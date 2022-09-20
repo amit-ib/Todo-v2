@@ -11,6 +11,8 @@ const initialState = {
 
 //(previousState, action) => newState
 const todoReducer = (state: todoList = initialState, action: any) => {
+  const todoList: TodoModal[] = [...state.tasks];
+
   switch (action.type) {
     case ADD_TODO:
       const updatedTodos = [...state.tasks];
@@ -33,7 +35,6 @@ const todoReducer = (state: todoList = initialState, action: any) => {
       };
 
     case MARK_DONE_TODO:
-      const todoList: TodoModal[] = [...state.tasks];
       const todoIndex: number = todoList.findIndex(
         (todo) => todo.id === action.payload.id
       );
@@ -43,6 +44,20 @@ const todoReducer = (state: todoList = initialState, action: any) => {
         ...state,
         tasks: todoList,
       };
+
+    case "EDIT_TODO":
+      const taskIndex: number = todoList.findIndex(
+        (todo) => todo.id === action.payload.id
+      );
+      const currentTodo: TodoModal = todoList[taskIndex];
+      currentTodo.todo = action.payload.todo;
+      currentTodo.date = action.payload.date;
+
+      return {
+        ...state,
+        tasks: todoList,
+      };
+
     default:
       return state;
   }
