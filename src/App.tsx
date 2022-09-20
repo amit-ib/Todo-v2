@@ -45,22 +45,24 @@ function App() {
         )}
       </div>
       <div className="container">
-        <h3 className="text-center">Todo List</h3>
+        <div className="todo-container">
+          <h3 className="text-center">Todo List</h3>
 
-        {isLogedin && (
-          <div>
-            <TodoForm  />
-            <TodoList todos={state.tasks} />
-          </div>
-        )}
+          {isLogedin && (
+            <div>
+              <TodoForm />
+              <TodoList todos={state.tasks} />
+            </div>
+          )}
 
-        {!isLogedin && (
-          <Login
-            isLogedin={isLogedin}
-            setIsLogedin={setIsLogedin}
-            setuserProfile={setuserProfile}
-          />
-        )}
+          {!isLogedin && (
+            <Login
+              isLogedin={isLogedin}
+              setIsLogedin={setIsLogedin}
+              setuserProfile={setuserProfile}
+            />
+          )}
+        </div>
       </div>
     </>
   );

@@ -7,6 +7,10 @@
     background: $blue-color;
     color: $white-color;
   }
+  &.secondary {
+    background: $gray-color;
+    color: $white-color;
+  }
   &.plus {
     font-size: 16px;
     border: solid 1px $gray-color;
@@ -19,6 +23,15 @@
     &:focus {
       outline: none;
     }
+  }
+}
+
+.button-set {
+  display: flex;
+  justify-content: space-around;
+  .button {
+    width: 49%;
+    margin: 4px 0px;
   }
 }
 
