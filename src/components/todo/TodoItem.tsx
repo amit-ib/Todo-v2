@@ -15,12 +15,10 @@ interface Props {
 const TodoItem = ({ todoItem }: Props) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
-  const handleCloseModal = () => setShow(false);
-  const handleShowModal = () => setShow(true);
 
   const handleDelete = () => {
     dispatch(deleteTodo(todoItem));
-    handleCloseModal();
+    setShow(false);
   };
 
   const handleDone = () => {
@@ -29,6 +27,18 @@ const TodoItem = ({ todoItem }: Props) => {
 
   const handleEdit = () => {
     setEditMode(true);
+  };
+
+  const handleUpdate = () => {
+    dispatch(
+      editTodo({
+        id: todoItem.id,
+        todo: input,
+        date: new Date(date),
+        isDone: todoItem.isDone,
+      })
+    );
+    setEditMode(false);
   };
 
   // State to check edit state(if already in edit mode)
@@ -60,17 +70,7 @@ const TodoItem = ({ todoItem }: Props) => {
                 type="submit"
                 label="Update"
                 className="button primary"
-                onClick={() => {
-                  dispatch(
-                    editTodo({
-                      id: todoItem.id,
-                      todo: input,
-                      date: new Date(date),
-                      isDone: todoItem.isDone,
-                    })
-                  );
-                  setEditMode(false);
-                }}
+                onClick={handleUpdate}
               />
 
               <Button
@@ -110,14 +110,18 @@ const TodoItem = ({ todoItem }: Props) => {
             className="link blue"
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
-            onClick={handleShowModal}
+            onClick={() => {
+              setShow(true);
+            }}
           />
         </div>
       )}
 
       <Confirm
         show={show}
-        onHide={handleCloseModal}
+        onHide={() => {
+          setShow(false);
+        }}
         text="Are you sure you want to delete this task?"
         title="Delete Task Confirmation"
         buttonLabel="Delete"
