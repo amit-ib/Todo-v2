@@ -16,6 +16,13 @@ const TodoItem = ({ todoItem }: Props) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
 
+  // const [todo, setTodo] = useState({
+  //   id: "",
+  //   title: "",
+  //   label: "",
+  //   createdDate: "",
+  // });
+
   const handleDelete = () => {
     dispatch(deleteTodo(todoItem));
     setShow(false);

@@ -8,6 +8,7 @@ import moment from "moment";
 const TodoForm = () => {
   const dispatch = useDispatch();
   const [todotext, setTodoText] = useState<string>("");
+  const [date, setToDoDate] = useState<Date>();
 
   const handelInputChange = (e: any) => {
     setTodoText(e.target.value);
@@ -16,26 +17,39 @@ const TodoForm = () => {
   const handleAdd = (e: React.FormEvent) => {
     e.preventDefault();
     if (todotext) {
-
-      dispatch(addTodo({
+      dispatch(
+        addTodo({
           id: Math.random(),
           todo: todotext,
-          date: moment().toDate(),
+          //date: moment().toDate(),
+          //date: new Date(date),
+          date: moment(date).toDate(),
           isDone: false,
-        }));
+        })
+      );
+      setTodoText("");
+      setToDoDate(moment().toDate());
     }
   };
-  
+
   return (
     <>
-    <form className="todo-form" onSubmit={handleAdd}>
-    <Input
+      <form className="todo-form" onSubmit={handleAdd}>
+        <Input
           value={todotext}
           onChange={handelInputChange}
           placeholder="Please enter task"
           className="input-task"
         />
-        <Button className="button plus" label="+" />
+        <div className="input-date-container">
+          <Input
+            type="date"
+            value={moment(date).format("YYYY-MM-DD")}
+            onChange={(e) => setToDoDate(new Date(e.target.value))}
+            className="input-date"
+          />
+          <Button className="button plus" label="+" />
+        </div>
       </form>
       <div className="filters">
         <span className="active filter-type">All</span>
