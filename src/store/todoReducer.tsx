@@ -1,6 +1,11 @@
 import { TodoModal } from "../models";
 import { staticTodo } from "../mock-data/todo";
-import { ADD_TODO, DELETE_TODO, MARK_DONE_TODO } from "./actionList";
+import {
+  ADD_TODO,
+  DELETE_TODO,
+  MARK_DONE_TODO,
+  EDIT_TODO,
+} from "./actionTypes";
 //import { v4 as uuidv4 } from "uuid";
 export interface todoList {
   tasks: TodoModal[];
@@ -11,6 +16,8 @@ const initialState = {
 
 //(previousState, action) => newState
 const todoReducer = (state: todoList = initialState, action: any) => {
+  const todoList: TodoModal[] = [...state.tasks];
+
   switch (action.type) {
     case ADD_TODO:
       const updatedTodos = [...state.tasks];
@@ -33,7 +40,6 @@ const todoReducer = (state: todoList = initialState, action: any) => {
       };
 
     case MARK_DONE_TODO:
-      const todoList: TodoModal[] = [...state.tasks];
       const todoIndex: number = todoList.findIndex(
         (todo) => todo.id === action.payload.id
       );
@@ -43,6 +49,18 @@ const todoReducer = (state: todoList = initialState, action: any) => {
         ...state,
         tasks: todoList,
       };
+
+    case EDIT_TODO:
+      const taskIndex: number = todoList.findIndex(
+        (todo) => todo.id === action.payload.id
+      );
+      todoList[taskIndex] = action.payload;
+
+      return {
+        ...state,
+        tasks: todoList,
+      };
+
     default:
       return state;
   }

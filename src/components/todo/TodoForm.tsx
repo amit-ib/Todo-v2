@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import Input from "../shared/form/Input";
 import Button from "../shared/form/Button";
 import { useDispatch } from "react-redux";
-import { addTodo } from "../../redux";
+import { addTodoAction } from "../../store";
 import moment from "moment";
+import { v4 as uuid } from "uuid";
 
 const TodoForm = () => {
   const dispatch = useDispatch();
@@ -16,20 +17,21 @@ const TodoForm = () => {
   const handleAdd = (e: React.FormEvent) => {
     e.preventDefault();
     if (todotext) {
-
-      dispatch(addTodo({
-          id: Math.random(),
+      dispatch(
+        addTodoAction({
+          id: uuid(),
           todo: todotext,
           date: moment().toDate(),
           isDone: false,
-        }));
+        })
+      );
     }
   };
-  
+
   return (
     <>
-    <form className="todo-form" onSubmit={handleAdd}>
-    <Input
+      <form className="todo-form" onSubmit={handleAdd}>
+        <Input
           value={todotext}
           onChange={handelInputChange}
           placeholder="Please enter task"

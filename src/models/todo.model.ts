@@ -1,5 +1,5 @@
 export interface TodoModal {
-  id: number;
+  id: string;
   todo: string;
   date: Date;
   isDone: boolean;
