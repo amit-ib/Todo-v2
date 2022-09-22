@@ -5,7 +5,7 @@ import { UserModal } from "./models/user";
 import Login from "./components/shared/Login";
 import { useSelector } from "react-redux";
 import { gapi } from "gapi-script";
-import { todoList } from "./redux/todoReducer";
+import { todoList } from "./store/todoReducer";
 
 const clientId = process.env.REACT_APP_CLIENTID;
 

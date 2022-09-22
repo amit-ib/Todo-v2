@@ -1,5 +1,5 @@
 import { TodoModal } from "../models";
-import { ADD_TODO, DELETE_TODO, MARK_DONE_TODO } from "./actionList";
+import { ADD_TODO, DELETE_TODO, MARK_DONE_TODO } from "./actionTypes";
 export const addTodo = (data: TodoModal) => {
   return {
     type: ADD_TODO, // returned type property

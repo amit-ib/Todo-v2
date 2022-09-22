@@ -3,7 +3,7 @@ import { TodoModal } from "../../models";
 import { dateConverter } from "../../utils/helper";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import { deleteTodo, markDoneTodo, editTodo } from "../../redux";
+import { deleteTodo, markDoneTodo, editTodo } from "../../store";
 import Confirm from "../shared/Confirm";
 import Input from "../shared/form/Input";
 import moment from "moment";

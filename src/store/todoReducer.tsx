@@ -1,6 +1,11 @@
 import { TodoModal } from "../models";
 import { staticTodo } from "../mock-data/todo";
-import { ADD_TODO, DELETE_TODO, MARK_DONE_TODO, EDIT_TODO } from "./actionList";
+import {
+  ADD_TODO,
+  DELETE_TODO,
+  MARK_DONE_TODO,
+  EDIT_TODO,
+} from "./actionTypes";
 //import { v4 as uuidv4 } from "uuid";
 export interface todoList {
   tasks: TodoModal[];
