@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Input from "../shared/form/Input";
 import Button from "../shared/form/Button";
 import { useDispatch } from "react-redux";
-import { addTodo } from "../../store";
+import { addTodoAction } from "../../store";
 import moment from "moment";
 import { v4 as uuid } from "uuid";
 
@@ -18,9 +18,8 @@ const TodoForm = () => {
     e.preventDefault();
     if (todotext) {
       dispatch(
-        addTodo({
-          //id: uuid(),
-          id: Math.random(),
+        addTodoAction({
+          id: uuid(),
           todo: todotext,
           date: moment().toDate(),
           isDone: false,

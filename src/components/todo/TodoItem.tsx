@@ -3,13 +3,17 @@ import { TodoModal } from "../../models";
 import { dateConverter } from "../../utils/helper";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import { deleteTodo, markDoneTodo, editTodo } from "../../store";
+import {
+  deleteTodoAction,
+  markDoneTodoAction,
+  editTodoAction,
+} from "../../store";
 import Confirm from "../shared/Confirm";
 import Input from "../shared/form/Input";
 import moment from "moment";
 interface Props {
   todoItem: TodoModal;
-  id: number;
+  id: string;
 }
 
 const TodoItem = ({ todoItem }: Props) => {
@@ -27,12 +31,12 @@ const TodoItem = ({ todoItem }: Props) => {
   });
 
   const deleteTaskHandeler = () => {
-    dispatch(deleteTodo(todoItem));
+    dispatch(deleteTodoAction(todoItem));
     setShowModal(false);
   };
 
   const doneTaskHandeler = () => {
-    dispatch(markDoneTodo(todoItem));
+    dispatch(markDoneTodoAction(todoItem));
   };
 
   const editTaskHandeler = () => {
@@ -40,16 +44,12 @@ const TodoItem = ({ todoItem }: Props) => {
   };
 
   const editFormDataChanger = (type: string, data: string | Date) => {
-    setTodo((todoData) => {
-      return {
-        ...todoData,
-        [type]: data,
-      };
-    });
+    const updatedTodo = { ...todo, [type]: data };
+    setTodo(updatedTodo);
   };
 
   const updateTaskHandeler = () => {
-    dispatch(editTodo(todo));
+    dispatch(editTodoAction(todo));
     setEditMode(false);
   };
 

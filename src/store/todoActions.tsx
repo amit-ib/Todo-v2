@@ -1,30 +1,34 @@
 import { TodoModal } from "../models";
-import { ADD_TODO, DELETE_TODO, MARK_DONE_TODO } from "./actionTypes";
-export const addTodo = (data: TodoModal) => {
+import {
+  ADD_TODO,
+  DELETE_TODO,
+  MARK_DONE_TODO,
+  EDIT_TODO,
+} from "./actionTypes";
+export const addTodoAction = (data: TodoModal) => {
   return {
     type: ADD_TODO, // returned type property
     payload: data,
   };
 };
 
-export const deleteTodo = (data: TodoModal) => {
-  console.log("deleteTodo", data);
+export const deleteTodoAction = (data: TodoModal) => {
   return {
     type: DELETE_TODO, // returned type property
     payload: data,
   };
 };
 
-export const markDoneTodo = (data: TodoModal) => {
+export const markDoneTodoAction = (data: TodoModal) => {
   return {
     type: MARK_DONE_TODO,
     payload: data,
   };
 };
 
-export const editTodo = (data: TodoModal) => {
+export const editTodoAction = (data: TodoModal) => {
   return {
-    type: "EDIT_TODO",
+    type: EDIT_TODO,
     payload: data,
   };
 };

@@ -2,19 +2,19 @@ import { TodoModal } from "../models";
 
 export const staticTodo: TodoModal[] = [
   {
-    id: 1,
+    id: "todo-001",
     todo: "First Todo",
     date: new Date(),
     isDone: true,
   },
   {
-    id: 2,
+    id: "todo-002",
     todo: "Second Todo",
     date: new Date(),
     isDone: false,
   },
   {
-    id: 3,
+    id: "todo-003",
     todo: "Third Todo",
     date: new Date(),
     isDone: false,
