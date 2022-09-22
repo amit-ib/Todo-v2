@@ -14,38 +14,44 @@ interface Props {
 
 const TodoItem = ({ todoItem }: Props) => {
   const dispatch = useDispatch();
-  const [show, setShow] = useState(false);
-
-  const handleDelete = () => {
-    dispatch(deleteTodo(todoItem));
-    setShow(false);
-  };
-
-  const handleDone = () => {
-    dispatch(markDoneTodo(todoItem));
-  };
-
-  const handleEdit = () => {
-    setEditMode(true);
-  };
-
-  const handleUpdate = () => {
-    dispatch(
-      editTodo({
-        id: todoItem.id,
-        todo: input,
-        date: new Date(date),
-        isDone: todoItem.isDone,
-      })
-    );
-    setEditMode(false);
-  };
+  const [showModal, setShowModal] = useState(false);
 
   // State to check edit state(if already in edit mode)
   const [editMode, setEditMode] = useState<boolean>(false);
 
-  const [input, setInput] = useState(todoItem.todo);
-  const [date, setDate] = useState(todoItem.date);
+  const [todo, setTodo] = useState({
+    id: todoItem.id,
+    todo: todoItem.todo,
+    date: todoItem.date,
+    isDone: todoItem.isDone,
+  });
+
+  const deleteTaskHandeler = () => {
+    dispatch(deleteTodo(todoItem));
+    setShowModal(false);
+  };
+
+  const doneTaskHandeler = () => {
+    dispatch(markDoneTodo(todoItem));
+  };
+
+  const editTaskHandeler = () => {
+    setEditMode(true);
+  };
+
+  const editFormDataChanger = (type: string, data: string | Date) => {
+    setTodo((todoData) => {
+      return {
+        ...todoData,
+        [type]: data,
+      };
+    });
+  };
+
+  const updateTaskHandeler = () => {
+    dispatch(editTodo(todo));
+    setEditMode(false);
+  };
 
   return (
     <div className="list-item">
@@ -56,13 +62,15 @@ const TodoItem = ({ todoItem }: Props) => {
             <Input
               type="text"
               placeholder=""
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
+              value={todo.todo}
+              onChange={(e) => editFormDataChanger("todo", e.target.value)}
             />
             <Input
               type="date"
-              value={moment(date).format("YYYY-MM-DD")}
-              onChange={(e) => setDate(new Date(e.target.value))}
+              value={moment(todo.date).format("YYYY-MM-DD")}
+              onChange={(e) =>
+                editFormDataChanger("date", new Date(e.target.value))
+              }
             />
 
             <div className="button-set">
@@ -70,7 +78,7 @@ const TodoItem = ({ todoItem }: Props) => {
                 type="submit"
                 label="Update"
                 className="button primary"
-                onClick={handleUpdate}
+                onClick={updateTaskHandeler}
               />
 
               <Button
@@ -98,12 +106,16 @@ const TodoItem = ({ todoItem }: Props) => {
 
       {!editMode && (
         <div className="action-icons">
-          <Button label="Mark Done" className="link" onClick={handleDone} />
+          <Button
+            label="Mark Done"
+            className="link"
+            onClick={doneTaskHandeler}
+          />
           <Button
             label="Edit"
             className="link red"
             disabled={todoItem.isDone}
-            onClick={handleEdit}
+            onClick={editTaskHandeler}
           />
           <Button
             label="Delete"
@@ -111,21 +123,21 @@ const TodoItem = ({ todoItem }: Props) => {
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
             onClick={() => {
-              setShow(true);
+              setShowModal(true);
             }}
           />
         </div>
       )}
 
       <Confirm
-        show={show}
+        show={showModal}
         onHide={() => {
-          setShow(false);
+          setShowModal(false);
         }}
         text="Are you sure you want to delete this task?"
         title="Delete Task Confirmation"
         buttonLabel="Delete"
-        buttonAction={handleDelete}
+        buttonAction={deleteTaskHandeler}
       />
     </div>
   );
