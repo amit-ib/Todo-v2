@@ -2,10 +2,19 @@ import { TodoModal } from "../../models";
 import TodoItem from "./TodoItem";
 export interface Props {
   todos: TodoModal[];
-  setFilter?: React.Dispatch<React.SetStateAction<string>>; // copied from setTodos state
+  filter: string;
 }
-const TodoList = ({ todos }: Props) => {
+const TodoList = ({ todos, filter }: Props) => {
   let filteredList = todos;
+
+  if (filter === "done") {
+    filteredList = todos.filter((todoItem) => todoItem.isDone === true);
+  } else if (filter === "pending") {
+    filteredList = todos.filter((todoItem) => todoItem.isDone === false);
+  } else {
+    filteredList = todos;
+  }
+
   return (
     <>
       {filteredList.map((todoItem) => (

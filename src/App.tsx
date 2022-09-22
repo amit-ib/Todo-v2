@@ -30,6 +30,10 @@ function App() {
 
   const [userProfile, setuserProfile] = useState<UserModal | null>();
 
+  // state to handle filters
+  const [filter, setFilter] = useState<string>("");
+  console.log(filter);
+
   return (
     <>
       <div className="welcome-text">
@@ -50,8 +54,8 @@ function App() {
 
           {isLogedin && (
             <div>
-              <TodoForm />
-              <TodoList todos={state.tasks} />
+              <TodoForm setFilter={setFilter} filter={filter} />
+              <TodoList todos={state.tasks} filter={filter} />
             </div>
           )}
 
