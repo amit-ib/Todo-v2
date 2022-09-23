@@ -3,6 +3,7 @@ input {
   font-size: 16px;
   border: solid 1px $gray-color;
   border-radius: 5px;
+  width: 100%;
   &:focus {
     outline: none;
   }

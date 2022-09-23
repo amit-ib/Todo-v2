@@ -24,7 +24,7 @@ function App() {
   });
 
   useEffect(() => {
-    setIsLogedin(accessToken ? true : true);
+    setIsLogedin(accessToken ? true : false);
     console.log("isLogedin", isLogedin, accessToken);
   }, []);
 
