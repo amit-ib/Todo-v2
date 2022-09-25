@@ -2,6 +2,7 @@ import { GoogleLogin, GoogleLogout } from "react-google-login";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Input from "./form/Input";
+import LoginForm from "../LoginForm";
 
 const clientId = process.env.REACT_APP_CLIENTID;
 
@@ -9,59 +10,55 @@ const Login = (props) => {
   const [showLoginButton, setShowLoginButton] = useState(true);
   const [showLogoutButton, setShowLogoutButton] = useState(false);
 
-  // Google Auth START
-  const onSuccess = (res) => {
-    console.log("Login Success! Current user: ", res);
-    window.localStorage.setItem("accessToken", res.accessToken);
-    props.setuserProfile(res.profileObj);
+  useEffect(() => {
+    if (props.isLogedin) {
+      setShowLoginButton(false);
+      setShowLogoutButton(true);
+    } else {
+      setShowLoginButton(true);
+      setShowLogoutButton(false);
+    }
+  }, [props.isLogedin]);
+
+  const onLoginSuccess = (res) => {
+    window.localStorage.setItem("accessToken", res.token);
+    props.setuserProfile(res.userName);
     props.setIsLogedin(true);
-    setShowLoginButton(false);
-    setShowLogoutButton(true);
   };
 
-  const onFailure = (res) => {
+  // Google Auth START
+  const onGoogleAuthSuccess = (res) => {
+    let userData = { token: res.accessToken, userName: res.profileObj };
+    onLoginSuccess(userData);
+  };
+
+  const onGoogleAuthFailure = (res) => {
     console.log("Login Failed! res:", res);
   };
-
-  const onLogoutSuccess = (res) => {
-    console.log("Logout Success!");
-    props.setIsLogedin(false);
-    window.localStorage.removeItem("accessToken");
-    setShowLoginButton(true);
-    setShowLogoutButton(false);
-  };
-
   // Google Auth ENDS
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const emailChangeHandeler = (e) => {
-    setEmail(e.target.value);
-  };
-  const passwordChangeHandeler = (e) => {
-    setPassword(e.target.value);
+  const onLogoutSuccess = () => {
+    props.setIsLogedin(false);
+    window.localStorage.removeItem("accessToken");
   };
 
-  const loginFunctionality = () => {
+  const loginApiAuth = (data) => {
     axios
       .post("https://todo-node-api.vercel.app/api/login", {
-        username: email,
+        username: data.email,
         //username: "amit.verma@infobeans.com",
         //password: "Ib@123456",
-        password: password,
+        password: data.password,
       })
       .then(function (response) {
-        console.log(response.data, "Response:");
-        window.localStorage.setItem("accessToken", response.data.token);
-        props.setIsLogedin(true);
-        setShowLoginButton(false);
-        setShowLogoutButton(true);
+        let userData = { token: response.data.token, userName: response.data };
+        onLoginSuccess(userData);
       })
       .catch(function (error) {
         console.log(error);
       });
   };
-  console.log(showLoginButton);
+  console.log(showLoginButton, showLogoutButton);
   return (
     <>
       {showLogoutButton ? (
@@ -70,6 +67,7 @@ const Login = (props) => {
             clientId={clientId}
             buttonText="Logout"
             onLogoutSuccess={onLogoutSuccess}
+            className="button-logout"
           />
         </span>
       ) : null}
@@ -77,26 +75,14 @@ const Login = (props) => {
       <div className="login-form">
         {showLoginButton ? (
           <div>
-            <Input
-              type="text"
-              placeholder="Please enter email"
-              onChange={emailChangeHandeler}
-            />
-            <Input
-              type="password"
-              placeholder="Please enter password"
-              onChange={passwordChangeHandeler}
-            />
-            <button onClick={loginFunctionality} className="button primary">
-              Login
-            </button>
+            <LoginForm loginFunctionality={(data) => loginApiAuth(data)} />
             OR
             <div class="button-google">
               <GoogleLogin
                 clientId={clientId}
                 buttonText="Login with your Gmail"
-                onSuccess={onSuccess}
-                onFailure={onFailure}
+                onSuccess={onGoogleAuthSuccess}
+                onFailure={onGoogleAuthFailure}
                 cookiePolicy={"single_host_origin"}
                 isSignedIn={true}
               />

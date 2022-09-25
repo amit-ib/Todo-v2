@@ -26,7 +26,7 @@ function App() {
   useEffect(() => {
     setIsLogedin(accessToken ? true : false);
     console.log("isLogedin", isLogedin, accessToken);
-  }, []);
+  }, [accessToken]);
 
   const [userProfile, setuserProfile] = useState<UserModal | null>();
 
