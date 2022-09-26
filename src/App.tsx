@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import TodoForm from "./components/todo/TodoForm";
 import TodoList from "./components/todo/TodoList";
-import { UserModal } from "./models/user";
 import Login from "./components/shared/Login";
 import { useSelector } from "react-redux";
 import { gapi } from "gapi-script";
@@ -25,21 +24,23 @@ function App() {
 
   useEffect(() => {
     setIsLogedin(accessToken ? true : false);
-    console.log("isLogedin", isLogedin, accessToken);
   }, [accessToken]);
 
-  const [userProfile, setuserProfile] = useState<UserModal | null>();
-
+  const [userName, setuserName] = useState<string | null>(
+    window.localStorage.getItem("userName")
+      ? window.localStorage.getItem("userName")
+      : ""
+  );
   return (
     <>
       <div className="welcome-text">
         {isLogedin && (
           <span>
-            Welcome - {userProfile?.name} |{" "}
+            Welcome - {userName} |{" "}
             <Login
               isLogedin={isLogedin}
               setIsLogedin={setIsLogedin}
-              setuserProfile={setuserProfile}
+              setuserName={setuserName}
             />
           </span>
         )}
@@ -59,7 +60,7 @@ function App() {
             <Login
               isLogedin={isLogedin}
               setIsLogedin={setIsLogedin}
-              setuserProfile={setuserProfile}
+              setuserName={setuserName}
             />
           )}
         </div>

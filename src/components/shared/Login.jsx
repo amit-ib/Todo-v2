@@ -1,7 +1,6 @@
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Input from "./form/Input";
 import LoginForm from "../LoginForm";
 
 const clientId = process.env.REACT_APP_CLIENTID;
@@ -21,14 +20,14 @@ const Login = (props) => {
   }, [props.isLogedin]);
 
   const onLoginSuccess = (res) => {
+    console.log(res, "RES");
     window.localStorage.setItem("accessToken", res.token);
-    props.setuserProfile(res.userName);
+    window.localStorage.setItem("userName", res.userData.name);
     props.setIsLogedin(true);
   };
-
   // Google Auth START
   const onGoogleAuthSuccess = (res) => {
-    let userData = { token: res.accessToken, userName: res.profileObj };
+    let userData = { token: res.accessToken, userData: res.profileObj };
     onLoginSuccess(userData);
   };
 
@@ -46,12 +45,10 @@ const Login = (props) => {
     axios
       .post("https://todo-node-api.vercel.app/api/login", {
         username: data.email,
-        //username: "amit.verma@infobeans.com",
-        //password: "Ib@123456",
         password: data.password,
       })
       .then(function (response) {
-        let userData = { token: response.data.token, userName: response.data };
+        let userData = { token: response.data.token, userData: response.data };
         onLoginSuccess(userData);
       })
       .catch(function (error) {

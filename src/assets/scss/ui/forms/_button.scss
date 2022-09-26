@@ -45,5 +45,15 @@
     border-radius: 5px !important;
     border: solid 1px #ccc !important;
     padding-right: 10px !important;
+    &.button-logout {
+      background: none !important;
+      border: 0px !important;
+      box-shadow: none !important;
+      color: $white-color !important;
+      font-size: 16px !important;
+      div {
+        display: none;
+      }
+    }
   }
 }

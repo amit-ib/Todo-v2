@@ -1,7 +1,6 @@
 import React from "react";
 import Button from "./shared/form/Button";
 import { useForm, SubmitHandler } from "react-hook-form";
-import axios from "axios";
 
 interface loginForm {
   email: string;
@@ -25,9 +24,16 @@ const LoginForm = (props: any) => {
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input {...register("email", { required: true })} />
+      <input
+        {...register("email", { required: true })}
+        placeholder="Please enter email"
+      />
       {errors.email?.type === "required" && "Please enter email"}
-      <input {...register("password", { required: true })} type="string" />
+      <input
+        {...register("password", { required: true })}
+        type="string"
+        placeholder="Please enter password"
+      />
       <Button type="submit" label="Login" className="button primary" />
     </form>
   );
