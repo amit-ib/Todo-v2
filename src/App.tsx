@@ -1,67 +1,59 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import TodoForm from "./components/todo/TodoForm";
 import TodoList from "./components/todo/TodoList";
 import Login from "./components/shared/Login";
-import { useSelector } from "react-redux";
-import { gapi } from "gapi-script";
-import { todoList } from "./store/todoReducer";
-
-const clientId = process.env.REACT_APP_CLIENTID;
+import { useDispatch, useSelector } from "react-redux";
+import { reducerSate } from "./store/todoReducer";
+import Button from "./components/shared/form/Button";
+import { loginTodoAction } from "./store";
 
 function App() {
-  const state = useSelector((state: todoList) => state);
-  const [isLogedin, setIsLogedin] = useState({});
+  const state = useSelector((state: reducerSate) => state);
+  const dispatch = useDispatch();
   var accessToken = window.localStorage.getItem("accessToken");
-  useEffect(() => {
-    function start() {
-      gapi.client.init({
-        clientId: clientId,
-        scope: "",
-      });
-    }
-    gapi.load("client:auth2", start);
-  });
+  const userName = window.localStorage.getItem("userName")
+    ? window.localStorage.getItem("userName")
+    : "";
+  const setIsLogedin = (bolval: boolean) => {
+    dispatch(loginTodoAction(bolval));
+  };
 
   useEffect(() => {
     setIsLogedin(accessToken ? true : false);
   }, [accessToken]);
 
-  const [userName, setuserName] = useState<string | null>(
-    window.localStorage.getItem("userName")
-      ? window.localStorage.getItem("userName")
-      : ""
-  );
+  const onLogoutSuccess = () => {
+    setIsLogedin(false);
+    window.localStorage.removeItem("accessToken");
+  };
+
   return (
     <>
       <div className="welcome-text">
-        {isLogedin && (
+        {state.isLogedin && (
           <span>
             Welcome - {userName} |{" "}
-            <Login
-              isLogedin={isLogedin}
-              setIsLogedin={setIsLogedin}
-              setuserName={setuserName}
-            />
+            <Button label="Logout" onClick={onLogoutSuccess} styles="link" />
           </span>
         )}
       </div>
       <div className="container">
         <div className="todo-container">
-          <h3 className="text-center">Todo List</h3>
+          {state.isLogedin ? (
+            <h3 className="text-center">Todo List</h3>
+          ) : (
+            <h3 className="text-center">Login</h3>
+          )}
 
-          {isLogedin && (
+          {state.isLogedin && (
             <div>
               <TodoForm />
               <TodoList todos={state.tasks} />
             </div>
           )}
 
-          {!isLogedin && (
-            <Login
-              isLogedin={isLogedin}
-              setIsLogedin={setIsLogedin}
-              setuserName={setuserName}
-            />
+          {!state.isLogedin && (
+            <Login isLogedin={state.isLogedin} setIsLogedin={setIsLogedin} />
           )}
         </div>
       </div>
