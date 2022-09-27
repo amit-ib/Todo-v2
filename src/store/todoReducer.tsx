@@ -5,20 +5,29 @@ import {
   DELETE_TODO,
   MARK_DONE_TODO,
   EDIT_TODO,
+  SET_LOGIN_STATUS,
 } from "./actionTypes";
 //import { v4 as uuidv4 } from "uuid";
-export interface todoList {
+export interface statesModal {
   tasks: TodoModal[];
+  isLogedin: boolean;
 }
 const initialState = {
   tasks: staticTodo,
+  isLogedin: false,
 };
 
 //(previousState, action) => newState
-const todoReducer = (state: todoList = initialState, action: any) => {
+const todoReducer = (state: statesModal = initialState, action: any) => {
   const todoList: TodoModal[] = [...state.tasks];
 
   switch (action.type) {
+    case SET_LOGIN_STATUS:
+      return {
+        ...state,
+        isLogedin: action.payload,
+      };
+
     case ADD_TODO:
       const updatedTodos = [...state.tasks];
       if (action.payload) {

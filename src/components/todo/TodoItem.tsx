@@ -77,14 +77,14 @@ const TodoItem = ({ todoItem }: Props) => {
               <Button
                 type="submit"
                 label="Update"
-                className="button primary"
+                varient="primary"
                 onClick={updateTaskHandeler}
               />
 
               <Button
                 type="button"
                 label="Cancel"
-                className="button secondary"
+                varient="secondary"
                 onClick={() => {
                   setEditMode(false);
                 }}
