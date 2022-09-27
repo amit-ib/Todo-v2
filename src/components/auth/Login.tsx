@@ -40,7 +40,7 @@ const Login = (props: Props) => {
 
   const onSubmit: SubmitHandler<loginDataType> = (data) => {
     axios
-      .post(`${process.env.REACT_APP_LOGIN_API}`, {
+      .post(`${process.env.REACT_APP_LOGIN_API}/login`, {
         username: data.email,
         password: data.password,
       })
