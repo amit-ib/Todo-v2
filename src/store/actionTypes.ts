@@ -2,4 +2,4 @@ export const ADD_TODO = "ADD_TODO";
 export const DELETE_TODO = "DELETE_TODO";
 export const MARK_DONE_TODO = "MARK_DONE_TODO";
 export const EDIT_TODO = "EDIT_TODO";
-export const LOGIN_CHECK = "LOGIN_CHECK";
+export const SET_LOGIN_STATUS = "SET_LOGIN_STATUS";

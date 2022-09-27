@@ -4,10 +4,12 @@ input {
   border: solid 1px $gray-color;
   border-radius: 5px;
   width: 100%;
+  margin-top: 10px;
   &:focus {
     outline: none;
   }
   &.input-task {
+    margin-top: 0;
     border-right: 0px;
     border-radius: 5px 0px 0px 5px;
   }

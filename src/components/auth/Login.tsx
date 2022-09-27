@@ -63,13 +63,24 @@ const Login = (props: Props) => {
                 {...register("email", { required: true })}
                 placeholder="Please enter email"
               />
-              {errors.email?.type === "required" && "Please enter email"}
+              <span className="error">
+                {errors.email?.type === "required" && "Please enter email"}
+              </span>
               <input
                 {...register("password", { required: true })}
-                type="string"
+                type="password"
                 placeholder="Please enter password"
               />
-              <Button type="submit" label="Login" className="button primary" />
+              <span className="error">
+                {errors.password?.type === "required" &&
+                  "Please enter password"}
+              </span>
+              <Button
+                type="submit"
+                label="Login"
+                varient="primary"
+                size="block"
+              />
             </form>
           </div>
         ) : null}

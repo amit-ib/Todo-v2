@@ -8,8 +8,8 @@ const TodoList = ({ todos }: Props) => {
   let filteredList = todos;
   return (
     <>
-      {filteredList.map((todoItem) => (
-        <TodoItem id={todoItem.id} todoItem={todoItem} />
+      {filteredList.map((todoItem, id) => (
+        <TodoItem key={id} id={todoItem.id} todoItem={todoItem} />
       ))}
     </>
   );

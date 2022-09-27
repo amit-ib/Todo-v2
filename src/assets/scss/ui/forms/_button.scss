@@ -1,16 +1,4 @@
-.button {
-  border-radius: 5px;
-  font-size: 14px;
-  border: 0px;
-  padding: 10px;
-  &.primary {
-    background: $blue-color;
-    color: $white-color;
-  }
-  &.secondary {
-    background: $gray-color;
-    color: $white-color;
-  }
+button {
   &.plus {
     font-size: 16px;
     border: solid 1px $gray-color;
@@ -24,19 +12,19 @@
       outline: none;
     }
   }
-  &.link {
-    background: none;
+  &.btn-link {
     padding: 0;
-    &:hover {
-      text-decoration: underline;
-    }
+    line-height: 18px;
+  }
+  &.btn-block {
+    width: 100%;
   }
 }
 
 .button-set {
   display: flex;
   justify-content: space-around;
-  .button {
+  button {
     width: 49%;
     margin: 4px 0px;
   }
