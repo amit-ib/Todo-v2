@@ -4,12 +4,12 @@ import {
   DELETE_TODO,
   MARK_DONE_TODO,
   EDIT_TODO,
-  LOGIN_TODO,
+  LOGIN_CHECK,
 } from "./actionTypes";
 
 export const loginTodoAction = (data: boolean) => {
   return {
-    type: LOGIN_TODO, // returned type property
+    type: LOGIN_CHECK, // returned type property
     payload: data,
   };
 };

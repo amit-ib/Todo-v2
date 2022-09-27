@@ -14,8 +14,8 @@ function App() {
   const userName = window.localStorage.getItem("userName")
     ? window.localStorage.getItem("userName")
     : "";
-  const setIsLogedin = (bolval: boolean) => {
-    dispatch(loginTodoAction(bolval));
+  const setIsLogedin = (loginStatus: boolean) => {
+    dispatch(loginTodoAction(loginStatus));
   };
 
   useEffect(() => {
