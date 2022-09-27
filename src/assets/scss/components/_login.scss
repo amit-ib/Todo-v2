@@ -1,12 +1,7 @@
 .login-form {
-  text-align: center;
-  input {
-    margin-bottom: 10px;
-  }
+  padding-bottom: 8px;
   button {
     width: 100%;
-    &.primary {
-      margin-bottom: 10px;
-    }
+    margin-top: 20px;
   }
 }

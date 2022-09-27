@@ -40,7 +40,7 @@ const Login = (props: Props) => {
 
   const onSubmit: SubmitHandler<loginDataType> = (data) => {
     axios
-      .post(`${process.env.REACT_APP_LOGIN_API}/login`, {
+      .post(`${process.env.REACT_APP_LOGIN_API}`, {
         username: data.email,
         password: data.password,
       })
@@ -63,12 +63,18 @@ const Login = (props: Props) => {
                 {...register("email", { required: true })}
                 placeholder="Please enter email"
               />
-              {errors.email?.type === "required" && "Please enter email"}
+              <span className="error">
+                {errors.email?.type === "required" && "Please enter email"}
+              </span>
               <input
                 {...register("password", { required: true })}
                 type="string"
                 placeholder="Please enter password"
               />
+              <span className="error">
+                {errors.password?.type === "required" &&
+                  "Please enter password"}
+              </span>
               <Button type="submit" label="Login" className="button primary" />
             </form>
           </div>
