@@ -17,6 +17,7 @@ const TodoForm = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<addTodoDataType>({});
   const handleAdd: SubmitHandler<addTodoDataType> = (data) => {
@@ -28,6 +29,7 @@ const TodoForm = () => {
         isDone: false,
       })
     );
+    reset();
   };
 
   return (
