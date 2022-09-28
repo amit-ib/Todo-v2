@@ -4,7 +4,7 @@ import {
   DELETE_TODO,
   MARK_DONE_TODO,
   EDIT_TODO,
-  LIST_TODO,
+  SET_TODOS,
   SET_LOGIN_STATUS,
 } from "./actionTypes";
 export interface statesModal {
@@ -70,8 +70,7 @@ const todoReducer = (state: statesModal = initialState, action: any) => {
         tasks: todoList,
       };
 
-    case LIST_TODO:
-      console.log("coming", action.payload);
+    case SET_TODOS:
       return {
         ...state,
         tasks: action.payload,

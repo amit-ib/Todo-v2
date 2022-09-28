@@ -4,7 +4,7 @@ import {
   DELETE_TODO,
   MARK_DONE_TODO,
   EDIT_TODO,
-  LIST_TODO,
+  SET_TODOS,
   SET_LOGIN_STATUS,
 } from "./actionTypes";
 
@@ -22,9 +22,9 @@ export const addTodoAction = (data: TodoModal) => {
   };
 };
 
-export const listTodoAction = (data: TodoModal[]) => {
+export const setTodoAction = (data: TodoModal[]) => {
   return {
-    type: LIST_TODO,
+    type: SET_TODOS,
     payload: data,
   };
 };

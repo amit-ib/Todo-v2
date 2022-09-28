@@ -5,7 +5,7 @@ import Login from "./components/auth/Login";
 import { useDispatch, useSelector } from "react-redux";
 import { statesModal } from "./store/todoReducer";
 import Button from "./components/shared/form/Button";
-import { listTodoAction, loginTodoAction } from "./store";
+import { setTodoAction, loginTodoAction } from "./store";
 import { getTodoList, accessToken } from "./services/todoListing";
 
 function App() {
@@ -25,10 +25,8 @@ function App() {
   }, [accessToken]);
 
   useEffect(() => {
-    if (state.isLogedin && accessToken) {
-      getTodoList().then((res) => dispatch(listTodoAction(res.data)));
-    }
-  }, [state.isLogedin]);
+    getTodoList().then((res) => dispatch(setTodoAction(res.data)));
+  }, []);
 
   const onLogoutSuccess = () => {
     setIsLogedin(false);
