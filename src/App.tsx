@@ -5,16 +5,17 @@ import Login from "./components/auth/Login";
 import { useDispatch, useSelector } from "react-redux";
 import { statesModal } from "./store/todoReducer";
 import Button from "./components/shared/form/Button";
-import { loginTodoAction } from "./store";
+import { listTodoAction, loginTodoAction } from "./store";
+import { getTodoList, accessToken } from "./services/todoListing";
 
 function App() {
   const state = useSelector((state: statesModal) => state);
   const dispatch = useDispatch();
-  var accessToken = window.localStorage.getItem("accessToken");
   let formTitle = state.isLogedin ? "Todo List" : "Todo Login";
   const userName = window.localStorage.getItem("userName")
     ? window.localStorage.getItem("userName")
     : "";
+
   const setIsLogedin = (loginStatus: boolean) => {
     dispatch(loginTodoAction(loginStatus));
   };
@@ -22,6 +23,12 @@ function App() {
   useEffect(() => {
     setIsLogedin(accessToken ? true : false);
   }, [accessToken]);
+
+  useEffect(() => {
+    if (state.isLogedin && accessToken) {
+      getTodoList().then((res) => dispatch(listTodoAction(res.data)));
+    }
+  }, [state.isLogedin]);
 
   const onLogoutSuccess = () => {
     setIsLogedin(false);

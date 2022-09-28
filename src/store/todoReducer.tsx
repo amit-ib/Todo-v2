@@ -1,20 +1,20 @@
 import { TodoModal } from "../models";
-import { staticTodo } from "../mock-data/todo";
 import {
   ADD_TODO,
   DELETE_TODO,
   MARK_DONE_TODO,
   EDIT_TODO,
+  LIST_TODO,
   SET_LOGIN_STATUS,
 } from "./actionTypes";
-//import { v4 as uuidv4 } from "uuid";
 export interface statesModal {
-  tasks: TodoModal[];
+  tasks: TodoModal[] | [];
   isLogedin: boolean;
 }
 const initialState = {
-  tasks: staticTodo,
+  tasks: [],
   isLogedin: false,
+  //status
 };
 
 //(previousState, action) => newState
@@ -70,6 +70,12 @@ const todoReducer = (state: statesModal = initialState, action: any) => {
         tasks: todoList,
       };
 
+    case LIST_TODO:
+      console.log("coming", action.payload);
+      return {
+        ...state,
+        tasks: action.payload,
+      };
     default:
       return state;
   }

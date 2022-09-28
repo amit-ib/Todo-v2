@@ -1,6 +1,6 @@
 export interface TodoModal {
-  id: string;
-  todo: string;
-  date: Date;
+  id: number;
+  title: string;
+  createdAt: Date;
   isDone: boolean;
 }
