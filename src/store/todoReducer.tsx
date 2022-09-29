@@ -2,8 +2,6 @@ import { TodoModal } from "../models";
 import {
   ADD_TODO,
   DELETE_TODO,
-  MARK_DONE_TODO,
-  EDIT_TODO,
   SET_TODOS,
   SET_LOGIN_STATUS,
 } from "./actionTypes";
@@ -46,28 +44,6 @@ const todoReducer = (state: statesModal = initialState, action: any) => {
       return {
         ...state, // copy origenal state and update only required
         tasks: remainingTasks,
-      };
-
-    case MARK_DONE_TODO:
-      const todoIndex: number = todoList.findIndex(
-        (todo) => todo.id === action.payload.id
-      );
-      const selectedTodo: TodoModal = todoList[todoIndex];
-      selectedTodo.isDone = !selectedTodo.isDone;
-      return {
-        ...state,
-        tasks: todoList,
-      };
-
-    case EDIT_TODO:
-      const taskIndex: number = todoList.findIndex(
-        (todo) => todo.id === action.payload.id
-      );
-      todoList[taskIndex] = action.payload;
-
-      return {
-        ...state,
-        tasks: todoList,
       };
 
     case SET_TODOS:
