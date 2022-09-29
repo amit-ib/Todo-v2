@@ -20,7 +20,7 @@ const TodoForm = () => {
         addTodoAction({
           id: Math.random(),
           title: todotext,
-          createdAt: moment().toDate(),
+          dueDate: moment().toDate(),
           isDone: false,
         })
       );
