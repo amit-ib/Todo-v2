@@ -1,8 +1,8 @@
 import Button from "../shared/form/Button";
-import { TodoModal } from "../../models";
+import { TodoModal, CategoryModal } from "../../models";
 import { dateConverter } from "../../utils/helper";
-import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 import axiosInstance from "../../axiosConfig";
 import {
   deleteTodoAction,
@@ -13,25 +13,39 @@ import {
 import Confirm from "../shared/Confirm";
 import Input from "../shared/form/Input";
 import moment from "moment";
+import { statesModal } from "../../store/todoReducer";
 interface Props {
   todoItem: TodoModal;
   id: number;
 }
 
 const TodoItem = ({ todoItem }: Props) => {
+  const { category } = useSelector((state: statesModal) => state);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
 
   // State to check edit state(if already in edit mode)
   const [editMode, setEditMode] = useState<boolean>(false);
 
-  const [todo, setTodo] = useState({
+  const [todo, setTodo] = useState<TodoModal>({
     id: todoItem.id,
     title: todoItem.title,
     dueDate: todoItem.dueDate,
     category: todoItem.category,
     status: todoItem.status,
   });
+
+  useEffect(() => {
+    if (todoItem) {
+      setTodo({
+        id: todoItem.id,
+        title: todoItem.title,
+        dueDate: todoItem.dueDate,
+        category: todoItem.category,
+        status: todoItem.status,
+      });
+    }
+  }, [todoItem]);
 
   const deleteTaskHandeler = () => {
     dispatch(deleteTodoAction(todoItem));
@@ -70,7 +84,6 @@ const TodoItem = ({ todoItem }: Props) => {
       dueDate: new Date(todo.dueDate),
       category: todo.category,
     };
-    console.log(data.dueDate);
     // dispatch(editTodoAction(todo));
     axiosInstance.put(`/todo/${todoItem.id}`, data).then((res) => {
       axiosInstance
@@ -99,6 +112,23 @@ const TodoItem = ({ todoItem }: Props) => {
                 editFormDataChanger("dueDate", new Date(e.target.value))
               }
             />
+            <select
+              name=""
+              id=""
+              onChange={(e) => editFormDataChanger("category", e.target.value)}
+            >
+              <option value="0" disabled>
+                Select Category
+              </option>
+              {category.map((category, id) => (
+                <option
+                  value={category.id}
+                  selected={category.id === todoItem.category}
+                >
+                  {category.title}
+                </option>
+              ))}
+            </select>
 
             <div className="button-set">
               <Button
@@ -134,7 +164,7 @@ const TodoItem = ({ todoItem }: Props) => {
       {!editMode && (
         <div className="action-icons">
           <Button
-            label={todo.status === 3 ? "Pending" : "Mark Done"}
+            label={todo.status === 3 ? "Reschedule" : "Mark Done"}
             className="link"
             onClick={doneTaskHandeler}
           />

@@ -1,4 +1,4 @@
-import { TodoModal } from "../../models";
+import { TodoModal, CategoryModal } from "../../models";
 import TodoItem from "./TodoItem";
 export interface Props {
   todos: TodoModal[];

@@ -1,4 +1,4 @@
-import { TodoModal } from "../models";
+import { TodoModal, CategoryModal } from "../models";
 import {
   ADD_TODO,
   DELETE_TODO,
@@ -6,6 +6,7 @@ import {
   EDIT_TODO,
   SET_TODOS,
   SET_LOGIN_STATUS,
+  SET_CATEGORIES,
 } from "./actionTypes";
 
 export const loginTodoAction = (data: boolean) => {
@@ -25,6 +26,13 @@ export const addTodoAction = (data: TodoModal) => {
 export const setTodoAction = (data: TodoModal[]) => {
   return {
     type: SET_TODOS,
+    payload: data,
+  };
+};
+
+export const setCategoryAction = (data: CategoryModal[]) => {
+  return {
+    type: SET_CATEGORIES,
     payload: data,
   };
 };
