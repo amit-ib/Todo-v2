@@ -12,6 +12,7 @@ function App() {
   const state = useSelector((state: statesModal) => state);
   const dispatch = useDispatch();
   let formTitle = state.isLogedin ? "Todo List" : "Todo Login";
+  const accessToken = window.localStorage.getItem("accessToken");
   const userName = window.localStorage.getItem("userName")
     ? window.localStorage.getItem("userName")
     : "";
@@ -19,6 +20,10 @@ function App() {
   const setIsLogedin = (loginStatus: boolean) => {
     dispatch(loginTodoAction(loginStatus));
   };
+
+  useEffect(() => {
+    setIsLogedin(accessToken ? true : false);
+  }, [accessToken]);
 
   useEffect(() => {
     axiosInstance
