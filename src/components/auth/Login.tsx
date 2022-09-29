@@ -1,8 +1,7 @@
 import React from "react";
 import Button from "../shared/form/Button";
 import { useForm, SubmitHandler } from "react-hook-form";
-import instance from "../../axiosConfig";
-
+import axios from "axios";
 interface Props {
   isLogedin: Boolean;
   setIsLogedin: Function;
@@ -39,8 +38,8 @@ const Login = (props: Props) => {
   };
 
   const onSubmit: SubmitHandler<loginDataType> = (data) => {
-    instance
-      .post(`/login`, {
+    axios
+      .post(`${process.env.REACT_APP_BASE_URL}/login`, {
         username: data.email,
         password: data.password,
       })

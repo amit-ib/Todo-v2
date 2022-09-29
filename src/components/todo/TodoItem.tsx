@@ -26,7 +26,7 @@ const TodoItem = ({ todoItem }: Props) => {
   const [todo, setTodo] = useState({
     id: todoItem.id,
     title: todoItem.title,
-    createdAt: todoItem.createdAt,
+    dueDate: todoItem.dueDate,
     isDone: todoItem.isDone,
   });
 
@@ -67,7 +67,7 @@ const TodoItem = ({ todoItem }: Props) => {
             />
             <Input
               type="date"
-              value={moment(todo.createdAt).format("YYYY-MM-DD")}
+              value={moment(todo.dueDate).format("YYYY-MM-DD")}
               onChange={(e) =>
                 editFormDataChanger("date", new Date(e.target.value))
               }
@@ -100,7 +100,7 @@ const TodoItem = ({ todoItem }: Props) => {
         >
           {todoItem.title}
 
-          <div className="date">{dateConverter(todoItem.createdAt)}</div>
+          <div className="date">{dateConverter(todoItem.dueDate)}</div>
         </div>
       )}
 

@@ -6,13 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { statesModal } from "./store/todoReducer";
 import Button from "./components/shared/form/Button";
 import { setTodoAction, loginTodoAction } from "./store";
-import instance from "./axiosConfig";
+import axiosInstance from "./axiosConfig";
 
 function App() {
   const state = useSelector((state: statesModal) => state);
   const dispatch = useDispatch();
   let formTitle = state.isLogedin ? "Todo List" : "Todo Login";
-  const accessToken = window.localStorage.getItem("accessToken");
   const userName = window.localStorage.getItem("userName")
     ? window.localStorage.getItem("userName")
     : "";
@@ -22,11 +21,9 @@ function App() {
   };
 
   useEffect(() => {
-    setIsLogedin(accessToken ? true : false);
-  }, [accessToken]);
-
-  useEffect(() => {
-    instance.get("/todos").then((res) => dispatch(setTodoAction(res.data)));
+    axiosInstance
+      .get("/todos")
+      .then((res) => dispatch(setTodoAction(res.data)));
   }, []);
 
   const onLogoutSuccess = () => {
