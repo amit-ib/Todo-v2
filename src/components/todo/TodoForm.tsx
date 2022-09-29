@@ -1,42 +1,64 @@
-import React, { useState } from "react";
-import Input from "../shared/form/Input";
+import { useState } from "react";
 import Button from "../shared/form/Button";
 import { useDispatch } from "react-redux";
-import { addTodoAction } from "../../store";
+import { setTodoAction } from "../../store";
+import axiosInstance from "../../axiosConfig";
+import { useForm, SubmitHandler } from "react-hook-form";
 import moment from "moment";
+
+interface addTodoDataType {
+  title: string;
+  dueDate: Date;
+}
 
 const TodoForm = () => {
   const dispatch = useDispatch();
-  const [todotext, setTodoText] = useState<string>("");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<addTodoDataType>({});
 
-  const handelInputChange = (e: any) => {
-    setTodoText(e.target.value);
-  };
+  const handleAdd: SubmitHandler<addTodoDataType> = (data) => {
+    console.log(data);
 
-  const handleAdd = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (todotext) {
-      dispatch(
-        addTodoAction({
-          id: Math.random(),
-          title: todotext,
-          dueDate: moment().toDate(),
-          isDone: false,
-        })
-      );
-    }
+    let addData = {
+      title: data.title,
+      status: 0,
+      dueDate: data.dueDate,
+      category: 0,
+    };
+    axiosInstance.post("/todo", addData).then(() => {
+      axiosInstance
+        .get("/todos")
+        .then((res) => dispatch(setTodoAction(res.data)));
+    });
   };
 
   return (
     <>
-      <form className="todo-form" onSubmit={handleAdd}>
-        <Input
-          value={todotext}
-          onChange={handelInputChange}
-          placeholder="Please enter task"
-          className="input-task"
+      <form className="todo-form" onSubmit={handleSubmit(handleAdd)}>
+        <input
+          {...register("title", { required: true })}
+          placeholder="Please enter todo"
         />
-        <Button className="button plus" label="+" />
+        <span className="error">
+          {errors.title?.type === "required" && "Please enter todo"}
+        </span>
+        <div className="input-date-container">
+          <input
+            {...register("dueDate", { required: true, valueAsDate: true })}
+            defaultValue={moment(new Date()).format("YYYY-MM-DD")}
+            placeholder="Please enter date of todo"
+            className="input-date"
+            type="date"
+          />
+          <span className="error">
+            {errors.dueDate?.type === "required" && "Please enter a date"}
+          </span>
+          <Button type="submit" className="button plus" label="+" />
+        </div>
       </form>
       <div className="filters">
         <span className="active filter-type">All</span>

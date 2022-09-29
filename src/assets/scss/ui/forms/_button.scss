@@ -2,11 +2,12 @@ button {
   &.plus {
     font-size: 16px;
     border: solid 1px $gray-color;
-    border-left: 0px;
     background: $white-color;
-    border-radius: 0px 5px 5px 0px;
+    border-radius: 5px;
     font-size: 25px;
-    padding-right: 10px;
+    padding: 0px 10px;
+    margin-left: 5px;
+    margin-top: 10px;
     cursor: pointer;
     &:focus {
       outline: none;
