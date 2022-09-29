@@ -14,3 +14,10 @@ input {
     border-radius: 5px 0px 0px 5px;
   }
 }
+
+.input-date-container {
+  display: flex;
+  .input-date {
+    flex-grow: 1;
+  }
+}
