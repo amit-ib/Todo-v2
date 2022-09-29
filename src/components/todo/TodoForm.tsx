@@ -25,14 +25,15 @@ const TodoForm = () => {
 
     let addData = {
       title: data.title,
-      status: 0,
+      status: 1,
       dueDate: data.dueDate,
-      category: 0,
+      category: 1,
     };
     axiosInstance.post("/todo", addData).then(() => {
-      axiosInstance
-        .get("/todos")
-        .then((res) => dispatch(setTodoAction(res.data)));
+      axiosInstance.get("/todos").then((res) => {
+        reset();
+        dispatch(setTodoAction(res.data));
+      });
     });
   };
 

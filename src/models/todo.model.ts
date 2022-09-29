@@ -2,5 +2,7 @@ export interface TodoModal {
   id: number;
   title: string;
   dueDate: Date;
-  isDone: boolean;
+  //isDone: boolean;
+  category: number;
+  status: number;
 }
