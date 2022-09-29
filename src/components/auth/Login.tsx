@@ -1,8 +1,7 @@
-import React from "react";
-import axios from "axios";
+import { useState } from "react";
 import Button from "../shared/form/Button";
 import { useForm, SubmitHandler } from "react-hook-form";
-
+import axios from "axios";
 interface Props {
   isLogedin: Boolean;
   setIsLogedin: Function;
@@ -21,6 +20,7 @@ interface loginDataType {
 }
 
 const Login = (props: Props) => {
+  const [showError, setShowError] = useState(false);
   const {
     register,
     handleSubmit,
@@ -40,7 +40,7 @@ const Login = (props: Props) => {
 
   const onSubmit: SubmitHandler<loginDataType> = (data) => {
     axios
-      .post(`${process.env.REACT_APP_LOGIN_API}/login`, {
+      .post(`${process.env.REACT_APP_BASE_URL}/login`, {
         username: data.email,
         password: data.password,
       })
@@ -50,6 +50,7 @@ const Login = (props: Props) => {
       })
       .catch(function (error) {
         console.log(error);
+        setShowError(true);
       });
   };
 
@@ -75,6 +76,9 @@ const Login = (props: Props) => {
                 {errors.password?.type === "required" &&
                   "Please enter password"}
               </span>
+              {showError && (
+                <div className="error center">Invalid Credentials</div>
+              )}
               <Button
                 type="submit"
                 label="Login"
