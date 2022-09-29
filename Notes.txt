@@ -1,23 +1,117 @@
-App.tsx
-------------
-//#### Filter related
-// created state for "Filter"
-  const [todosFilter, setTodosFilter] = useState<TodoModal[]>([]);
+TDAP100-Common-Updates
+---------
+##########
+Inalid credential
+##########
+1. Login 
+-----
+import { useState } from "react";
 
-  // created useEffect to handle
-  useEffect(() => {
-    if (todotext !== "") {
-      let array = todos.filter((todoItem) => todoItem.todo.includes(todotext));
-      setTodosFilter(array);
-    } else {
-      setTodosFilter([]);
+>>>const onSubmit: SubmitHandler..........
+
+.catch(function (error) {
+        console.log(error);
+        setShowError(true);
+      });
+
+//place above button
+{showError && (<div className="error center">Invalid Credentials</div>)}
+
+-------
+2. common.scss
+--------
+.error {
+  color: $red-color;
+  font-size: 14px;
+  &.center {
+    text-align: center;
+    padding-top: 20px;
+  }
+}
+
+
+
+##########
+Add Task
+##########
+
+input.scss
+-----------
+.input-date-container {
+  display: flex;
+  .input-date {
+    flex-grow: 1;
+  }
+}
+
+button.scss
+------
+&.plus {
+    font-size: 16px;
+    border: solid 1px $gray-color;
+    background: $white-color;
+    border-radius: 5px;
+    font-size: 25px;
+    padding: 0px 10px;
+    margin-left: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+    &:focus {
+      outline: none;
     }
-  }, [todotext]);
 
-return (
-.............
-<TodoList
-        todos={todosFilter.length !== 0 ? todosFilter : todos}
-        setTodos={setTodos}
-      />
- );
+todo-form.scss
+---------
+Remove
+
+.todo-form {
+  display: flex;
+  input {
+    flex-grow: 1;
+  }
+}
+
+
+todoForm.tsx
+----------
+
+import axiosInstance from "../../axiosConfig";
+import { useForm, SubmitHandler } from "react-hook-form";
+import {setTodoAction } from "../../store";
+
+interface addTodoDataType {
+  title: string;
+  dueDate: Date;
+}
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<addTodoDataType>({});
+
+replace form
+
+<form className="todo-form" onSubmit={handleSubmit(handleAdd)}>
+        <input
+          {...register("title", { required: true })}
+          placeholder="Please enter todo"
+        />
+        <span className="error">
+          {errors.title?.type === "required" && "Please enter todo"}
+        </span>
+        <div className="input-date-container">
+          <input
+            {...register("dueDate", { required: true, valueAsDate: true })}
+            defaultValue={moment(new Date()).format("YYYY-MM-DD")}
+            placeholder="Please enter date of todo"
+            className="input-date"
+            type="date"
+          />
+          <span className="error">
+            {errors.dueDate?.type === "required" && "Please enter a date"}
+          </span>
+          <Button type="submit" className="button plus" label="+" />
+        </div>
+      </form>
