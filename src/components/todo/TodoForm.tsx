@@ -4,7 +4,6 @@ import Button from "../shared/form/Button";
 import { useDispatch } from "react-redux";
 import { addTodoAction } from "../../store";
 import moment from "moment";
-import { v4 as uuid } from "uuid";
 
 const TodoForm = () => {
   const dispatch = useDispatch();
@@ -19,9 +18,9 @@ const TodoForm = () => {
     if (todotext) {
       dispatch(
         addTodoAction({
-          id: uuid(),
-          todo: todotext,
-          date: moment().toDate(),
+          id: Math.random(),
+          title: todotext,
+          createdAt: moment().toDate(),
           isDone: false,
         })
       );

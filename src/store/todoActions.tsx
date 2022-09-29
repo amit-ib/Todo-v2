@@ -4,6 +4,7 @@ import {
   DELETE_TODO,
   MARK_DONE_TODO,
   EDIT_TODO,
+  SET_TODOS,
   SET_LOGIN_STATUS,
 } from "./actionTypes";
 
@@ -17,6 +18,13 @@ export const loginTodoAction = (data: boolean) => {
 export const addTodoAction = (data: TodoModal) => {
   return {
     type: ADD_TODO, // returned type property
+    payload: data,
+  };
+};
+
+export const setTodoAction = (data: TodoModal[]) => {
+  return {
+    type: SET_TODOS,
     payload: data,
   };
 };

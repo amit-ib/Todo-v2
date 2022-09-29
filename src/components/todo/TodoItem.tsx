@@ -13,7 +13,7 @@ import Input from "../shared/form/Input";
 import moment from "moment";
 interface Props {
   todoItem: TodoModal;
-  id: string;
+  id: number;
 }
 
 const TodoItem = ({ todoItem }: Props) => {
@@ -25,8 +25,8 @@ const TodoItem = ({ todoItem }: Props) => {
 
   const [todo, setTodo] = useState({
     id: todoItem.id,
-    todo: todoItem.todo,
-    date: todoItem.date,
+    title: todoItem.title,
+    dueDate: todoItem.dueDate,
     isDone: todoItem.isDone,
   });
 
@@ -62,12 +62,12 @@ const TodoItem = ({ todoItem }: Props) => {
             <Input
               type="text"
               placeholder=""
-              value={todo.todo}
+              value={todo.title}
               onChange={(e) => editFormDataChanger("todo", e.target.value)}
             />
             <Input
               type="date"
-              value={moment(todo.date).format("YYYY-MM-DD")}
+              value={moment(todo.dueDate).format("YYYY-MM-DD")}
               onChange={(e) =>
                 editFormDataChanger("date", new Date(e.target.value))
               }
@@ -98,9 +98,9 @@ const TodoItem = ({ todoItem }: Props) => {
             ${todoItem.isDone ? "task-done" : ""}
           `}
         >
-          {todoItem.todo}
+          {todoItem.title}
 
-          <div className="date">{dateConverter(todoItem.date)}</div>
+          <div className="date">{dateConverter(todoItem.dueDate)}</div>
         </div>
       )}
 

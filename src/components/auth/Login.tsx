@@ -1,8 +1,7 @@
 import React from "react";
-import axios from "axios";
 import Button from "../shared/form/Button";
 import { useForm, SubmitHandler } from "react-hook-form";
-
+import axios from "axios";
 interface Props {
   isLogedin: Boolean;
   setIsLogedin: Function;
@@ -40,7 +39,7 @@ const Login = (props: Props) => {
 
   const onSubmit: SubmitHandler<loginDataType> = (data) => {
     axios
-      .post(`${process.env.REACT_APP_LOGIN_API}/login`, {
+      .post(`${process.env.REACT_APP_BASE_URL}/login`, {
         username: data.email,
         password: data.password,
       })
