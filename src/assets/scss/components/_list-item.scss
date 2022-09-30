@@ -11,8 +11,8 @@
   .edit-task-container {
     flex-grow: 1;
     width: 65%;
-    input {
-      width: 100%;
+    input,
+    select {
       margin: 4px 0px;
       font-size: 15px;
     }

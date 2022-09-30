@@ -1,8 +1,8 @@
 import Button from "../shared/form/Button";
 import { TodoModal } from "../../models";
 import { dateConverter } from "../../utils/helper";
-import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 import {
   deleteTodoAction,
   markDoneTodoAction,
@@ -12,26 +12,41 @@ import Confirm from "../shared/Confirm";
 import Input from "../shared/form/Input";
 import moment from "moment";
 import axiosInstance from "../../axiosConfig";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { statesModal } from "../../store/todoReducer";
 interface Props {
   todoItem: TodoModal;
   id: number;
 }
+interface updateTodoDataType {
+  title: string;
+  dueDate: string;
+  category: number;
+  status: number;
+}
 
 const TodoItem = ({ todoItem }: Props) => {
+  const { category } = useSelector((state: statesModal) => state);
+  const { status } = useSelector((state: statesModal) => state);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
 
   // State to check edit state(if already in edit mode)
   const [editMode, setEditMode] = useState<boolean>(false);
-
-  const [todo, setTodo] = useState({
+  var todoData = {
     id: todoItem.id,
     title: todoItem.title,
     dueDate: todoItem.dueDate,
     category: todoItem.category,
     status: todoItem.status,
-  });
+  };
+  useEffect(() => {
+    if (todoItem) {
+      setTodo(todoData);
+    }
+  }, [todoItem]);
 
+  const [todo, setTodo] = useState(todoData);
   const deleteTaskHandeler = () => {
     dispatch(deleteTodoAction(todoItem));
     setShowModal(false);
@@ -50,15 +65,28 @@ const TodoItem = ({ todoItem }: Props) => {
     setTodo(updatedTodo);
   };
 
-  const updateTaskHandeler = () => {
-    let data = {
-      title: todo.title,
-      status: todo.status,
-      description: "something",
-      dueDate: new Date(todo.dueDate),
-      category: todo.category,
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    watch,
+  } = useForm<updateTodoDataType>({
+    defaultValues: {
+      title: todoItem.title,
+      dueDate: moment(todoItem.dueDate).format("YYYY-MM-DD"),
+    },
+  });
+
+  const updateTaskHandeler: SubmitHandler<updateTodoDataType> = (data) => {
+    console.log(data);
+
+    let updateData = {
+      title: data.title,
+      status: data.status,
+      dueDate: data.dueDate,
+      category: data.category,
     };
-    axiosInstance.put(`/todo/${todoItem.id}`, data).then((res) => {
+    axiosInstance.put(`/todo/${todoItem.id}`, updateData).then((res) => {
       axiosInstance
         .get("/todos")
         .then((res) => dispatch(setTodoAction(res.data)));
@@ -71,28 +99,58 @@ const TodoItem = ({ todoItem }: Props) => {
       {editMode ? (
         //If in edit mode then display Textbox
         <div className="edit-task-container">
-          <form>
-            <Input
-              type="text"
-              placeholder=""
-              value={todo.title}
-              onChange={(e) => editFormDataChanger("title", e.target.value)}
-            />
-            <Input
+          <form onSubmit={handleSubmit(updateTaskHandeler)}>
+            <input {...register("title", { required: true })} />
+            <span className="error">
+              {errors.title?.type === "required" && "Please enter todo"}
+            </span>
+            <input
+              {...register("dueDate", { required: true })}
               type="date"
-              value={moment(todo.dueDate).format("YYYY-MM-DD")}
               onChange={(e) =>
                 editFormDataChanger("dueDate", new Date(e.target.value))
               }
             />
+            <div className="input-set">
+              <div className="input-col">
+                <label>Category</label>
+                <select
+                  {...register("category")}
+                  defaultValue={todoItem.category}
+                >
+                  {category.map((category, id) => (
+                    <option
+                      key={category.id}
+                      defaultValue={
+                        category.id === todoItem.category ? category.id : 0
+                      }
+                      value={category.id}
+                    >
+                      {category.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="input-col">
+                <label>Status</label>
+                <select {...register("status")} defaultValue={todoItem.status}>
+                  {status.map((status, id) => (
+                    <option
+                      key={status.id}
+                      defaultValue={
+                        status.id === todoItem.status ? status.id : 0
+                      }
+                      value={status.id}
+                    >
+                      {status.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
 
             <div className="button-set">
-              <Button
-                type="submit"
-                label="Update"
-                varient="primary"
-                onClick={updateTaskHandeler}
-              />
+              <Button type="submit" label="Update" varient="primary" />
 
               <Button
                 type="button"

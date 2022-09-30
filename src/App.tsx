@@ -5,7 +5,12 @@ import Login from "./components/auth/Login";
 import { useDispatch, useSelector } from "react-redux";
 import { statesModal } from "./store/todoReducer";
 import Button from "./components/shared/form/Button";
-import { setTodoAction, loginTodoAction } from "./store";
+import {
+  setTodoAction,
+  loginTodoAction,
+  setCategoryAction,
+  setStatusAction,
+} from "./store";
 import axiosInstance from "./axiosConfig";
 
 function App() {
@@ -29,6 +34,12 @@ function App() {
     axiosInstance
       .get("/todos")
       .then((res) => dispatch(setTodoAction(res.data)));
+    axiosInstance
+      .get("/category")
+      .then((res) => dispatch(setCategoryAction(res.data)));
+    axiosInstance
+      .get("/status")
+      .then((res) => dispatch(setStatusAction(res.data)));
   }, []);
 
   const onLogoutSuccess = () => {
