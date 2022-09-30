@@ -6,11 +6,12 @@ import { useState } from "react";
 import {
   deleteTodoAction,
   markDoneTodoAction,
-  editTodoAction,
+  setTodoAction,
 } from "../../store";
 import Confirm from "../shared/Confirm";
 import Input from "../shared/form/Input";
 import moment from "moment";
+import axiosInstance from "../../axiosConfig";
 interface Props {
   todoItem: TodoModal;
   id: number;
@@ -27,7 +28,8 @@ const TodoItem = ({ todoItem }: Props) => {
     id: todoItem.id,
     title: todoItem.title,
     dueDate: todoItem.dueDate,
-    isDone: todoItem.isDone,
+    category: todoItem.category,
+    status: todoItem.status,
   });
 
   const deleteTaskHandeler = () => {
@@ -49,7 +51,18 @@ const TodoItem = ({ todoItem }: Props) => {
   };
 
   const updateTaskHandeler = () => {
-    dispatch(editTodoAction(todo));
+    let data = {
+      title: todo.title,
+      status: todo.status,
+      description: "something",
+      dueDate: new Date(todo.dueDate),
+      category: todo.category,
+    };
+    axiosInstance.put(`/todo/${todoItem.id}`, data).then((res) => {
+      axiosInstance
+        .get("/todos")
+        .then((res) => dispatch(setTodoAction(res.data)));
+    });
     setEditMode(false);
   };
 
@@ -63,13 +76,13 @@ const TodoItem = ({ todoItem }: Props) => {
               type="text"
               placeholder=""
               value={todo.title}
-              onChange={(e) => editFormDataChanger("todo", e.target.value)}
+              onChange={(e) => editFormDataChanger("title", e.target.value)}
             />
             <Input
               type="date"
               value={moment(todo.dueDate).format("YYYY-MM-DD")}
               onChange={(e) =>
-                editFormDataChanger("date", new Date(e.target.value))
+                editFormDataChanger("dueDate", new Date(e.target.value))
               }
             />
 
@@ -95,8 +108,8 @@ const TodoItem = ({ todoItem }: Props) => {
       ) : (
         <div
           className={`list-item-text 
-            ${todoItem.isDone ? "task-done" : ""}
-          `}
+          ${todoItem.status === 3 ? "task-done" : ""}
+        `}
         >
           {todoItem.title}
 
@@ -114,7 +127,7 @@ const TodoItem = ({ todoItem }: Props) => {
           <Button
             label="Edit"
             className="link red"
-            disabled={todoItem.isDone}
+            disabled={todoItem.status === 3 ? true : false}
             onClick={editTaskHandeler}
           />
           <Button
