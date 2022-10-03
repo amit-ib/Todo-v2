@@ -4,13 +4,18 @@ import { setTodoAction } from "../../store";
 import axiosInstance from "../../axiosConfig";
 import { useForm, SubmitHandler } from "react-hook-form";
 import moment from "moment";
+import { tostType } from "../../App";
 
 interface addTodoDataType {
   title: string;
   dueDate: Date;
 }
+interface Props {
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setTost: React.Dispatch<React.SetStateAction<tostType>>;
+}
 
-const TodoForm = () => {
+const TodoForm = ({ setLoading, setTost }: Props) => {
   const dispatch = useDispatch();
 
   const {
@@ -20,20 +25,25 @@ const TodoForm = () => {
     formState: { errors },
   } = useForm<addTodoDataType>({});
 
-  const handleAdd: SubmitHandler<addTodoDataType> = (data) => {
-    console.log(data);
-
+  const handleAdd: SubmitHandler<addTodoDataType> = async (data) => {
     let addData = {
       title: data.title,
       status: 1,
       dueDate: data.dueDate,
       category: 1,
     };
-    axiosInstance.post("/todo", addData).then(() => {
-      axiosInstance.get("/todos").then((res) => {
+    setLoading(true);
+    await axiosInstance.post("/todo", addData).then(async () => {
+      await axiosInstance.get("/todos").then((res) => {
         reset();
         dispatch(setTodoAction(res.data));
       });
+    });
+    setLoading(false);
+    setTost({
+      tostState: true,
+      tostMessage: "Task Added Successfully",
+      tostType: "success",
     });
   };
 

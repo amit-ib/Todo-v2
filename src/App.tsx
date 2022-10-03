@@ -16,7 +16,7 @@ import Loader from "./components/shared/Loader";
 import Tost from "./components/shared/Tost";
 
 export interface tostType {
-  state: boolean;
+  tostState: boolean;
   tostMessage: string;
   tostType: string;
 }
@@ -24,11 +24,10 @@ function App() {
   const state = useSelector((state: statesModal) => state);
   const [loading, setLoading] = useState(false);
   const [tost, setTost] = useState<tostType>({
-    state: false,
+    tostState: false,
     tostMessage: "",
     tostType: "",
   });
-  console.log(tost);
   const dispatch = useDispatch();
   let formTitle = state.isLogedin ? "Todo List" : "Todo Login";
   const accessToken = window.localStorage.getItem("accessToken");
@@ -50,9 +49,10 @@ function App() {
 
   const loadData = async () => {
     setLoading(true);
-    await axiosInstance
-      .get("/todos")
-      .then((res) => dispatch(setTodoAction(res.data)));
+    await axiosInstance.get("/todos").then((res) => {
+      dispatch(setTodoAction(res.data));
+    });
+
     await axiosInstance
       .get("/category")
       .then((res) => dispatch(setCategoryAction(res.data)));
@@ -77,7 +77,7 @@ function App() {
           </span>
         )}
       </div>
-      {tost.state ? (
+      {tost.tostState ? (
         <Tost
           delay={3000}
           setTost={setTost}
@@ -93,7 +93,7 @@ function App() {
           <h3 className="text-center">{formTitle}</h3>
           {state.isLogedin && (
             <div>
-              <TodoForm />
+              <TodoForm setLoading={setLoading} setTost={setTost} />
               <TodoList
                 todos={state.tasks}
                 setLoading={setLoading}
