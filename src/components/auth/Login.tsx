@@ -5,6 +5,7 @@ import axios from "axios";
 interface Props {
   isLogedin: Boolean;
   setIsLogedin: Function;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface ResponseType {
@@ -38,8 +39,9 @@ const Login = (props: Props) => {
     props.setIsLogedin(true);
   };
 
-  const onSubmit: SubmitHandler<loginDataType> = (data) => {
-    axios
+  const onSubmit: SubmitHandler<loginDataType> = async (data) => {
+    props.setLoading(true);
+    await axios
       .post(`${process.env.REACT_APP_BASE_URL}/login`, {
         username: data.email,
         password: data.password,
@@ -52,6 +54,7 @@ const Login = (props: Props) => {
         console.log(error);
         setShowError(true);
       });
+    props.setLoading(false);
   };
 
   return (

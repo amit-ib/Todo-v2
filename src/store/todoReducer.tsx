@@ -10,13 +10,13 @@ import {
 export interface statesModal {
   tasks: TodoModal[] | [];
   isLogedin: boolean;
-  category: CategoryModal[] | [];
+  categories: CategoryModal[] | [];
   status: StatusModal[] | [];
 }
 const initialState = {
   tasks: [],
   isLogedin: false,
-  category: [],
+  categories: [],
   status: [],
 };
 
@@ -52,21 +52,12 @@ const todoReducer = (state: statesModal = initialState, action: any) => {
       };
 
     case SET_TODOS:
-      return {
-        ...state,
-        tasks: action.payload,
-      };
     case SET_CATEGORIES:
-      return {
-        ...state,
-        category: action.payload,
-      };
     case SET_STATUS:
       return {
         ...state,
-        status: action.payload,
+        [action.type]: action.payload,
       };
-
     default:
       return state;
   }

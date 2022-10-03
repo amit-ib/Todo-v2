@@ -9,14 +9,16 @@ import {
   setTodoAction,
 } from "../../store";
 import Confirm from "../shared/Confirm";
-import Input from "../shared/form/Input";
 import moment from "moment";
 import axiosInstance from "../../axiosConfig";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { statesModal } from "../../store/todoReducer";
+import { ToDoStatus } from "../../models/status.model";
+
 interface Props {
   todoItem: TodoModal;
   id: number;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 interface updateTodoDataType {
   title: string;
@@ -25,8 +27,8 @@ interface updateTodoDataType {
   status: number;
 }
 
-const TodoItem = ({ todoItem }: Props) => {
-  const { category } = useSelector((state: statesModal) => state);
+const TodoItem = ({ todoItem, setLoading }: Props) => {
+  const { categories } = useSelector((state: statesModal) => state);
   const { status } = useSelector((state: statesModal) => state);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
@@ -77,20 +79,24 @@ const TodoItem = ({ todoItem }: Props) => {
     },
   });
 
-  const updateTaskHandeler: SubmitHandler<updateTodoDataType> = (data) => {
-    console.log(data);
-
+  const updateTaskHandeler: SubmitHandler<updateTodoDataType> = async (
+    data
+  ) => {
     let updateData = {
       title: data.title,
       status: data.status,
       dueDate: data.dueDate,
       category: data.category,
     };
-    axiosInstance.put(`/todo/${todoItem.id}`, updateData).then((res) => {
-      axiosInstance
-        .get("/todos")
-        .then((res) => dispatch(setTodoAction(res.data)));
-    });
+    setLoading(true);
+    await axiosInstance
+      .put(`/todo/${todoItem.id}`, updateData)
+      .then(async (res) => {
+        await axiosInstance
+          .get("/todos")
+          .then((res) => dispatch(setTodoAction(res.data)));
+      });
+    setLoading(false);
     setEditMode(false);
   };
 
@@ -118,7 +124,7 @@ const TodoItem = ({ todoItem }: Props) => {
                   {...register("category")}
                   defaultValue={todoItem.category}
                 >
-                  {category.map((category, id) => (
+                  {categories.map((category, id) => (
                     <option
                       key={category.id}
                       defaultValue={
@@ -166,7 +172,7 @@ const TodoItem = ({ todoItem }: Props) => {
       ) : (
         <div
           className={`list-item-text 
-          ${todoItem.status === 3 ? "task-done" : ""}
+          ${todoItem.status === ToDoStatus.COMPLETED ? "task-done" : ""}
         `}
         >
           {todoItem.title}
@@ -185,7 +191,7 @@ const TodoItem = ({ todoItem }: Props) => {
           <Button
             label="Edit"
             className="link red"
-            disabled={todoItem.status === 3 ? true : false}
+            disabled={todoItem.status === ToDoStatus.COMPLETED ? true : false}
             onClick={editTaskHandeler}
           />
           <Button

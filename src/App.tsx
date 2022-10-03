@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import TodoForm from "./components/todo/TodoForm";
 import TodoList from "./components/todo/TodoList";
 import Login from "./components/auth/Login";
@@ -12,9 +12,11 @@ import {
   setStatusAction,
 } from "./store";
 import axiosInstance from "./axiosConfig";
+import Loader from "./components/shared/Loader";
 
 function App() {
   const state = useSelector((state: statesModal) => state);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   let formTitle = state.isLogedin ? "Todo List" : "Todo Login";
   const accessToken = window.localStorage.getItem("accessToken");
@@ -31,16 +33,22 @@ function App() {
   }, [accessToken]);
 
   useEffect(() => {
-    axiosInstance
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    setLoading(true);
+    await axiosInstance
       .get("/todos")
       .then((res) => dispatch(setTodoAction(res.data)));
-    axiosInstance
+    await axiosInstance
       .get("/category")
       .then((res) => dispatch(setCategoryAction(res.data)));
-    axiosInstance
+    await axiosInstance
       .get("/status")
       .then((res) => dispatch(setStatusAction(res.data)));
-  }, []);
+    setLoading(false);
+  };
 
   const onLogoutSuccess = () => {
     setIsLogedin(false);
@@ -59,17 +67,20 @@ function App() {
       </div>
       <div className="container">
         <div className="todo-container">
+          {loading ? <Loader /> : ""}
           <h3 className="text-center">{formTitle}</h3>
-
           {state.isLogedin && (
             <div>
               <TodoForm />
-              <TodoList todos={state.tasks} />
+              <TodoList todos={state.tasks} setLoading={setLoading} />
             </div>
           )}
-
           {!state.isLogedin && (
-            <Login isLogedin={state.isLogedin} setIsLogedin={setIsLogedin} />
+            <Login
+              isLogedin={state.isLogedin}
+              setLoading={setLoading}
+              setIsLogedin={setIsLogedin}
+            />
           )}
         </div>
       </div>
