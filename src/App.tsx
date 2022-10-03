@@ -16,7 +16,7 @@ import Loader from "./components/shared/Loader";
 import Tost from "./components/shared/Tost";
 
 export interface tostType {
-  state: boolean;
+  tostState: boolean;
   tostMessage: string;
   tostType: string;
 }
@@ -24,7 +24,7 @@ function App() {
   const state = useSelector((state: statesModal) => state);
   const [loading, setLoading] = useState(false);
   const [tost, setTost] = useState<tostType>({
-    state: false,
+    tostState: false,
     tostMessage: "",
     tostType: "",
   });
@@ -77,7 +77,7 @@ function App() {
           </span>
         )}
       </div>
-      {tost.state ? (
+      {tost.tostState ? (
         <Tost
           delay={3000}
           setTost={setTost}

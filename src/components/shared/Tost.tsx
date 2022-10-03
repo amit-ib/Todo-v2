@@ -12,7 +12,7 @@ const Tost = ({ delay, setTost, tostMessage, tostType }: Props) => {
   useEffect(() => {
     console.log("first");
     const timer = setTimeout(() => {
-      setTost({ state: false, tostMessage: "", tostType: "" });
+      setTost({ tostState: false, tostMessage: "", tostType: "" });
     }, delay);
     return () => clearTimeout(timer);
   }, [tostMessage]);

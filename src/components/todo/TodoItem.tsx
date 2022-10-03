@@ -60,7 +60,7 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
         .then((res) => dispatch(setTodoAction(res.data)));
       setLoading(false);
       setTost({
-        state: true,
+        tostState: true,
         tostMessage: "Task Deleted Successfully",
         tostType: "success",
       });
@@ -113,7 +113,7 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
     setLoading(false);
     setEditMode(false);
     setTost({
-      state: true,
+      tostState: true,
       tostMessage: "Task Edited Successfully",
       tostType: "success",
     });
