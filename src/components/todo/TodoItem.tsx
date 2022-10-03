@@ -49,13 +49,36 @@ const TodoItem = ({ todoItem, setLoading }: Props) => {
   }, [todoItem]);
 
   const [todo, setTodo] = useState(todoData);
-  const deleteTaskHandeler = () => {
-    dispatch(deleteTodoAction(todoItem));
+  const deleteTaskHandeler = async () => {
     setShowModal(false);
+    setLoading(true);
+    await axiosInstance.delete(`/todo/${todoItem.id}`).then(async () => {
+      await axiosInstance
+        .get("/todos")
+        .then((res) => dispatch(setTodoAction(res.data)));
+      setLoading(false);
+    });
   };
 
-  const doneTaskHandeler = () => {
-    dispatch(markDoneTodoAction(todoItem));
+  const doneTaskHandeler = async () => {
+    //dispatch(markDoneTodoAction(todoItem));
+    let data = {
+      id: todoItem.id,
+      title: todo.title,
+      status:
+        todo.status === ToDoStatus.COMPLETED
+          ? ToDoStatus.PENDING
+          : ToDoStatus.COMPLETED,
+      dueDate: new Date(todo.dueDate),
+      category: todo.category,
+    };
+    setLoading(true);
+    await axiosInstance.put(`/todo/${todoItem.id}`, data).then(async (res) => {
+      await axiosInstance
+        .get("/todos")
+        .then((res) => dispatch(setTodoAction(res.data)));
+    });
+    setLoading(false);
   };
 
   const editTaskHandeler = () => {
