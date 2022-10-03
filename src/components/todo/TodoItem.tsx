@@ -14,11 +14,13 @@ import axiosInstance from "../../axiosConfig";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { statesModal } from "../../store/todoReducer";
 import { ToDoStatus } from "../../models/status.model";
+import { tostType } from "../../App";
 
 interface Props {
   todoItem: TodoModal;
   id: number;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setTost: React.Dispatch<React.SetStateAction<tostType>>;
 }
 interface updateTodoDataType {
   title: string;
@@ -27,7 +29,7 @@ interface updateTodoDataType {
   status: number;
 }
 
-const TodoItem = ({ todoItem, setLoading }: Props) => {
+const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
   const { categories } = useSelector((state: statesModal) => state);
   const { status } = useSelector((state: statesModal) => state);
   const dispatch = useDispatch();
@@ -57,6 +59,11 @@ const TodoItem = ({ todoItem, setLoading }: Props) => {
         .get("/todos")
         .then((res) => dispatch(setTodoAction(res.data)));
       setLoading(false);
+      setTost({
+        state: true,
+        tostMessage: "Task Deleted Successfully",
+        tostType: "success",
+      });
     });
   };
 
@@ -112,6 +119,7 @@ const TodoItem = ({ todoItem, setLoading }: Props) => {
       category: data.category,
     };
     setLoading(true);
+
     await axiosInstance
       .put(`/todo/${todoItem.id}`, updateData)
       .then(async (res) => {
@@ -121,6 +129,11 @@ const TodoItem = ({ todoItem, setLoading }: Props) => {
       });
     setLoading(false);
     setEditMode(false);
+    setTost({
+      state: true,
+      tostMessage: "Task Edited Successfully",
+      tostType: "success",
+    });
   };
 
   return (

@@ -13,10 +13,22 @@ import {
 } from "./store";
 import axiosInstance from "./axiosConfig";
 import Loader from "./components/shared/Loader";
+import Tost from "./components/shared/Tost";
 
+export interface tostType {
+  state: boolean;
+  tostMessage: string;
+  tostType: string;
+}
 function App() {
   const state = useSelector((state: statesModal) => state);
   const [loading, setLoading] = useState(false);
+  const [tost, setTost] = useState<tostType>({
+    state: false,
+    tostMessage: "",
+    tostType: "",
+  });
+  console.log(tost);
   const dispatch = useDispatch();
   let formTitle = state.isLogedin ? "Todo List" : "Todo Login";
   const accessToken = window.localStorage.getItem("accessToken");
@@ -65,6 +77,16 @@ function App() {
           </span>
         )}
       </div>
+      {tost.state ? (
+        <Tost
+          delay={3000}
+          setTost={setTost}
+          tostType={tost.tostType}
+          tostMessage={tost.tostMessage}
+        />
+      ) : (
+        ""
+      )}
       <div className="container">
         <div className="todo-container">
           {loading ? <Loader /> : ""}
@@ -72,7 +94,11 @@ function App() {
           {state.isLogedin && (
             <div>
               <TodoForm />
-              <TodoList todos={state.tasks} setLoading={setLoading} />
+              <TodoList
+                todos={state.tasks}
+                setLoading={setLoading}
+                setTost={setTost}
+              />
             </div>
           )}
           {!state.isLogedin && (
