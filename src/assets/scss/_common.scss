@@ -28,3 +28,21 @@ label {
   display: block;
   font-size: 14px;
 }
+.alert {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  border-radius: 0;
+  text-align: center;
+  .success {
+    display: inline-block;
+    transform: rotate(45deg);
+    height: 19px;
+    width: 11px;
+    margin-right: 8px;
+    border-bottom: 3px solid #78b13f;
+    border-right: 3px solid #78b13f;
+    margin-bottom: -2px;
+  }
+}
