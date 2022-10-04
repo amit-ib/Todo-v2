@@ -10,7 +10,6 @@ interface Props {
 }
 const Tost = ({ delay, setTost, tostMessage, tostType }: Props) => {
   useEffect(() => {
-    console.log("first");
     const timer = setTimeout(() => {
       setTost({ tostState: false, tostMessage: "", tostType: "" });
     }, delay);
