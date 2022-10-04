@@ -30,8 +30,7 @@ interface updateTodoDataType {
 }
 
 const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
-  const { categories } = useSelector((state: statesModal) => state);
-  const { status } = useSelector((state: statesModal) => state);
+  const { categories, status } = useSelector((state: statesModal) => state);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
 

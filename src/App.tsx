@@ -20,8 +20,17 @@ export interface tostType {
   tostMessage: string;
   tostType: string;
 }
+export interface statusCount {
+  pending: number;
+  inProgress: number;
+  completed: number;
+  archived: number;
+}
+
 function App() {
   const state = useSelector((state: statesModal) => state);
+  // const [statusCount, setstatusCount] = useState<statusCount>();
+  const [activeId, setActiveId] = useState<Number>(0);
   const [loading, setLoading] = useState(false);
   const [tost, setTost] = useState<tostType>({
     tostState: false,
@@ -47,12 +56,18 @@ function App() {
     loadData();
   }, []);
 
+  useEffect(() => {
+    if (state.tasks.length !== 0) {
+      //state.tasks.forEach()
+    }
+  }, [state.tasks]);
+
   const loadData = async () => {
     setLoading(true);
     await axiosInstance.get("/todos").then((res) => {
       dispatch(setTodoAction(res.data));
     });
-
+    //console.log(state.tasks);
     await axiosInstance
       .get("/category")
       .then((res) => dispatch(setCategoryAction(res.data)));
@@ -93,11 +108,18 @@ function App() {
           <h3 className="text-center">{formTitle}</h3>
           {state.isLogedin && (
             <div>
-              <TodoForm setLoading={setLoading} setTost={setTost} />
+              <TodoForm
+                setLoading={setLoading}
+                setTost={setTost}
+                status={state.status}
+                setActiveId={setActiveId}
+                activeId={activeId}
+              />
               <TodoList
                 todos={state.tasks}
                 setLoading={setLoading}
                 setTost={setTost}
+                activeId={activeId}
               />
             </div>
           )}
