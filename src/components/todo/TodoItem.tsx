@@ -7,6 +7,7 @@ import {
   deleteTodoAction,
   markDoneTodoAction,
   setTodoAction,
+  editTodoAction,
 } from "../../store";
 import Confirm from "../shared/Confirm";
 import moment from "moment";
@@ -46,15 +47,11 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
   useEffect(() => {
     if (todoItem) {
       setTodo(todoData);
-      //console.log(todoData);
-      //let sort_toDo = todoData.sort((a, b) => {
-      //   return b.upvotes - a.upvotes;
-      // });
-      // setTodo([...sort_toDo]);
     }
   }, [todoItem]);
 
   const [todo, setTodo] = useState(todoData);
+  //const [singleEditTodo, setSingleEditTodo] = useState(todoData);
 
   const deleteTaskHandeler = async () => {
     setShowModal(false);
@@ -69,6 +66,25 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
       tostMessage: "Task Deleted Successfully",
       tostType: "success",
     });
+  };
+
+  const editSingleTaskHandeler = async () => {
+    // let data = {
+    //   id: todoItem.id,
+    //   title: todoItem.title,
+    //   // status:
+    //   //   todo.status === ToDoStatus.COMPLETED
+    //   //     ? ToDoStatus.PENDING
+    //   //     : ToDoStatus.COMPLETED,
+    //   // dueDate: new Date(todo.dueDate),
+    //   // category: todo.category,
+    // };
+    //setLoading(true);
+    await axiosInstance.get(`/todo/${todoItem.id}`).then((res) => {
+      dispatch(editTodoAction(res.data));
+    });
+
+    //setLoading(false);
   };
 
   const doneTaskHandeler = async () => {
@@ -232,7 +248,8 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
             label="Edit"
             className="link red"
             disabled={todoItem.status === ToDoStatus.COMPLETED ? true : false}
-            onClick={editTaskHandeler}
+            //onClick={editTaskHandeler}
+            onClick={editSingleTaskHandeler}
           />
           <Button
             label="Delete"

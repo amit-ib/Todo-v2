@@ -30,6 +30,7 @@ export interface statusCount {
 
 function App() {
   const state = useSelector((state: statesModal) => state);
+
   // const [statusCount, setstatusCount] = useState<statusCount>();
   const [activeId, setActiveId] = useState<Number>(0);
   const [loading, setLoading] = useState(false);
@@ -40,6 +41,7 @@ function App() {
   });
   const dispatch = useDispatch();
   let formTitle = state.isLogedin ? "Todo List" : "Todo Login";
+  let categories = state.categories;
   const accessToken = window.localStorage.getItem("accessToken");
   const userName = window.localStorage.getItem("userName")
     ? window.localStorage.getItem("userName")
@@ -104,11 +106,13 @@ function App() {
             <div>
               <TodoForm
                 todos={state.tasks}
+                categories={state.categories}
                 setLoading={setLoading}
                 setTost={setTost}
                 status={state.status}
                 setActiveId={setActiveId}
                 activeId={activeId}
+                editTask={state.editTask}
               />
               <TodoList
                 todos={

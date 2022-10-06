@@ -31,6 +31,12 @@ export const setTodoAction = (data: TodoModal[]) => {
     payload: data,
   };
 };
+export const editTodoAction = (data: TodoModal | null) => {
+  return {
+    type: EDIT_TODO,
+    payload: data,
+  };
+};
 export const setCategoryAction = (data: CategoryModal[]) => {
   return {
     type: SET_CATEGORIES,
@@ -53,13 +59,6 @@ export const deleteTodoAction = (data: TodoModal) => {
 export const markDoneTodoAction = (data: TodoModal) => {
   return {
     type: MARK_DONE_TODO,
-    payload: data,
-  };
-};
-
-export const editTodoAction = (data: TodoModal) => {
-  return {
-    type: EDIT_TODO,
     payload: data,
   };
 };

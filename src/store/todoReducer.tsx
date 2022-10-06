@@ -6,6 +6,7 @@ import {
   SET_LOGIN_STATUS,
   SET_CATEGORIES,
   SET_STATUS,
+  EDIT_TODO,
   SET_FILTERED_TASK,
 } from "./actionTypes";
 export interface statesModal {
@@ -13,6 +14,7 @@ export interface statesModal {
   isLogedin: boolean;
   categories: CategoryModal[] | [];
   status: StatusModal[] | [];
+  editTask: TodoModal | null;
   filteredList: TodoModal[] | [];
 }
 const initialState = {
@@ -20,6 +22,7 @@ const initialState = {
   isLogedin: false,
   categories: [],
   status: [],
+  editTask: null,
   filteredList: [],
 };
 
@@ -77,15 +80,16 @@ const todoReducer = (state: statesModal = initialState, action: any) => {
       };
     case SET_CATEGORIES:
     case SET_STATUS:
+    case EDIT_TODO:
       return {
         ...state,
         [action.type]: action.payload,
       };
-    // case SET_FILTERED_TASK:
-    //   return {
-    //     ...state,
-    //     filteredList: action.payload,
-    //   };
+    case SET_FILTERED_TASK:
+      return {
+        ...state,
+        filteredList: action.payload,
+      };
     default:
       return state;
   }
