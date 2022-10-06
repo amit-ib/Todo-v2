@@ -46,23 +46,28 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
   useEffect(() => {
     if (todoItem) {
       setTodo(todoData);
+      //console.log(todoData);
+      //let sort_toDo = todoData.sort((a, b) => {
+      //   return b.upvotes - a.upvotes;
+      // });
+      // setTodo([...sort_toDo]);
     }
   }, [todoItem]);
 
   const [todo, setTodo] = useState(todoData);
+
   const deleteTaskHandeler = async () => {
     setShowModal(false);
     setLoading(true);
-    await axiosInstance.delete(`/todo/${todoItem.id}`).then(async () => {
-      await axiosInstance
-        .get("/todos")
-        .then((res) => dispatch(setTodoAction(res.data)));
-      setLoading(false);
-      setTost({
-        tostState: true,
-        tostMessage: "Task Deleted Successfully",
-        tostType: "success",
-      });
+    await axiosInstance.delete(`/todo/${todoItem.id}`);
+    await axiosInstance
+      .get("/todos")
+      .then((res) => dispatch(setTodoAction(res.data)));
+    setLoading(false);
+    setTost({
+      tostState: true,
+      tostMessage: "Task Deleted Successfully",
+      tostType: "success",
     });
   };
 

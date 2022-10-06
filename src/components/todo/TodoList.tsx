@@ -10,24 +10,24 @@ export interface Props {
   setTost: React.Dispatch<React.SetStateAction<tostType>>;
 }
 const TodoList = ({ todos, setLoading, setTost, activeId }: Props) => {
-  const [filteredList, setfilteredList] = useState<TodoModal[]>(todos);
+  // const [filteredList, setfilteredList] = useState<TodoModal[]>(todos);
 
-  const filterSwitch = (stausId: Number) => {
-    setfilteredList(todos.filter((todoItem) => todoItem.status === stausId));
-  };
+  // const filterSwitch = (stausId: Number) => {
+  //   setfilteredList(todos.filter((todoItem) => todoItem.status === stausId));
+  // };
 
-  useEffect(() => {
-    if (activeId !== 0) {
-      filterSwitch(activeId);
-    } else {
-      setfilteredList(todos);
-    }
-  }, [activeId, todos]);
+  // useEffect(() => {
+  //   if (activeId !== 0) {
+  //     filterSwitch(activeId);
+  //   } else {
+  //     setfilteredList(todos);
+  //   }
+  // }, [activeId, todos]);
 
-  //console.log(filteredList);
   return (
     <>
-      {filteredList.map((todoItem, id) => (
+      {/* {filteredList.map((todoItem, id) => ( */}
+      {todos.map((todoItem, id) => (
         <TodoItem
           key={id}
           id={todoItem.id}

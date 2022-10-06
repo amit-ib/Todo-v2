@@ -14,6 +14,7 @@ import {
 import axiosInstance from "./axiosConfig";
 import Loader from "./components/shared/Loader";
 import Tost from "./components/shared/Tost";
+import { TodoModal } from "./models";
 
 export interface tostType {
   tostState: boolean;
@@ -56,18 +57,11 @@ function App() {
     loadData();
   }, []);
 
-  useEffect(() => {
-    if (state.tasks.length !== 0) {
-      //state.tasks.forEach()
-    }
-  }, [state.tasks]);
-
   const loadData = async () => {
     setLoading(true);
     await axiosInstance.get("/todos").then((res) => {
       dispatch(setTodoAction(res.data));
     });
-    //console.log(state.tasks);
     await axiosInstance
       .get("/category")
       .then((res) => dispatch(setCategoryAction(res.data)));
@@ -109,6 +103,7 @@ function App() {
           {state.isLogedin && (
             <div>
               <TodoForm
+                todos={state.tasks}
                 setLoading={setLoading}
                 setTost={setTost}
                 status={state.status}
@@ -116,7 +111,11 @@ function App() {
                 activeId={activeId}
               />
               <TodoList
-                todos={state.tasks}
+                todos={
+                  state.filteredList.length !== 0
+                    ? state.filteredList
+                    : state.tasks
+                }
                 setLoading={setLoading}
                 setTost={setTost}
                 activeId={activeId}
