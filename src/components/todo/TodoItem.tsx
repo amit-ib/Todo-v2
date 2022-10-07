@@ -108,7 +108,14 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
     setLoading(false);
   };
 
-  const editTaskHandeler = () => {
+  const editTaskHandeler = async () => {
+    await axiosInstance.get(`/todo/${todoItem.id}`).then((res) => {
+      //dispatch(editTodoAction(res.data));
+      setValue("title", res.data.title);
+      setValue("dueDate", moment(res.data.dueDate).format("YYYY-MM-DD"));
+      setValue("category", res.data.category);
+      setValue("status", res.data.status);
+    });
     setEditMode(true);
   };
 
@@ -121,12 +128,13 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
     register,
     formState: { errors },
     handleSubmit,
+    setValue,
     watch,
   } = useForm<updateTodoDataType>({
-    defaultValues: {
-      title: todoItem.title,
-      dueDate: moment(todoItem.dueDate).format("YYYY-MM-DD"),
-    },
+    // defaultValues: {
+    //   title: todoItem.title,
+    //   dueDate: moment(todoItem.dueDate).format("YYYY-MM-DD"),
+    // },
   });
 
   const updateTaskHandeler: SubmitHandler<updateTodoDataType> = async (
@@ -176,16 +184,17 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
             <div className="input-set">
               <div className="input-col">
                 <label>Category</label>
-                <select
+                {/* <select
                   {...register("category")}
                   defaultValue={todoItem.category}
-                >
+                > */}
+                <select {...register("category")}>
                   {categories.map((category, id) => (
                     <option
                       key={category.id}
-                      defaultValue={
-                        category.id === todoItem.category ? category.id : 0
-                      }
+                      // defaultValue={
+                      //   category.id === todoItem.category ? category.id : 0
+                      // }
                       value={category.id}
                     >
                       {category.title}
@@ -195,13 +204,14 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
               </div>
               <div className="input-col">
                 <label>Status</label>
-                <select {...register("status")} defaultValue={todoItem.status}>
+                {/* <select {...register("status")} defaultValue={todoItem.status}> */}
+                <select {...register("status")}>
                   {status.map((status, id) => (
                     <option
                       key={status.id}
-                      defaultValue={
-                        status.id === todoItem.status ? status.id : 0
-                      }
+                      // defaultValue={
+                      //   status.id === todoItem.status ? status.id : 0
+                      // }
                       value={status.id}
                     >
                       {status.title}
@@ -248,8 +258,8 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
             label="Edit"
             className="link red"
             disabled={todoItem.status === ToDoStatus.COMPLETED ? true : false}
-            //onClick={editTaskHandeler}
-            onClick={editSingleTaskHandeler}
+            onClick={editTaskHandeler}
+            //onClick={editSingleTaskHandeler}
           />
           <Button
             label="Delete"

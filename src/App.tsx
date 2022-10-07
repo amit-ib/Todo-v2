@@ -115,15 +115,13 @@ function App() {
                 editTask={state.editTask}
               />
               <TodoList
-                todos={
-                  state.filteredList.length !== 0
-                    ? state.filteredList
-                    : state.tasks
-                }
+                todos={activeId === 0 ? state.tasks : state.filteredList}
                 setLoading={setLoading}
                 setTost={setTost}
                 activeId={activeId}
               />
+              {(state.tasks.length === 0 ||
+                state.filteredList.length === 0) && <div>No Tasks</div>}
             </div>
           )}
           {!state.isLogedin && (
