@@ -15,6 +15,7 @@ import {
 import axiosInstance from "./axiosConfig";
 import Loader from "./components/shared/Loader";
 import Tost from "./components/shared/Tost";
+import { TodoModal } from "./models";
 
 export interface tostType {
   tostState: boolean;
@@ -36,7 +37,8 @@ function App() {
   const userName = window.localStorage.getItem("userName")
     ? window.localStorage.getItem("userName")
     : "";
-
+  // state to handle filters
+  const [filter, setFilter] = useState<TodoModal[] | []>([]);
   const setIsLogedin = (loginStatus: boolean) => {
     dispatch(loginTodoAction(loginStatus));
   };
@@ -99,20 +101,22 @@ function App() {
                 status={state.status}
                 setActiveId={setActiveId}
                 activeId={activeId}
+                setFilter={setFilter}
               />
-              <TodoList
-                todos={
-                  activeId === ToDoStatus.ALL ? state.tasks : state.filteredList
-                }
-                setLoading={setLoading}
-                setTost={setTost}
-              />
-              {(state.tasks.length === 0 ||
-                state.filteredList.length === 0) && (
-                <div className="text-center p-3 error">
-                  Sorry no tasks found
-                </div>
-              )}
+              <div className="list-container">
+                <TodoList
+                  todos={activeId === ToDoStatus.ALL ? state.tasks : filter}
+                  setLoading={setLoading}
+                  setTost={setTost}
+                />
+                {state.tasks.length === 0 && (
+                  <div className="text-center p-3 error">No tasks found</div>
+                )}
+                {activeId !== ToDoStatus.ALL &&
+                  (state.tasks.length === 0 || filter.length === 0) && (
+                    <div className="text-center p-3 error">No tasks found</div>
+                  )}
+              </div>
             </div>
           )}
           {!state.isLogedin && (

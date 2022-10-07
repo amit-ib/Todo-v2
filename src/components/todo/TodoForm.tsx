@@ -1,6 +1,6 @@
 import Button from "../shared/form/Button";
 import { useDispatch } from "react-redux";
-import { filterTodoAction, setTodoAction } from "../../store";
+import { setTodoAction } from "../../store";
 import { StatusModal } from "../../models/status.model";
 import axiosInstance from "../../axiosConfig";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -17,9 +17,16 @@ interface Props {
   status: StatusModal[];
   activeId: Number;
   setActiveId: React.Dispatch<React.SetStateAction<Number>>;
+  setFilter: React.Dispatch<React.SetStateAction<TodoModal[]>>;
 }
 
-const TodoForm = ({ todos, status, activeId, setActiveId }: Props) => {
+const TodoForm = ({
+  todos,
+  status,
+  activeId,
+  setActiveId,
+  setFilter,
+}: Props) => {
   const dispatch = useDispatch();
 
   const statusList = [
@@ -55,12 +62,9 @@ const TodoForm = ({ todos, status, activeId, setActiveId }: Props) => {
   // Handeling filter active state
   const handleFilters = (status: StatusModal) => {
     setActiveId(status.id);
-
-    dispatch(
-      filterTodoAction(
-        todos.filter((todoItem) => todoItem.status === status.id)
-      )
-    );
+    if (setFilter) {
+      setFilter(todos.filter((todoItem) => todoItem.status === status.id));
+    }
   };
 
   return (

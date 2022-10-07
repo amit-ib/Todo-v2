@@ -8,7 +8,6 @@ import {
   SET_LOGIN_STATUS,
   SET_CATEGORIES,
   SET_STATUS,
-  SET_FILTERED_TASK,
 } from "./actionTypes";
 
 export const loginTodoAction = (data: boolean) => {
@@ -60,13 +59,6 @@ export const markDoneTodoAction = (data: TodoModal) => {
 export const editTodoAction = (data: TodoModal) => {
   return {
     type: EDIT_TODO,
-    payload: data,
-  };
-};
-
-export const filterTodoAction = (data: TodoModal[]) => {
-  return {
-    type: SET_FILTERED_TASK,
     payload: data,
   };
 };
