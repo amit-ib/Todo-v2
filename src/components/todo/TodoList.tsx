@@ -8,10 +8,9 @@ export interface Props {
   setTost: React.Dispatch<React.SetStateAction<tostType>>;
 }
 const TodoList = ({ todos, setLoading, setTost }: Props) => {
-  let filteredList = todos;
   return (
     <>
-      {filteredList.map((todoItem, id) => (
+      {todos.map((todoItem, id) => (
         <TodoItem
           key={id}
           id={todoItem.id}

@@ -5,6 +5,7 @@ import Login from "./components/auth/Login";
 import { useDispatch, useSelector } from "react-redux";
 import { statesModal } from "./store/todoReducer";
 import Button from "./components/shared/form/Button";
+import { ToDoStatus } from "./models/status.model";
 import {
   setTodoAction,
   loginTodoAction,
@@ -22,13 +23,13 @@ export interface tostType {
 }
 function App() {
   const state = useSelector((state: statesModal) => state);
+  const [activeId, setActiveId] = useState<Number>(0);
   const [loading, setLoading] = useState(false);
   const [tost, setTost] = useState<tostType>({
     tostState: false,
     tostMessage: "",
     tostType: "",
   });
-  console.log(tost);
   const dispatch = useDispatch();
   let formTitle = state.isLogedin ? "Todo List" : "Todo Login";
   const accessToken = window.localStorage.getItem("accessToken");
@@ -93,12 +94,25 @@ function App() {
           <h3 className="text-center">{formTitle}</h3>
           {state.isLogedin && (
             <div>
-              <TodoForm />
-              <TodoList
+              <TodoForm
                 todos={state.tasks}
+                status={state.status}
+                setActiveId={setActiveId}
+                activeId={activeId}
+              />
+              <TodoList
+                todos={
+                  activeId === ToDoStatus.ALL ? state.tasks : state.filteredList
+                }
                 setLoading={setLoading}
                 setTost={setTost}
               />
+              {(state.tasks.length === 0 ||
+                state.filteredList.length === 0) && (
+                <div className="text-center p-3 error">
+                  Sorry no tasks found
+                </div>
+              )}
             </div>
           )}
           {!state.isLogedin && (
