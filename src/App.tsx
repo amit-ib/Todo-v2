@@ -102,21 +102,21 @@ function App() {
                 setActiveId={setActiveId}
                 activeId={activeId}
                 setFilter={setFilter}
+                setLoading={setLoading}
               />
-              <div className="list-container">
-                <TodoList
-                  todos={activeId === ToDoStatus.ALL ? state.tasks : filter}
-                  setLoading={setLoading}
-                  setTost={setTost}
-                />
-                {state.tasks.length === 0 && (
+
+              <TodoList
+                todos={activeId === ToDoStatus.ALL ? state.tasks : filter}
+                setLoading={setLoading}
+                setTost={setTost}
+              />
+              {state.tasks.length === 0 && (
+                <div className="text-center p-3 error">No tasks found</div>
+              )}
+              {activeId !== ToDoStatus.ALL &&
+                (state.tasks.length === 0 || filter.length === 0) && (
                   <div className="text-center p-3 error">No tasks found</div>
                 )}
-                {activeId !== ToDoStatus.ALL &&
-                  (state.tasks.length === 0 || filter.length === 0) && (
-                    <div className="text-center p-3 error">No tasks found</div>
-                  )}
-              </div>
             </div>
           )}
           {!state.isLogedin && (

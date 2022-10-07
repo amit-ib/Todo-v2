@@ -9,7 +9,7 @@ export interface Props {
 }
 const TodoList = ({ todos, setLoading, setTost }: Props) => {
   return (
-    <>
+    <div className="list-container">
       {todos.map((todoItem, id) => (
         <TodoItem
           key={id}
@@ -19,7 +19,7 @@ const TodoList = ({ todos, setLoading, setTost }: Props) => {
           setTost={setTost}
         />
       ))}
-    </>
+    </div>
   );
 };
 

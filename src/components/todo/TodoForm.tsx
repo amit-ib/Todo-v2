@@ -18,6 +18,7 @@ interface Props {
   activeId: Number;
   setActiveId: React.Dispatch<React.SetStateAction<Number>>;
   setFilter: React.Dispatch<React.SetStateAction<TodoModal[]>>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const TodoForm = ({
@@ -26,6 +27,7 @@ const TodoForm = ({
   activeId,
   setActiveId,
   setFilter,
+  setLoading,
 }: Props) => {
   const dispatch = useDispatch();
 
@@ -44,19 +46,21 @@ const TodoForm = ({
     formState: { errors },
   } = useForm<addTodoDataType>({});
 
-  const handleAdd: SubmitHandler<addTodoDataType> = (data) => {
+  const handleAdd: SubmitHandler<addTodoDataType> = async (data) => {
     let addData = {
       title: data.title,
       status: 1,
       dueDate: data.dueDate,
       category: 1,
     };
-    axiosInstance.post("/todo", addData).then(() => {
-      axiosInstance.get("/todos").then((res) => {
-        reset();
-        dispatch(setTodoAction(res.data));
-      });
+    setLoading(true);
+    await axiosInstance.post("/todo", addData);
+    await axiosInstance.get("/todos").then((res) => {
+      reset();
+      dispatch(setTodoAction(res.data));
     });
+
+    setLoading(false);
   };
 
   // Handeling filter active state
