@@ -5,6 +5,7 @@ import Login from "./components/auth/Login";
 import { useDispatch, useSelector } from "react-redux";
 import { statesModal } from "./store/todoReducer";
 import Button from "./components/shared/form/Button";
+import { ToDoStatus } from "./models/status.model";
 import {
   setTodoAction,
   loginTodoAction,
@@ -14,6 +15,7 @@ import {
 import axiosInstance from "./axiosConfig";
 import Loader from "./components/shared/Loader";
 import Tost from "./components/shared/Tost";
+import { TodoModal } from "./models";
 
 export interface tostType {
   tostState: boolean;
@@ -22,20 +24,21 @@ export interface tostType {
 }
 function App() {
   const state = useSelector((state: statesModal) => state);
+  const [activeId, setActiveId] = useState<Number>(0);
   const [loading, setLoading] = useState(false);
   const [tost, setTost] = useState<tostType>({
     tostState: false,
     tostMessage: "",
     tostType: "",
   });
-  console.log(tost);
   const dispatch = useDispatch();
   let formTitle = state.isLogedin ? "Todo List" : "Todo Login";
   const accessToken = window.localStorage.getItem("accessToken");
   const userName = window.localStorage.getItem("userName")
     ? window.localStorage.getItem("userName")
     : "";
-
+  // state to handle filters
+  const [filter, setFilter] = useState<TodoModal[] | []>([]);
   const setIsLogedin = (loginStatus: boolean) => {
     dispatch(loginTodoAction(loginStatus));
   };
@@ -93,12 +96,27 @@ function App() {
           <h3 className="text-center">{formTitle}</h3>
           {state.isLogedin && (
             <div>
-              <TodoForm />
-              <TodoList
+              <TodoForm
                 todos={state.tasks}
+                status={state.status}
+                setActiveId={setActiveId}
+                activeId={activeId}
+                setFilter={setFilter}
+                setLoading={setLoading}
+              />
+
+              <TodoList
+                todos={activeId === ToDoStatus.ALL ? state.tasks : filter}
                 setLoading={setLoading}
                 setTost={setTost}
               />
+              {state.tasks.length === 0 && (
+                <div className="text-center p-3 error">No tasks found</div>
+              )}
+              {activeId !== ToDoStatus.ALL &&
+                (state.tasks.length === 0 || filter.length === 0) && (
+                  <div className="text-center p-3 error">No tasks found</div>
+                )}
             </div>
           )}
           {!state.isLogedin && (

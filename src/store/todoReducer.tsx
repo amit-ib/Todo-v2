@@ -50,7 +50,6 @@ const todoReducer = (state: statesModal = initialState, action: any) => {
         ...state, // copy origenal state and update only required
         tasks: remainingTasks,
       };
-
     case SET_TODOS:
     case SET_CATEGORIES:
     case SET_STATUS:

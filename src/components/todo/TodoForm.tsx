@@ -1,17 +1,43 @@
 import Button from "../shared/form/Button";
 import { useDispatch } from "react-redux";
 import { setTodoAction } from "../../store";
+import { StatusModal } from "../../models/status.model";
 import axiosInstance from "../../axiosConfig";
 import { useForm, SubmitHandler } from "react-hook-form";
 import moment from "moment";
+import { TodoModal } from "../../models";
 
 interface addTodoDataType {
   title: string;
   dueDate: Date;
 }
 
-const TodoForm = () => {
+interface Props {
+  todos: TodoModal[];
+  status: StatusModal[];
+  activeId: Number;
+  setActiveId: React.Dispatch<React.SetStateAction<Number>>;
+  setFilter: React.Dispatch<React.SetStateAction<TodoModal[]>>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const TodoForm = ({
+  todos,
+  status,
+  activeId,
+  setActiveId,
+  setFilter,
+  setLoading,
+}: Props) => {
   const dispatch = useDispatch();
+
+  const statusList = [
+    {
+      id: 0,
+      title: "All",
+    },
+    ...status,
+  ];
 
   const {
     register,
@@ -20,21 +46,29 @@ const TodoForm = () => {
     formState: { errors },
   } = useForm<addTodoDataType>({});
 
-  const handleAdd: SubmitHandler<addTodoDataType> = (data) => {
-    console.log(data);
-
+  const handleAdd: SubmitHandler<addTodoDataType> = async (data) => {
     let addData = {
       title: data.title,
       status: 1,
       dueDate: data.dueDate,
       category: 1,
     };
-    axiosInstance.post("/todo", addData).then(() => {
-      axiosInstance.get("/todos").then((res) => {
-        reset();
-        dispatch(setTodoAction(res.data));
-      });
+    setLoading(true);
+    await axiosInstance.post("/todo", addData);
+    await axiosInstance.get("/todos").then((res) => {
+      reset();
+      dispatch(setTodoAction(res.data));
     });
+
+    setLoading(false);
+  };
+
+  // Handeling filter active state
+  const handleFilters = (status: StatusModal) => {
+    setActiveId(status.id);
+    if (setFilter) {
+      setFilter(todos.filter((todoItem) => todoItem.status === status.id));
+    }
   };
 
   return (
@@ -62,9 +96,19 @@ const TodoForm = () => {
         </div>
       </form>
       <div className="filters">
-        <span className="active filter-type">All</span>
-        <span className="filter-type">Pending</span>
-        <span className="filter-type">Completed</span>
+        {statusList.map((status, id) => (
+          <span
+            key={status.id}
+            className={`filter-type ${activeId === 0 ? status.title : ""}  ${
+              activeId === status.id ? "active" : ""
+            }`}
+            onClick={() => {
+              handleFilters(status);
+            }}
+          >
+            {status.title}
+          </span>
+        ))}
       </div>
     </>
   );
