@@ -99,9 +99,7 @@ const TodoForm = ({
         {statusList.map((status, id) => (
           <span
             key={status.id}
-            className={`filter-type ${activeId === 0 ? status.title : ""}  ${
-              activeId === status.id ? "active" : ""
-            }`}
+            className={`filter-type ${activeId === status.id ? "active" : ""}`}
             onClick={() => {
               handleFilters(status);
             }}

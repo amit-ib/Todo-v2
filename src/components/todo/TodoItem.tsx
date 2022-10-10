@@ -3,11 +3,7 @@ import { TodoModal } from "../../models";
 import { dateConverter } from "../../utils/helper";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import {
-  deleteTodoAction,
-  markDoneTodoAction,
-  setTodoAction,
-} from "../../store";
+import { markDoneTodoAction, setTodoAction } from "../../store";
 import Confirm from "../shared/Confirm";
 import moment from "moment";
 import axiosInstance from "../../axiosConfig";
