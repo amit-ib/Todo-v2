@@ -10,15 +10,21 @@ import {
 export interface statesModal {
   tasks: TodoModal[] | [];
   isLogedin: boolean;
+  userName: string;
   categories: CategoryModal[] | [];
   status: StatusModal[] | [];
 }
 const initialState = {
   tasks: [],
   isLogedin: false,
+  userName: "",
   categories: [],
   status: [],
 };
+
+// token
+// user
+// isLoggedIn
 
 //(previousState, action) => newState
 const todoReducer = (state: statesModal = initialState, action: any) => {

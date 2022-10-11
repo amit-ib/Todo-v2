@@ -17,6 +17,13 @@ export const loginTodoAction = (data: boolean) => {
   };
 };
 
+export const setIsLogedIn = (data: boolean) => {
+  return {
+    type: SET_LOGIN_STATUS, // returned type property
+    payload: data,
+  };
+};
+
 export const addTodoAction = (data: TodoModal) => {
   return {
     type: ADD_TODO, // returned type property

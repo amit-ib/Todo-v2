@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { tostType } from "../../App";
+import { TostType } from "../../models/toasts.model";
 
 interface Props {
   delay: number;
   //children: React.ReactNode;
-  setTost: React.Dispatch<React.SetStateAction<tostType>>;
+  setTost: React.Dispatch<React.SetStateAction<TostType>>;
   tostMessage: string;
   tostType: string;
 }

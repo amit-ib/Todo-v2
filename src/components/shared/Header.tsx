@@ -1,21 +1,15 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "./form/Button";
-
-interface Props {
-  isLogedin: boolean;
-  setIsLogedin: Function;
-}
-
-const Header = ({ setIsLogedin, isLogedin }: Props) => {
+import { statesModal } from "../../store/todoReducer";
+import { loginTodoAction } from "../../store";
+const Header = () => {
+  const { isLogedin, userName } = useSelector((state: statesModal) => state);
+  const dispatch = useDispatch();
   const onLogoutSuccess = () => {
-    setIsLogedin(false);
+    dispatch(loginTodoAction(false));
     window.localStorage.removeItem("accessToken");
   };
-
-  const userName = window.localStorage.getItem("userName")
-    ? window.localStorage.getItem("userName")
-    : "";
-
   return (
     <div className="welcome-text">
       {isLogedin && (

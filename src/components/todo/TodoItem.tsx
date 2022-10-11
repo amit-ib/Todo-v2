@@ -10,13 +10,13 @@ import axiosInstance from "../../axiosConfig";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { statesModal } from "../../store/todoReducer";
 import { ToDoStatus } from "../../models/status.model";
-import { tostType } from "../../App";
+import { TostType } from "../../models/toasts.model";
 
 interface Props {
   todoItem: TodoModal;
   id: number;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  setTost: React.Dispatch<React.SetStateAction<tostType>>;
+  setTost: React.Dispatch<React.SetStateAction<TostType>>;
 }
 interface updateTodoDataType {
   title: string;

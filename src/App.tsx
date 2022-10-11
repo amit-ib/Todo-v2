@@ -1,37 +1,23 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { statesModal } from "./store/todoReducer";
-
-import { loginTodoAction } from "./store";
 import Header from "./components/shared/Header";
 import TodoAppContainer from "./components/todo/TodoAppContainer";
-
-export interface tostType {
-  tostState: boolean;
-  tostMessage: string;
-  tostType: string;
-}
+import Login from "./components/auth/Login";
+import axiosInstance from "./axiosConfig";
 function App() {
-  const state = useSelector((state: statesModal) => state);
-
-  const dispatch = useDispatch();
-
-  const accessToken = window.localStorage.getItem("accessToken");
-
-  const setIsLogedin = (loginStatus: boolean) => {
-    dispatch(loginTodoAction(loginStatus));
-  };
-
-  useEffect(() => {
-    setIsLogedin(accessToken ? true : false);
-  }, [accessToken]);
-
+  const isLogedin = useSelector((state: statesModal) => state.isLogedin);
+  const formTitle = isLogedin ? "Todo List" : "Todo Login";
+  if (isLogedin) {
+    const AUTH_TOKEN = window.localStorage.getItem("accessToken");
+    axiosInstance.defaults.headers.common["Authorization"] =
+      "Bearer " + AUTH_TOKEN;
+  }
   return (
     <>
-      <Header setIsLogedin={setIsLogedin} isLogedin={state.isLogedin} />
-
-      <div className="container">
-        <TodoAppContainer state={state} setIsLogedin={setIsLogedin} />
+      <Header />
+      <div className="todo-container">
+        <h3 className="text-center">{formTitle}</h3>
+        {!isLogedin ? <Login /> : <TodoAppContainer />}
       </div>
     </>
   );

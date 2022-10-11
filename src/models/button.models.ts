@@ -8,6 +8,7 @@ export interface ButtonModel {
   onClick?: MouseEventHandler;
   className?: string;
   disabled?: boolean;
+  loading?: boolean;
 }
 
 export enum ButtonType {
