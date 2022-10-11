@@ -79,7 +79,6 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
     register,
     formState: { errors },
     handleSubmit,
-    watch,
   } = useForm<updateTodoDataType>({
     defaultValues: {
       title: todoItem.title,

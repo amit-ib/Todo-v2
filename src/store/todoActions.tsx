@@ -8,6 +8,7 @@ import {
   SET_LOGIN_STATUS,
   SET_CATEGORIES,
   SET_STATUS,
+  SET_USERNAME,
 } from "./actionTypes";
 
 export const loginTodoAction = (data: boolean) => {
@@ -49,6 +50,13 @@ export const setStatusAction = (data: StatusModal[]) => {
     payload: data,
   };
 };
+export const setUserNameAction = (data: string) => {
+  return {
+    type: SET_USERNAME,
+    payload: data,
+  };
+};
+
 export const deleteTodoAction = (data: TodoModal) => {
   return {
     type: DELETE_TODO, // returned type property
