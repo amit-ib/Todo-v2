@@ -1,5 +1,6 @@
 import React from "react";
 import { ButtonModel } from "../../../models/button.models";
+import Loader from "../Loader";
 
 const Button = (props: ButtonModel) => {
   return (
@@ -12,7 +13,7 @@ const Button = (props: ButtonModel) => {
       disabled={props.disabled}
       {...props}
     >
-      {props.label}
+      {props.loading ? <Loader iconOnly={true} /> : props.label}
     </button>
   );
 };

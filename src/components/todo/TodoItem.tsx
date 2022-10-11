@@ -3,24 +3,20 @@ import { TodoModal } from "../../models";
 import { dateConverter } from "../../utils/helper";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import {
-  deleteTodoAction,
-  markDoneTodoAction,
-  setTodoAction,
-} from "../../store";
+import { markDoneTodoAction, setTodoAction } from "../../store";
 import Confirm from "../shared/Confirm";
 import moment from "moment";
 import axiosInstance from "../../axiosConfig";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { statesModal } from "../../store/todoReducer";
 import { ToDoStatus } from "../../models/status.model";
-import { tostType } from "../../App";
+import { TostType } from "../../models/toasts.model";
 
 interface Props {
   todoItem: TodoModal;
   id: number;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  setTost: React.Dispatch<React.SetStateAction<tostType>>;
+  setTost: React.Dispatch<React.SetStateAction<TostType>>;
 }
 interface updateTodoDataType {
   title: string;
@@ -83,7 +79,6 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
     register,
     formState: { errors },
     handleSubmit,
-    watch,
   } = useForm<updateTodoDataType>({
     defaultValues: {
       title: todoItem.title,
