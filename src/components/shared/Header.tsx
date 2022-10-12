@@ -4,7 +4,8 @@ import Button from "./form/Button";
 import { statesModal } from "../../store/todoReducer";
 import { loginTodoAction } from "../../store";
 const Header = () => {
-  const { isLogedin, userName } = useSelector((state: statesModal) => state);
+  const { isLogedin } = useSelector((state: statesModal) => state);
+  const userName = window.localStorage.getItem("userName");
   const dispatch = useDispatch();
   const onLogoutSuccess = () => {
     dispatch(loginTodoAction(false));

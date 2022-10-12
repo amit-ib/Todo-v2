@@ -12,7 +12,9 @@ import Tost from "../shared/Tost";
 import { TostType } from "../../models/toasts.model";
 const TodoAppContainer = () => {
   const [loading, setLoading] = useState(false);
-  const { tasks, status } = useSelector((state: statesModal) => state);
+  const { tasks, status, categories, editTask } = useSelector(
+    (state: statesModal) => state
+  );
   const dispatch = useDispatch();
 
   const [activeId, setActiveId] = useState<Number>(0);
@@ -67,6 +69,9 @@ const TodoAppContainer = () => {
           activeId={activeId}
           setFilter={setFilter}
           setLoading={setLoading}
+          setTost={setTost}
+          editTask={editTask}
+          categories={categories}
         />
 
         <TodoList

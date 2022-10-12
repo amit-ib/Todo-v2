@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Button from "../shared/form/Button";
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
-import { loginTodoAction, setUserNameAction } from "../../store";
+import { loginTodoAction } from "../../store";
 import { useDispatch } from "react-redux";
 interface ResponseType {
   token: string;
@@ -42,7 +42,6 @@ const Login = () => {
   const onLoginSuccess = (res: ResponseType) => {
     window.localStorage.setItem("accessToken", res.token);
     window.localStorage.setItem("userName", res.userData.name);
-    dispatch(setUserNameAction(res.userData.name));
   };
 
   const onSubmit: SubmitHandler<loginDataType> = async (data) => {
