@@ -18,7 +18,6 @@ interface Props {
 const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
-
   var todoData = {
     id: todoItem.id,
     title: todoItem.title,
@@ -35,12 +34,13 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
   const [todo, setTodo] = useState(todoData);
   const deleteTaskHandeler = async () => {
     setShowModal(false);
-    setLoading(true);
+    let ref = document.getElementById(`${todoItem.id}`);
+    ref?.classList.add("delete-animate");
     await axiosInstance.delete(`/todo/${todoItem.id}`);
     await axiosInstance
       .get("/todos")
       .then((res) => dispatch(setTodoAction(res.data)));
-    setLoading(false);
+    ref?.classList.remove("delete-animate");
     setTost({
       tostState: true,
       tostMessage: "Task Deleted Successfully",
@@ -61,7 +61,7 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
   };
 
   return (
-    <div className="list-item">
+    <div className={`list-item`} id={String(todoItem.id)}>
       <div
         className={`list-item-text 
           ${todoItem.status === ToDoStatus.COMPLETED ? "task-done" : ""}

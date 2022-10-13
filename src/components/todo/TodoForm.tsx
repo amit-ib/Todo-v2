@@ -8,8 +8,10 @@ import moment from "moment";
 import { useEffect } from "react";
 import { TodoModal, CategoryModal } from "../../models";
 import { TostType } from "../../models/toasts.model";
+import Select from "../shared/form/Select";
+import Input from "../shared/form/Input";
 
-interface addTodoDataType {
+export interface addTodoDataType {
   title: string;
   dueDate: string;
   category: number;
@@ -116,7 +118,7 @@ const TodoForm = ({
       setValue("category", editTask.category);
     }
   }, [editTask]);
-
+  console.log(errors);
   return (
     <>
       <form
@@ -125,55 +127,43 @@ const TodoForm = ({
       >
         <div className="task-input-group">
           <div className="task-input">
-            <input
-              {...register("title", { required: true })}
-              placeholder="Please enter todo"
+            <Input
+              type="text"
+              register={register}
+              name={"title"}
+              placeholder={"Please enter todo"}
+              isRequired={true}
+              errorMessage="Please enter todo"
+              errors={errors.title?.message}
             />
-
-            <span className="error">
-              {errors.title?.type === "required" && "Please enter todo"}
-            </span>
           </div>
-          <input
-            {...register("dueDate", { required: true, valueAsDate: true })}
-            defaultValue={moment(new Date()).format("YYYY-MM-DD")}
-            placeholder="Please enter date of todo"
-            className="input-date"
+          <Input
             type="date"
+            register={register}
+            name={"dueDate"}
+            isRequired={false}
+            className={"input-date"}
           />
         </div>
         <div className="input-category-group">
           <div className="input-set">
             <label htmlFor="">Category</label>
-            <select {...register("category")}>
-              {categories.map((category, id) => (
-                <option
-                  key={category.id}
-                  defaultValue={
-                    category.id === editTask?.category ? category.id : 0
-                  }
-                  value={category.id}
-                >
-                  {category.title}
-                </option>
-              ))}
-            </select>
+            <Select
+              register={register}
+              name={"category"}
+              optvalues={categories}
+              selectedOption={editTask?.category}
+            />
           </div>
           <div className="input-set">
             <label htmlFor="">Status</label>
-            <select {...register("status")} className="ms-1">
-              {status.map((status, id) => (
-                <option
-                  key={status.id}
-                  defaultValue={
-                    status.id === editTask?.category ? status.id : 0
-                  }
-                  value={status.id}
-                >
-                  {status.title}
-                </option>
-              ))}
-            </select>
+            <Select
+              register={register}
+              name={"status"}
+              optvalues={status}
+              selectedOption={editTask?.status}
+              className="ms-1"
+            />
           </div>
           <Button type="submit" className="button plus" label="+" />
         </div>
