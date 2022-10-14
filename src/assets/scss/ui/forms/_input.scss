@@ -1,6 +1,6 @@
 input,
 select {
-  padding: 6px 10px;
+  padding: 10px;
   font-size: 16px;
   border: solid 1px $gray-color;
   border-radius: 5px;
@@ -9,24 +9,34 @@ select {
   &:focus {
     outline: none;
   }
-  &.input-task {
-    margin-top: 0;
-    border-right: 0px;
-    border-radius: 5px 0px 0px 5px;
-  }
 }
-
-.input-date-container {
+.task-input-group {
+  border-radius: 5px 0px 0px 5px;
+  border-right: 0px;
   display: flex;
-  .input-date {
+  .task-input {
     flex-grow: 1;
+    input {
+      border-right: 0px;
+      border-radius: 5px 0px 0px 5px;
+    }
   }
 }
-
-.input-set {
+.input-category-group {
   display: flex;
-  justify-content: space-between;
-  .input-col {
-    width: 49%;
+  align-items: flex-end;
+}
+.input-date {
+  width: 41px;
+  height: 46px;
+  border-left: 0px;
+  border-radius: 0px 5px 5px 0px;
+}
+.input-set {
+  flex-grow: 1;
+  padding-top: 10px;
+
+  select {
+    margin-top: 0;
   }
 }

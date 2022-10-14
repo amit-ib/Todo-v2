@@ -6,21 +6,21 @@ import {
   SET_LOGIN_STATUS,
   SET_CATEGORIES,
   SET_STATUS,
-  SET_USERNAME,
+  EDIT_TODO,
 } from "./actionTypes";
 export interface statesModal {
   tasks: TodoModal[] | [];
   isLogedin: boolean;
-  userName: string;
   categories: CategoryModal[] | [];
   status: StatusModal[] | [];
+  editTask: TodoModal | null;
 }
 const initialState = {
   tasks: [],
   isLogedin: false,
-  userName: "",
   categories: [],
   status: [],
+  editTask: null,
 };
 
 const todoReducer = (state: statesModal = initialState, action: any) => {
@@ -53,7 +53,7 @@ const todoReducer = (state: statesModal = initialState, action: any) => {
     case SET_TODOS:
     case SET_CATEGORIES:
     case SET_STATUS:
-    case SET_USERNAME:
+    case EDIT_TODO:
       return {
         ...state,
         [action.type]: action.payload,

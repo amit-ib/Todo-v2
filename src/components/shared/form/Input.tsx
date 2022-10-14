@@ -1,20 +1,37 @@
 interface Props {
   type?: string;
-  value: string | number;
+  name: string;
+  register: any;
+  errors?: string;
+  isRequired: boolean;
   placeholder?: string;
-  onChange: (e: any) => void;
+  errorMessage?: string;
   className?: string;
 }
 
-const Input = ({ type, value, placeholder, onChange, className }: Props) => {
+const Input = ({
+  type,
+  name,
+  register,
+  errors,
+  isRequired,
+  placeholder,
+  errorMessage,
+  className,
+}: Props) => {
   return (
-    <input
-      type={type}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      className={className}
-    />
+    <>
+      <input
+        {...register(`${name}`, {
+          required: { value: isRequired, message: errorMessage },
+        })}
+        placeholder={placeholder}
+        type={type}
+        className={className}
+      />
+
+      <span className="error">{errors && errors}</span>
+    </>
   );
 };
 

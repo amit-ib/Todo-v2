@@ -1,14 +1,11 @@
 import Button from "../shared/form/Button";
 import { TodoModal } from "../../models";
 import { dateConverter } from "../../utils/helper";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
-import { markDoneTodoAction, setTodoAction } from "../../store";
+import { editTodoAction, markDoneTodoAction, setTodoAction } from "../../store";
 import Confirm from "../shared/Confirm";
-import moment from "moment";
 import axiosInstance from "../../axiosConfig";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { statesModal } from "../../store/todoReducer";
 import { ToDoStatus } from "../../models/status.model";
 import { TostType } from "../../models/toasts.model";
 
@@ -18,21 +15,9 @@ interface Props {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setTost: React.Dispatch<React.SetStateAction<TostType>>;
 }
-interface updateTodoDataType {
-  title: string;
-  dueDate: string;
-  category: number;
-  status: number;
-}
-
 const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
-  const { categories } = useSelector((state: statesModal) => state);
-  const { status } = useSelector((state: statesModal) => state);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
-
-  // State to check edit state(if already in edit mode)
-  const [editMode, setEditMode] = useState<boolean>(false);
   var todoData = {
     id: todoItem.id,
     title: todoItem.title,
@@ -49,12 +34,13 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
   const [todo, setTodo] = useState(todoData);
   const deleteTaskHandeler = async () => {
     setShowModal(false);
-    setLoading(true);
+    let ref = document.getElementById(`${todoItem.id}`);
+    ref?.classList.add("delete-animate");
     await axiosInstance.delete(`/todo/${todoItem.id}`);
     await axiosInstance
       .get("/todos")
       .then((res) => dispatch(setTodoAction(res.data)));
-    setLoading(false);
+    ref?.classList.remove("delete-animate");
     setTost({
       tostState: true,
       tostMessage: "Task Deleted Successfully",
@@ -66,159 +52,43 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
     dispatch(markDoneTodoAction(todoItem));
   };
 
-  const editTaskHandeler = () => {
-    setEditMode(true);
-  };
-
-  const editFormDataChanger = (type: string, data: string | Date) => {
-    const updatedTodo = { ...todo, [type]: data };
-    setTodo(updatedTodo);
-  };
-
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm<updateTodoDataType>({
-    defaultValues: {
-      title: todoItem.title,
-      dueDate: moment(todoItem.dueDate).format("YYYY-MM-DD"),
-    },
-  });
-
-  const updateTaskHandeler: SubmitHandler<updateTodoDataType> = async (
-    data
-  ) => {
-    let updateData = {
-      title: data.title,
-      status: data.status,
-      dueDate: data.dueDate,
-      category: data.category,
-    };
+  const editTaskHandeler = async () => {
     setLoading(true);
-
-    await axiosInstance
-      .put(`/todo/${todoItem.id}`, updateData)
-      .then(async (res) => {
-        await axiosInstance
-          .get("/todos")
-          .then((res) => dispatch(setTodoAction(res.data)));
-      });
-    setLoading(false);
-    setEditMode(false);
-    setTost({
-      tostState: true,
-      tostMessage: "Task Edited Successfully",
-      tostType: "success",
+    await axiosInstance.get(`/todo/${todoItem.id}`).then((res) => {
+      dispatch(editTodoAction(res.data));
     });
+    setLoading(false);
   };
 
   return (
-    <div className="list-item">
-      {editMode ? (
-        //If in edit mode then display Textbox
-        <div className="edit-task-container">
-          <form onSubmit={handleSubmit(updateTaskHandeler)}>
-            <input {...register("title", { required: true })} />
-            <span className="error">
-              {errors.title?.type === "required" && "Please enter todo"}
-            </span>
-            <input
-              {...register("dueDate", { required: true })}
-              type="date"
-              onChange={(e) =>
-                editFormDataChanger("dueDate", new Date(e.target.value))
-              }
-            />
-            <div className="input-set">
-              <div className="input-col">
-                <label>Category</label>
-                <select
-                  {...register("category")}
-                  defaultValue={todoItem.category}
-                >
-                  {categories.map((category, id) => (
-                    <option
-                      key={category.id}
-                      defaultValue={
-                        category.id === todoItem.category ? category.id : 0
-                      }
-                      value={category.id}
-                    >
-                      {category.title}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="input-col">
-                <label>Status</label>
-                <select {...register("status")} defaultValue={todoItem.status}>
-                  {status.map((status, id) => (
-                    <option
-                      key={status.id}
-                      defaultValue={
-                        status.id === todoItem.status ? status.id : 0
-                      }
-                      value={status.id}
-                    >
-                      {status.title}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div className="button-set">
-              <Button type="submit" label="Update" varient="primary" />
-
-              <Button
-                type="button"
-                label="Cancel"
-                varient="secondary"
-                onClick={() => {
-                  setEditMode(false);
-                }}
-              />
-            </div>
-          </form>
-        </div>
-      ) : (
-        <div
-          className={`list-item-text 
+    <div className={`list-item`} id={String(todoItem.id)}>
+      <div
+        className={`list-item-text 
           ${todoItem.status === ToDoStatus.COMPLETED ? "task-done" : ""}
         `}
-        >
-          {todoItem.title}
+      >
+        {todoItem.title}
 
-          <div className="date">{dateConverter(todoItem.dueDate)}</div>
-        </div>
-      )}
-
-      {!editMode && (
-        <div className="action-icons">
-          <Button
-            label="Mark Done"
-            className="link"
-            onClick={doneTaskHandeler}
-          />
-          <Button
-            label="Edit"
-            className="link red"
-            disabled={todoItem.status === ToDoStatus.COMPLETED ? true : false}
-            onClick={editTaskHandeler}
-          />
-          <Button
-            label="Delete"
-            className="link blue"
-            data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
-            onClick={() => {
-              setShowModal(true);
-            }}
-          />
-        </div>
-      )}
-
+        <div className="date">{dateConverter(todoItem.dueDate)}</div>
+      </div>
+      <div className="action-icons">
+        <Button label="Mark Done" className="link" onClick={doneTaskHandeler} />
+        <Button
+          label="Edit"
+          className="link red"
+          disabled={todoItem.status === ToDoStatus.COMPLETED ? true : false}
+          onClick={editTaskHandeler}
+        />
+        <Button
+          label="Delete"
+          className="link blue"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+          onClick={() => {
+            setShowModal(true);
+          }}
+        />
+      </div>
       <Confirm
         show={showModal}
         onHide={() => {
