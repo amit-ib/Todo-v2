@@ -41,7 +41,7 @@ const Login = () => {
 
   const onLoginSuccess = (res: ResponseType) => {
     window.localStorage.setItem("accessToken", res.token);
-    window.localStorage.setItem("userName", res.userData.name);
+    window.localStorage.setItem("userData", JSON.stringify(res.userData));
   };
 
   const onSubmit: SubmitHandler<loginDataType> = async (data) => {

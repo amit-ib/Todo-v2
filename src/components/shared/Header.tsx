@@ -5,7 +5,9 @@ import { statesModal } from "../../store/todoReducer";
 import { loginTodoAction } from "../../store";
 const Header = () => {
   const { isLogedin } = useSelector((state: statesModal) => state);
-  const userName = window.localStorage.getItem("userName");
+  const userData = window.localStorage.getItem("userData")
+    ? JSON.parse(window.localStorage.getItem("userData") || "{}")
+    : "";
   const dispatch = useDispatch();
   const onLogoutSuccess = () => {
     dispatch(loginTodoAction(false));
@@ -13,9 +15,9 @@ const Header = () => {
   };
   return (
     <div className="welcome-text">
-      {isLogedin && (
+      {isLogedin && userData.name && (
         <span>
-          Welcome - {userName} |{" "}
+          Welcome - {userData.name} |{" "}
           <Button label="Logout" onClick={onLogoutSuccess} varient="link" />
         </span>
       )}

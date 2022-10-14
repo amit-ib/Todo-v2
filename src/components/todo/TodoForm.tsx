@@ -118,7 +118,6 @@ const TodoForm = ({
       setValue("category", editTask.category);
     }
   }, [editTask]);
-  console.log(errors);
   return (
     <>
       <form
