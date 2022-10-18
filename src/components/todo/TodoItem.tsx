@@ -49,7 +49,6 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
   };
 
   const doneTaskHandeler = async () => {
-    //dispatch(markDoneTodoAction(todoItem));
     let updateData = {
       title: todo.title,
       status:
@@ -84,21 +83,26 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
           ${todoItem.status === ToDoStatus.COMPLETED ? "task-done" : ""}
         `}
       >
+        <span
+          onClick={doneTaskHandeler}
+          className={
+            todo.status === ToDoStatus.COMPLETED ? "checked" : "unchecked"
+          }
+        ></span>
         {todoItem.title}
-
         <div className="date">{dateConverter(todoItem.dueDate)}</div>
       </div>
       <div className="action-icons">
         {/* todo.status === ToDoStatus.COMPLETED
           ? ToDoStatus.PENDING
           : ToDoStatus.COMPLETED */}
-        <Button
+        {/* <Button
           label={
             todo.status === ToDoStatus.COMPLETED ? "Not Done" : "Mark Done"
           }
           className="link"
           onClick={doneTaskHandeler}
-        />
+        /> */}
         <Button
           label="Edit"
           className="link red"
