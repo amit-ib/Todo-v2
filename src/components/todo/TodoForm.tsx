@@ -5,7 +5,7 @@ import { StatusModal } from "../../models/status.model";
 import axiosInstance from "../../axiosConfig";
 import { useForm, SubmitHandler } from "react-hook-form";
 import moment from "moment";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { TodoModal, CategoryModal } from "../../models";
 import { TostType } from "../../models/toasts.model";
 import Select from "../shared/form/Select";
@@ -58,6 +58,8 @@ const TodoForm = ({
     setValue,
     formState: { errors },
   } = useForm<addTodoDataType>({});
+
+  const [isActive, setActive] = useState(false);
 
   const handleAdd: SubmitHandler<addTodoDataType> = async (data) => {
     let addData = {
@@ -118,6 +120,10 @@ const TodoForm = ({
       setValue("category", editTask.category);
     }
   }, [editTask]);
+
+  const toggleClass = () => {
+    setActive(!isActive);
+  };
   return (
     <>
       <form
@@ -143,9 +149,15 @@ const TodoForm = ({
             isRequired={false}
             className={"input-date"}
           />
+          <Button type="submit" className="button plus" label="+" />
         </div>
-        <div className="input-category-group">
-          <div className="input-set">
+
+        <div
+          className={`input-category-group collapsible-content ${
+            isActive ? "active" : ""
+          }`}
+        >
+          <div className="input-set me-2">
             <label htmlFor="">Category</label>
             <Select
               register={register}
@@ -161,10 +173,17 @@ const TodoForm = ({
               name={"status"}
               optvalues={status}
               selectedOption={editTask?.status}
-              className="ms-1"
             />
           </div>
-          <Button type="submit" className="button plus" label="+" />
+        </div>
+        <div className={`toggle-arrow ${isActive ? "active" : ""}`}>
+          <label
+            htmlFor="collapsible3"
+            className="lbl-toggle"
+            onClick={toggleClass}
+          >
+            {isActive ? "Hide options" : "More options"}
+          </label>
         </div>
       </form>
       <div className="filters">
