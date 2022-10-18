@@ -25,6 +25,7 @@ select {
 .input-category-group {
   display: flex;
   align-items: flex-end;
+  flex-wrap: wrap;
 }
 .input-date {
   width: 41px;
