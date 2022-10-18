@@ -48,8 +48,26 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
     });
   };
 
-  const doneTaskHandeler = () => {
-    dispatch(markDoneTodoAction(todoItem));
+  const doneTaskHandeler = async () => {
+    //dispatch(markDoneTodoAction(todoItem));
+    let updateData = {
+      title: todo.title,
+      status:
+        todo.status === ToDoStatus.COMPLETED
+          ? ToDoStatus.PENDING
+          : ToDoStatus.COMPLETED,
+      dueDate: todo.dueDate,
+      category: todo.category,
+    };
+    setLoading(true);
+    await axiosInstance
+      .put(`/todo/${todo.id}`, updateData)
+      .then(async (res) => {
+        await axiosInstance
+          .get("/todos")
+          .then((res) => dispatch(setTodoAction(res.data)));
+      });
+    setLoading(false);
   };
 
   const editTaskHandeler = async () => {
@@ -59,7 +77,6 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
     });
     setLoading(false);
   };
-
   return (
     <div className={`list-item`} id={String(todoItem.id)}>
       <div
@@ -72,7 +89,16 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
         <div className="date">{dateConverter(todoItem.dueDate)}</div>
       </div>
       <div className="action-icons">
-        <Button label="Mark Done" className="link" onClick={doneTaskHandeler} />
+        {/* todo.status === ToDoStatus.COMPLETED
+          ? ToDoStatus.PENDING
+          : ToDoStatus.COMPLETED */}
+        <Button
+          label={
+            todo.status === ToDoStatus.COMPLETED ? "Not Done" : "Mark Done"
+          }
+          className="link"
+          onClick={doneTaskHandeler}
+        />
         <Button
           label="Edit"
           className="link red"
