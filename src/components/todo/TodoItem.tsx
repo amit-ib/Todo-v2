@@ -50,13 +50,10 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
 
   const doneTaskHandeler = async () => {
     let updateData = {
-      title: todo.title,
       status:
         todo.status === ToDoStatus.COMPLETED
           ? ToDoStatus.PENDING
           : ToDoStatus.COMPLETED,
-      dueDate: todo.dueDate,
-      category: todo.category,
     };
     setLoading(true);
     await axiosInstance
@@ -93,16 +90,6 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
         <div className="date">{dateConverter(todoItem.dueDate)}</div>
       </div>
       <div className="action-icons">
-        {/* todo.status === ToDoStatus.COMPLETED
-          ? ToDoStatus.PENDING
-          : ToDoStatus.COMPLETED */}
-        {/* <Button
-          label={
-            todo.status === ToDoStatus.COMPLETED ? "Not Done" : "Mark Done"
-          }
-          className="link"
-          onClick={doneTaskHandeler}
-        /> */}
         <Button
           label="Edit"
           className="link red"
