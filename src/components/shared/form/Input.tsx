@@ -19,6 +19,13 @@ const Input = ({
   errorMessage,
   className,
 }: Props) => {
+  const disablePastDate = () => {
+    const today = new Date();
+    const dd = String(today.getDate() + 1).padStart(2, "0");
+    const mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    const yyyy = today.getFullYear();
+    return yyyy + "-" + mm + "-" + dd;
+  };
   return (
     <>
       <input
@@ -28,6 +35,7 @@ const Input = ({
         placeholder={placeholder}
         type={type}
         className={className}
+        {...(type === "date" && { min: disablePastDate() })}
       />
 
       <span className="error">{errors && errors}</span>
