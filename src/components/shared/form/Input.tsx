@@ -1,3 +1,5 @@
+import moment from "moment";
+
 interface Props {
   type?: string;
   name: string;
@@ -19,13 +21,7 @@ const Input = ({
   errorMessage,
   className,
 }: Props) => {
-  const disablePastDate = () => {
-    const today = new Date();
-    const dd = String(today.getDate() + 1).padStart(2, "0");
-    const mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-    const yyyy = today.getFullYear();
-    return yyyy + "-" + mm + "-" + dd;
-  };
+  console.log(moment().subtract(0, "days").format("YYYY-MM-DD"));
   return (
     <>
       <input
@@ -35,7 +31,9 @@ const Input = ({
         placeholder={placeholder}
         type={type}
         className={className}
-        {...(type === "date" && { min: disablePastDate() })}
+        {...(type === "date" && {
+          min: moment().subtract(0, "days").format("YYYY-MM-DD"),
+        })}
       />
 
       <span className="error">{errors && errors}</span>

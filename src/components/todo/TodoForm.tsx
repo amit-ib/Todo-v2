@@ -10,6 +10,7 @@ import { TostType } from "../../models/toasts.model";
 import Select from "../shared/form/Select";
 import Input from "../shared/form/Input";
 import { dateConverter } from "../../utils/helper";
+import moment from "moment";
 
 export interface addTodoDataType {
   title: string;
@@ -60,22 +61,23 @@ const TodoForm = ({
   } = useForm<addTodoDataType>({});
 
   const [isActive, setActive] = useState(false);
+  const [buttonDisabled, setbuttonDisabled] = useState(false);
 
   const handleAdd: SubmitHandler<addTodoDataType> = async (data) => {
     let addData = {
       title: data.title,
       status: 1,
-      dueDate: data.dueDate ? data.dueDate : dateConverter(),
+      dueDate: data.dueDate ? data.dueDate : moment(),
       category: 1,
     };
-    setLoading(true);
+
+    setbuttonDisabled(true);
     await axiosInstance.post("/todo", addData);
     await axiosInstance.get("/todos").then((res) => {
       reset();
       dispatch(setTodoAction(res.data));
     });
-
-    setLoading(false);
+    setbuttonDisabled(false);
   };
 
   const updateTaskHandeler: SubmitHandler<addTodoDataType> = async (data) => {
@@ -86,7 +88,7 @@ const TodoForm = ({
         dueDate: data.dueDate,
         category: data.category,
       };
-      setLoading(true);
+      setbuttonDisabled(true);
 
       await axiosInstance
         .put(`/todo/${editTask.id}`, updateData)
@@ -95,7 +97,7 @@ const TodoForm = ({
             .get("/todos")
             .then((res) => dispatch(setTodoAction(res.data)));
         });
-      setLoading(false);
+      setbuttonDisabled(false);
       setTost({
         tostState: true,
         tostMessage: "Task Edited Successfully",
@@ -149,7 +151,12 @@ const TodoForm = ({
             isRequired={false}
             className={"input-date"}
           />
-          <Button type="submit" className="button plus" label="+" />
+          <Button
+            type="submit"
+            className="button plus"
+            label="+"
+            disabled={buttonDisabled}
+          />
         </div>
 
         <div
