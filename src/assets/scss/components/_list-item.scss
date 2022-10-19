@@ -25,6 +25,16 @@
     border-radius: 5px;
     .list-item-text {
       flex-grow: 1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      .todo-title {
+        width: 92%;
+      }
+      .date {
+        font-size: 13px;
+        margin-left: 25px;
+      }
     }
     .edit-task-container {
       flex-grow: 1;
@@ -66,8 +76,46 @@
     .task-done {
       text-decoration: line-through;
     }
-    .date {
-      font-size: 13px;
+
+    .todo-status-icon-checked,
+    .todo-status-icon-unchecked {
+      border-radius: 100%;
+      display: inline-block;
+      padding: 7px;
+      margin-right: 10px;
+      cursor: pointer;
+      position: relative;
+      margin-top: 5px;
+      width: 10px;
+    }
+    .todo-status-icon-unchecked {
+      background: $white-color;
+      border: solid 1px $gray-color;
+      &:hover {
+        background: $gray-color;
+      }
+    }
+    .todo-status-icon-checked {
+      background: $blue-color;
+      border: solid 1px $blue-color;
+      &:before {
+        content: "";
+        display: block;
+        box-sizing: border-box;
+        position: absolute;
+        left: 3px;
+        top: -1px;
+        width: 4px;
+        height: 8px;
+        border-width: 0 2px 2px 0;
+        border-style: solid;
+        border-color: $white-color;
+        transform-origin: bottom left;
+        transform: rotate(45deg);
+      }
+      &:hover {
+        background: $blue-color;
+      }
     }
   }
 }
