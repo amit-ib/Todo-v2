@@ -4,12 +4,12 @@ import { setTodoAction } from "../../store";
 import { StatusModal } from "../../models/status.model";
 import axiosInstance from "../../axiosConfig";
 import { useForm, SubmitHandler } from "react-hook-form";
-import moment from "moment";
 import { useState, useEffect } from "react";
 import { TodoModal, CategoryModal } from "../../models";
 import { TostType } from "../../models/toasts.model";
 import Select from "../shared/form/Select";
 import Input from "../shared/form/Input";
+import { dateConverter } from "../../utils/helper";
 
 export interface addTodoDataType {
   title: string;
@@ -65,7 +65,7 @@ const TodoForm = ({
     let addData = {
       title: data.title,
       status: 1,
-      dueDate: data.dueDate,
+      dueDate: data.dueDate ? data.dueDate : dateConverter(),
       category: 1,
     };
     setLoading(true);
@@ -116,7 +116,7 @@ const TodoForm = ({
   useEffect(() => {
     if (editTask) {
       setValue("title", editTask.title);
-      setValue("dueDate", moment(editTask.dueDate).format("YYYY-MM-DD"));
+      setValue("dueDate", dateConverter(editTask.dueDate));
       setValue("category", editTask.category);
     }
   }, [editTask]);

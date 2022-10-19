@@ -3,7 +3,7 @@ import { TodoModal } from "../../models";
 import { dateConverter } from "../../utils/helper";
 import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
-import { editTodoAction, markDoneTodoAction, setTodoAction } from "../../store";
+import { editTodoAction, setTodoAction } from "../../store";
 import Confirm from "../shared/Confirm";
 import axiosInstance from "../../axiosConfig";
 import { ToDoStatus } from "../../models/status.model";
@@ -47,9 +47,23 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
       tostType: "success",
     });
   };
-
-  const doneTaskHandeler = () => {
-    dispatch(markDoneTodoAction(todoItem));
+  const toggleStatusHandler = async () => {
+    let updateData = {
+      ...todoItem,
+      status:
+        todo.status === ToDoStatus.COMPLETED
+          ? ToDoStatus.PENDING
+          : ToDoStatus.COMPLETED,
+    };
+    setLoading(true);
+    await axiosInstance
+      .put(`/todo/${todo.id}`, updateData)
+      .then(async (res) => {
+        await axiosInstance
+          .get("/todos")
+          .then((res) => dispatch(setTodoAction(res.data)));
+      });
+    setLoading(false);
   };
 
   const editTaskHandeler = async () => {
@@ -59,20 +73,23 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
     });
     setLoading(false);
   };
-
   return (
-    <div className={`list-item`} id={String(todoItem.id)}>
+    <div className="list-item" id={String(todoItem.id)}>
       <div
         className={`list-item-text 
           ${todoItem.status === ToDoStatus.COMPLETED ? "task-done" : ""}
         `}
       >
-        {todoItem.title}
-
+        <span
+          onClick={toggleStatusHandler}
+          className={`todo-status-icon-${
+            todo.status === ToDoStatus.COMPLETED ? "checked" : "unchecked"
+          }`}
+        ></span>
+        <span className="todo-title">{todoItem.title}</span>
         <div className="date">{dateConverter(todoItem.dueDate)}</div>
       </div>
       <div className="action-icons">
-        <Button label="Mark Done" className="link" onClick={doneTaskHandeler} />
         <Button
           label="Edit"
           className="link red"

@@ -2,7 +2,6 @@ import { TodoModal, CategoryModal, StatusModal } from "../models";
 import {
   ADD_TODO,
   DELETE_TODO,
-  MARK_DONE_TODO,
   EDIT_TODO,
   SET_TODOS,
   SET_LOGIN_STATUS,
@@ -37,28 +36,24 @@ export const setTodoAction = (data: TodoModal[]) => {
     payload: data,
   };
 };
+
 export const setCategoryAction = (data: CategoryModal[]) => {
   return {
     type: SET_CATEGORIES,
     payload: data,
   };
 };
+
 export const setStatusAction = (data: StatusModal[]) => {
   return {
     type: SET_STATUS,
     payload: data,
   };
 };
+
 export const deleteTodoAction = (data: TodoModal) => {
   return {
     type: DELETE_TODO, // returned type property
-    payload: data,
-  };
-};
-
-export const markDoneTodoAction = (data: TodoModal) => {
-  return {
-    type: MARK_DONE_TODO,
     payload: data,
   };
 };
