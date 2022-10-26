@@ -17,7 +17,7 @@ const TodoAppContainer = () => {
   );
   const dispatch = useDispatch();
 
-  const [activeId, setActiveId] = useState<Number>(0);
+  const [activeId, setActiveId] = useState<number>(0);
 
   const [filter, setFilter] = useState<TodoModal[] | []>([]);
 
@@ -46,7 +46,6 @@ const TodoAppContainer = () => {
     tostMessage: "",
     tostType: "",
   });
-
   return (
     <>
       {tost.tostState ? (

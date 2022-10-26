@@ -14,8 +14,15 @@ interface Props {
   id: number;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setTost: React.Dispatch<React.SetStateAction<TostType>>;
+  deleteTaskHandeler: Function;
 }
-const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
+
+const TodoItem = ({
+  todoItem,
+  setLoading,
+  setTost,
+  deleteTaskHandeler,
+}: Props) => {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   var todoData = {
@@ -25,6 +32,7 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
     category: todoItem.category,
     status: todoItem.status,
   };
+
   useEffect(() => {
     if (todoItem) {
       setTodo(todoData);
@@ -32,21 +40,7 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
   }, [todoItem]);
 
   const [todo, setTodo] = useState(todoData);
-  const deleteTaskHandeler = async () => {
-    setShowModal(false);
-    let ref = document.getElementById(`${todoItem.id}`);
-    ref?.classList.add("delete-animate");
-    await axiosInstance.delete(`/todo/${todoItem.id}`);
-    await axiosInstance
-      .get("/todos")
-      .then((res) => dispatch(setTodoAction(res.data)));
-    ref?.classList.remove("delete-animate");
-    setTost({
-      tostState: true,
-      tostMessage: "Task Deleted Successfully",
-      tostType: "success",
-    });
-  };
+
   const toggleStatusHandler = async () => {
     let updateData = {
       ...todoItem,
@@ -73,6 +67,7 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
     });
     setLoading(false);
   };
+
   return (
     <div className="list-item" id={String(todoItem.id)}>
       <div
@@ -111,6 +106,7 @@ const TodoItem = ({ todoItem, setLoading, setTost }: Props) => {
         onHide={() => {
           setShowModal(false);
         }}
+        todo={todoItem}
         text="Are you sure you want to delete this task?"
         title="Delete Task Confirmation"
         buttonLabel="Delete"

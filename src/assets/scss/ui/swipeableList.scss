@@ -1,0 +1,55 @@
+.swipeable-list {
+  padding: 2px;
+  .swipeable-list-item {
+    background: $red-color;
+    margin-bottom: 12px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 3px -1px $black-color;
+    .swiper-status-label {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0%;
+      z-index: 1;
+      display: flex;
+      flex-grow: 1;
+      justify-content: center;
+      text-align: center;
+      align-items: center;
+      color: $white-color;
+      &.swiper-right-bg {
+        background: $red-color;
+      }
+      &.swiper-left-bg {
+        background: $green-color;
+      }
+    }
+    .swipeable-list-item__content {
+      display: block;
+      position: relative;
+      z-index: 98;
+    }
+    .swipeable-list-item__trailing-actions {
+      align-items: center;
+      text-align: center;
+      color: $white-color;
+      background: $red-color;
+      .swipe-action {
+        display: block;
+        align-items: center;
+      }
+    }
+    .swipeable-list-item__leading-actions {
+      align-items: center;
+      text-align: center;
+      color: $white-color;
+      .swipe-action__leading {
+        background: $green-color;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+}
