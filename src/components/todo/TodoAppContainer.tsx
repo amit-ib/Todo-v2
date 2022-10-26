@@ -26,7 +26,6 @@ const TodoAppContainer = () => {
     await axiosInstance
       .get("/todos")
       .then((res) => dispatch(setTodoAction(res.data)));
-    //.catch(() => setLoading(false));
     await axiosInstance
       .get("/category")
       .then((res) => dispatch(setCategoryAction(res.data)));

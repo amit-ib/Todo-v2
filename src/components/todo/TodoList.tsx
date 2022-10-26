@@ -26,7 +26,6 @@ const TodoList = ({ todos, setLoading, setTost }: Props) => {
   const [swiperLabel, setSwiperLabel] = useState<string>();
   const [swiperClass, setSwiperClass] = useState<string>();
   const deleteTaskHandeler = async (todoItem: TodoModal) => {
-    //setShowModal(false);
     let ref = document.getElementById(`${todoItem.id}`);
     ref?.classList.add("delete-animate");
     await axiosInstance.delete(`/todo/${todoItem.id}`);
@@ -46,7 +45,6 @@ const TodoList = ({ todos, setLoading, setTost }: Props) => {
       ...todoItem,
       status: ToDoStatus.ARCHIVED,
     };
-    //setLoading(true);
     let ref = document.getElementById(`${todoItem.id}`);
     ref?.classList.add("delete-animate");
     await axiosInstance
@@ -57,7 +55,6 @@ const TodoList = ({ todos, setLoading, setTost }: Props) => {
           .then((res) => dispatch(setTodoAction(res.data)));
       });
     ref?.classList.remove("delete-animate");
-    //setLoading(false);
   };
 
   const leadingActions = (TodoItem: TodoModal) => (
@@ -77,7 +74,6 @@ const TodoList = ({ todos, setLoading, setTost }: Props) => {
   const trailingActions = (TodoItem: TodoModal) => (
     <TrailingActions>
       <SwipeAction
-        //destructive={true}
         onClick={() => {
           deleteTaskHandeler(TodoItem);
           setSwiperLabel("Deleting...");
