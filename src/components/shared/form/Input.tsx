@@ -1,3 +1,5 @@
+import moment from "moment";
+
 interface Props {
   type?: string;
   name: string;
@@ -19,6 +21,7 @@ const Input = ({
   errorMessage,
   className,
 }: Props) => {
+  console.log(moment().subtract(0, "days").format("YYYY-MM-DD"));
   return (
     <>
       <input
@@ -28,6 +31,9 @@ const Input = ({
         placeholder={placeholder}
         type={type}
         className={className}
+        {...(type === "date" && {
+          min: moment().subtract(0, "days").format("YYYY-MM-DD"),
+        })}
       />
 
       <span className="error">{errors && errors}</span>
