@@ -1,13 +1,14 @@
 import Modal from "react-bootstrap/Modal";
-import { ConfimModel } from "../../models/confirm.models";
+import { ConfirmModel } from "../../models/confirm.models";
 import Button from "./form/Button";
 
-const BsModal = (props: ConfimModel) => {
+const BsModal = (props: ConfirmModel) => {
   const cancelButtonHandler = () => {
     props.onHide();
   };
   const actionButtonHandler = () => {
-    props.buttonAction();
+    props.buttonAction(props?.todo);
+    props.onHide();
   };
 
   return (

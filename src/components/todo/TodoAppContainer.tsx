@@ -17,7 +17,7 @@ const TodoAppContainer = () => {
   );
   const dispatch = useDispatch();
 
-  const [activeId, setActiveId] = useState<Number>(0);
+  const [activeId, setActiveId] = useState<number>(0);
 
   const [filter, setFilter] = useState<TodoModal[] | []>([]);
 
@@ -26,7 +26,6 @@ const TodoAppContainer = () => {
     await axiosInstance
       .get("/todos")
       .then((res) => dispatch(setTodoAction(res.data)));
-    //.catch(() => setLoading(false));
     await axiosInstance
       .get("/category")
       .then((res) => dispatch(setCategoryAction(res.data)));
@@ -46,7 +45,6 @@ const TodoAppContainer = () => {
     tostMessage: "",
     tostType: "",
   });
-
   return (
     <>
       {tost.tostState ? (

@@ -9,24 +9,23 @@ import { TodoModal, CategoryModal } from "../../models";
 import { TostType } from "../../models/toasts.model";
 import Select from "../shared/form/Select";
 import Input from "../shared/form/Input";
-import { dateConverter } from "../../utils/helper";
-import moment from "moment";
+import { dateConverter, dateConverterYMD } from "../../utils/helper";
 
 export interface addTodoDataType {
   title: string;
   dueDate: string;
   category: number;
-  status: string;
+  status: number;
 }
 
 interface Props {
   todos: TodoModal[];
   status: StatusModal[];
-  activeId: Number;
+  activeId: number;
   categories: CategoryModal[];
   editTask: TodoModal | null;
   setTost: React.Dispatch<React.SetStateAction<TostType>>;
-  setActiveId: React.Dispatch<React.SetStateAction<Number>>;
+  setActiveId: React.Dispatch<React.SetStateAction<number>>;
   setFilter: React.Dispatch<React.SetStateAction<TodoModal[]>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -67,16 +66,16 @@ const TodoForm = ({
     let addData = {
       title: data.title,
       status: 1,
-      dueDate: data.dueDate ? data.dueDate : moment(),
+      dueDate: data.dueDate ? data.dueDate : new Date(),
       category: 1,
     };
-
     setbuttonDisabled(true);
     await axiosInstance.post("/todo", addData);
     await axiosInstance.get("/todos").then((res) => {
       reset();
       dispatch(setTodoAction(res.data));
     });
+
     setbuttonDisabled(false);
   };
 
@@ -108,20 +107,24 @@ const TodoForm = ({
   };
 
   // Handeling filter active state
-  const handleFilters = (status: StatusModal) => {
-    setActiveId(status.id);
+  const handleFilters = (statusId: number) => {
     if (setFilter) {
-      setFilter(todos.filter((todoItem) => todoItem.status === status.id));
+      setFilter(todos.filter((todoItem) => todoItem.status === statusId));
     }
   };
 
   useEffect(() => {
     if (editTask) {
       setValue("title", editTask.title);
-      setValue("dueDate", dateConverter(editTask.dueDate));
+      setValue("dueDate", dateConverterYMD(editTask.dueDate));
       setValue("category", editTask.category);
+      setValue("status", editTask.status);
     }
   }, [editTask]);
+
+  useEffect(() => {
+    handleFilters(activeId);
+  }, [todos]);
 
   const toggleClass = () => {
     setActive(!isActive);
@@ -199,7 +202,8 @@ const TodoForm = ({
             key={status.id}
             className={`filter-type ${activeId === status.id ? "active" : ""}`}
             onClick={() => {
-              handleFilters(status);
+              setActiveId(status.id);
+              handleFilters(status.id);
             }}
           >
             {status.title}
