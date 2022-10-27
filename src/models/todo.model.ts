@@ -4,4 +4,5 @@ export interface TodoModal {
   dueDate: Date;
   category: number;
   status: number;
+  createdBy: number;
 }

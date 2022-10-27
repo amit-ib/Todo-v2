@@ -65,15 +65,15 @@ const TodoForm = ({
   const handleAdd: SubmitHandler<addTodoDataType> = async (data) => {
     let addData = {
       title: data.title,
-      status: 1,
+      status: data.status,
       dueDate: data.dueDate ? data.dueDate : new Date(),
-      category: 1,
+      category: data.category,
     };
     setbuttonDisabled(true);
     await axiosInstance.post("/todo", addData);
     await axiosInstance.get("/todos").then((res) => {
       reset();
-      dispatch(setTodoAction(res.data));
+      dispatch(setTodoAction(res.data.todos));
     });
 
     setbuttonDisabled(false);
@@ -94,7 +94,7 @@ const TodoForm = ({
         .then(async (res) => {
           await axiosInstance
             .get("/todos")
-            .then((res) => dispatch(setTodoAction(res.data)));
+            .then((res) => dispatch(setTodoAction(res.data.todos)));
         });
       setbuttonDisabled(false);
       setTost({

@@ -15,6 +15,9 @@ interface Props {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setTost: React.Dispatch<React.SetStateAction<TostType>>;
   deleteTaskHandeler: Function;
+  userData: {
+    id: number;
+  };
 }
 
 const TodoItem = ({
@@ -22,6 +25,7 @@ const TodoItem = ({
   setLoading,
   setTost,
   deleteTaskHandeler,
+  userData,
 }: Props) => {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
@@ -31,14 +35,13 @@ const TodoItem = ({
     dueDate: todoItem.dueDate,
     category: todoItem.category,
     status: todoItem.status,
+    createdBy: todoItem.createdBy,
   };
-
   useEffect(() => {
     if (todoItem) {
       setTodo(todoData);
     }
   }, [todoItem]);
-
   const [todo, setTodo] = useState(todoData);
 
   const toggleStatusHandler = async () => {
@@ -55,7 +58,7 @@ const TodoItem = ({
       .then(async (res) => {
         await axiosInstance
           .get("/todos")
-          .then((res) => dispatch(setTodoAction(res.data)));
+          .then((res) => dispatch(setTodoAction(res.data.todos)));
       });
     setLoading(false);
   };
@@ -88,7 +91,12 @@ const TodoItem = ({
         <Button
           label="Edit"
           className="link red"
-          disabled={todoItem.status === ToDoStatus.COMPLETED ? true : false}
+          disabled={
+            Number(todoItem.createdBy) !== userData.id ||
+            todoItem.status === ToDoStatus.COMPLETED
+              ? true
+              : false
+          }
           onClick={editTaskHandeler}
         />
         <Button
