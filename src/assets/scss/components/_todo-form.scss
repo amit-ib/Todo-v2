@@ -12,7 +12,6 @@
     cursor: pointer;
     &.active {
       color: $blue-color;
-      text-decoration: underline;
       cursor: default;
     }
     &:hover {

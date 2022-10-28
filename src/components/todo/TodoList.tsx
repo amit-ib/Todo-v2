@@ -12,8 +12,9 @@ import {
 import "react-swipeable-list/dist/styles.css";
 import axiosInstance from "../../axiosConfig";
 import { useDispatch } from "react-redux";
-import { setTodoAction } from "../../store";
+import { setStatusCountAction, setTodoAction } from "../../store";
 import { ToDoStatus } from "../../models/status.model";
+import { featchToDos, updateToDos } from "../../services/axiosService";
 export interface Props {
   todos: TodoModal[];
   setFilter?: React.Dispatch<React.SetStateAction<string>>; // copied from setTodos state
@@ -35,9 +36,11 @@ const TodoList = ({ todos, setLoading, setTost }: Props) => {
     ref?.classList.add("delete-animate");
     setSwiperLabel("Deleting...");
     await axiosInstance.delete(`/todo/${todoItem.id}`);
-    await axiosInstance
-      .get("/todos")
-      .then((res) => dispatch(setTodoAction(res.data.todos)));
+    await featchToDos().then((res) => {
+      dispatch(setTodoAction(res.data.todos));
+      delete res.data.todos;
+      dispatch(setStatusCountAction(res.data));
+    });
     ref?.classList.remove("delete-animate");
     setTost({
       tostState: true,
@@ -53,13 +56,12 @@ const TodoList = ({ todos, setLoading, setTost }: Props) => {
     };
     let ref = document.getElementById(`${todoItem.id}`);
     ref?.classList.add("delete-animate");
-    await axiosInstance
-      .put(`/todo/${todoItem.id}`, updateData)
-      .then(async (res) => {
-        await axiosInstance
-          .get("/todos")
-          .then((res) => dispatch(setTodoAction(res.data.todos)));
-      });
+    await updateToDos(todoItem.id, updateData);
+    await featchToDos().then((res) => {
+      dispatch(setTodoAction(res.data.todos));
+      delete res.data.todos;
+      dispatch(setStatusCountAction(res.data));
+    });
     ref?.classList.remove("delete-animate");
   };
 

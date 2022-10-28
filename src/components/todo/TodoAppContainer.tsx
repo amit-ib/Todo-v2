@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import axiosInstance from "../../axiosConfig";
-import { setCategoryAction, setStatusAction, setTodoAction } from "../../store";
+import {
+  featchCategories,
+  featchStatus,
+  featchToDos,
+} from "../../services/axiosService";
+import {
+  setCategoryAction,
+  setStatusAction,
+  setStatusCountAction,
+  setTodoAction,
+} from "../../store";
 import Loader from "../shared/Loader";
 import TodoForm from "./TodoForm";
 import TodoList from "./TodoList";
@@ -12,7 +21,7 @@ import Tost from "../shared/Tost";
 import { TostType } from "../../models/toasts.model";
 const TodoAppContainer = () => {
   const [loading, setLoading] = useState(false);
-  const { tasks, status, categories, editTask } = useSelector(
+  const { tasks, status, statusCount, categories, editTask } = useSelector(
     (state: statesModal) => state
   );
   const dispatch = useDispatch();
@@ -23,15 +32,15 @@ const TodoAppContainer = () => {
 
   const loadData = async () => {
     setLoading(true);
-    await axiosInstance
-      .get("/todos")
-      .then((res) => dispatch(setTodoAction(res.data.todos)));
-    await axiosInstance
-      .get("/category")
-      .then((res) => dispatch(setCategoryAction(res.data)));
-    await axiosInstance
-      .get("/status")
-      .then((res) => dispatch(setStatusAction(res.data)));
+    await featchToDos().then((res) => {
+      dispatch(setTodoAction(res.data.todos));
+      delete res.data.todos;
+      dispatch(setStatusCountAction(res.data));
+    });
+    await featchCategories().then((res) =>
+      dispatch(setCategoryAction(res.data))
+    );
+    await featchStatus().then((res) => dispatch(setStatusAction(res.data)));
     setLoading(false);
   };
 
@@ -63,6 +72,7 @@ const TodoAppContainer = () => {
         <TodoForm
           todos={tasks}
           status={status}
+          statusCount={statusCount}
           setActiveId={setActiveId}
           activeId={activeId}
           setFilter={setFilter}

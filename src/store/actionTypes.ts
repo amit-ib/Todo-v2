@@ -4,4 +4,5 @@ export const EDIT_TODO = "editTask";
 export const SET_TODOS = "tasks";
 export const SET_CATEGORIES = "categories";
 export const SET_STATUS = "status";
+export const SET_STATUS_COUNT = "statusCount";
 export const SET_LOGIN_STATUS = "SET_LOGIN_STATUS";
