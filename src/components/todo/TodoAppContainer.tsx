@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { featchToDos, featchTodoConfig } from "../../services/axiosService";
+import {
+  featchToDos,
+  featchUsers,
+  featchTodoConfig,
+} from "../../services/axiosService";
 import {
   setStatusCountAction,
   setTodoAction,
   setTodoConfigAction,
+  setUsersAction,
 } from "../../store";
 import Loader from "../shared/Loader";
 import TodoForm from "./TodoForm";
@@ -14,6 +19,7 @@ import { TodoModal } from "../../models";
 import { ToDoStatus } from "../../models/status.model";
 import Tost from "../shared/Tost";
 import { TostType } from "../../models/toasts.model";
+
 const TodoAppContainer = () => {
   const [loading, setLoading] = useState(false);
   const { tasks, statusCount, editTask } = useSelector(
@@ -35,6 +41,7 @@ const TodoAppContainer = () => {
     await featchTodoConfig().then((res) =>
       dispatch(setTodoConfigAction(res.data))
     );
+    await featchUsers().then((res) => dispatch(setUsersAction(res.data)));
     setLoading(false);
   };
 

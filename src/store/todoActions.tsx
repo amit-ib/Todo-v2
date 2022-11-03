@@ -2,6 +2,7 @@ import {
   TodoModal,
   CategoryModal,
   StatusModal,
+  UsersModal,
   TodoConfigModal,
 } from "../models";
 import {
@@ -13,6 +14,7 @@ import {
   SET_CATEGORIES,
   SET_STATUS,
   SET_STATUS_COUNT,
+  SET_USERS,
   SET_TODO_CONFIG,
 } from "./actionTypes";
 
@@ -47,6 +49,13 @@ export const setTodoAction = (data: TodoModal[]) => {
 export const setCategoryAction = (data: CategoryModal[]) => {
   return {
     type: SET_CATEGORIES,
+    payload: data,
+  };
+};
+
+export const setUsersAction = (data: UsersModal[]) => {
+  return {
+    type: SET_USERS,
     payload: data,
   };
 };
