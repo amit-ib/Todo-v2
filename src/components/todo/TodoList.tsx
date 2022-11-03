@@ -12,8 +12,9 @@ import {
 import "react-swipeable-list/dist/styles.css";
 import axiosInstance from "../../axiosConfig";
 import { useDispatch } from "react-redux";
-import { setTodoAction } from "../../store";
+import { setStatusCountAction, setTodoAction } from "../../store";
 import { ToDoStatus } from "../../models/status.model";
+import { featchToDos, updateToDos } from "../../services/axiosService";
 export interface Props {
   todos: TodoModal[];
   setFilter?: React.Dispatch<React.SetStateAction<string>>; // copied from setTodos state
@@ -22,16 +23,24 @@ export interface Props {
 }
 
 const TodoList = ({ todos, setLoading, setTost }: Props) => {
+  const userData = window.localStorage.getItem("userData")
+    ? JSON.parse(window.localStorage.getItem("userData") || "{}")
+    : "";
+
   const dispatch = useDispatch();
   const [swiperLabel, setSwiperLabel] = useState<string>();
   const [swiperClass, setSwiperClass] = useState<string>();
+
   const deleteTaskHandeler = async (todoItem: TodoModal) => {
     let ref = document.getElementById(`${todoItem.id}`);
     ref?.classList.add("delete-animate");
+    setSwiperLabel("Deleting...");
     await axiosInstance.delete(`/todo/${todoItem.id}`);
-    await axiosInstance
-      .get("/todos")
-      .then((res) => dispatch(setTodoAction(res.data)));
+    await featchToDos().then((res) => {
+      dispatch(setTodoAction(res.data.todos));
+      delete res.data.todos;
+      dispatch(setStatusCountAction(res.data));
+    });
     ref?.classList.remove("delete-animate");
     setTost({
       tostState: true,
@@ -47,13 +56,12 @@ const TodoList = ({ todos, setLoading, setTost }: Props) => {
     };
     let ref = document.getElementById(`${todoItem.id}`);
     ref?.classList.add("delete-animate");
-    await axiosInstance
-      .put(`/todo/${todoItem.id}`, updateData)
-      .then(async (res) => {
-        await axiosInstance
-          .get("/todos")
-          .then((res) => dispatch(setTodoAction(res.data)));
-      });
+    await updateToDos(todoItem.id, updateData);
+    await featchToDos().then((res) => {
+      dispatch(setTodoAction(res.data.todos));
+      delete res.data.todos;
+      dispatch(setStatusCountAction(res.data));
+    });
     ref?.classList.remove("delete-animate");
   };
 
@@ -76,7 +84,6 @@ const TodoList = ({ todos, setLoading, setTost }: Props) => {
       <SwipeAction
         onClick={() => {
           deleteTaskHandeler(TodoItem);
-          setSwiperLabel("Deleting...");
           setSwiperClass("swiper-right-bg");
         }}
       >
@@ -91,7 +98,11 @@ const TodoList = ({ todos, setLoading, setTost }: Props) => {
         {todos.map((todoItem, id) => (
           <SwipeableListItem
             trailingActions={trailingActions(todoItem)}
-            leadingActions={leadingActions(todoItem)}
+            leadingActions={
+              Number(todoItem.createdBy) === userData.id
+                ? leadingActions(todoItem)
+                : null
+            }
             fullSwipe={true}
             key={id}
           >
@@ -104,6 +115,7 @@ const TodoList = ({ todos, setLoading, setTost }: Props) => {
               deleteTaskHandeler={deleteTaskHandeler}
               setLoading={setLoading}
               setTost={setTost}
+              userData={userData}
             />
           </SwipeableListItem>
         ))}

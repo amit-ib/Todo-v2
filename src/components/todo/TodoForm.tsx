@@ -1,15 +1,16 @@
 import Button from "../shared/form/Button";
 import { useDispatch } from "react-redux";
-import { setTodoAction } from "../../store";
+import { setStatusCountAction, setTodoAction } from "../../store";
 import { StatusModal } from "../../models/status.model";
 import axiosInstance from "../../axiosConfig";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState, useEffect } from "react";
-import { TodoModal, CategoryModal } from "../../models";
+import { TodoModal, CategoryModal, StatusCountModal } from "../../models";
 import { TostType } from "../../models/toasts.model";
 import Select from "../shared/form/Select";
 import Input from "../shared/form/Input";
 import { dateConverter, dateConverterYMD } from "../../utils/helper";
+import { featchToDos, updateToDos } from "../../services/axiosService";
 
 export interface addTodoDataType {
   title: string;
@@ -21,6 +22,7 @@ export interface addTodoDataType {
 interface Props {
   todos: TodoModal[];
   status: StatusModal[];
+  statusCount: StatusCountModal | null;
   activeId: number;
   categories: CategoryModal[];
   editTask: TodoModal | null;
@@ -33,6 +35,7 @@ interface Props {
 const TodoForm = ({
   todos,
   status,
+  statusCount,
   activeId,
   setActiveId,
   setFilter,
@@ -65,15 +68,15 @@ const TodoForm = ({
   const handleAdd: SubmitHandler<addTodoDataType> = async (data) => {
     let addData = {
       title: data.title,
-      status: 1,
+      status: data.status,
       dueDate: data.dueDate ? data.dueDate : new Date(),
-      category: 1,
+      category: data.category,
     };
     setbuttonDisabled(true);
     await axiosInstance.post("/todo", addData);
     await axiosInstance.get("/todos").then((res) => {
       reset();
-      dispatch(setTodoAction(res.data));
+      dispatch(setTodoAction(res.data.todos));
     });
 
     setbuttonDisabled(false);
@@ -88,14 +91,12 @@ const TodoForm = ({
         category: data.category,
       };
       setbuttonDisabled(true);
-
-      await axiosInstance
-        .put(`/todo/${editTask.id}`, updateData)
-        .then(async (res) => {
-          await axiosInstance
-            .get("/todos")
-            .then((res) => dispatch(setTodoAction(res.data)));
-        });
+      await updateToDos(editTask.id, updateData);
+      await featchToDos().then((res) => {
+        dispatch(setTodoAction(res.data.todos));
+        delete res.data.todos;
+        dispatch(setStatusCountAction(res.data));
+      });
       setbuttonDisabled(false);
       setTost({
         tostState: true,
@@ -197,18 +198,37 @@ const TodoForm = ({
         </div>
       </form>
       <div className="filters">
-        {statusList.map((status, id) => (
-          <span
-            key={status.id}
-            className={`filter-type ${activeId === status.id ? "active" : ""}`}
-            onClick={() => {
-              setActiveId(status.id);
-              handleFilters(status.id);
-            }}
-          >
-            {status.title}
-          </span>
-        ))}
+        {statusList.map((status, id) => {
+          let statusCounter;
+          if (status.title === "All") {
+            statusCounter = statusCount?.total;
+          } else if (status.title === "Pending") {
+            statusCounter = statusCount?.pending;
+          } else if (status.title === "In Progress") {
+            statusCounter = statusCount?.inProgress;
+          } else if (status.title === "Completed") {
+            statusCounter = statusCount?.completed;
+          } else if (status.title === "Archived") {
+            statusCounter = statusCount?.archived;
+          }
+
+          return (
+            <span
+              key={status.id}
+              className={`filter-type ${
+                activeId === status.id ? "active" : ""
+              }`}
+              onClick={() => {
+                setActiveId(status.id);
+                handleFilters(status.id);
+              }}
+            >
+              <>
+                {status.title} ({statusCounter})
+              </>
+            </span>
+          );
+        })}
       </div>
     </>
   );

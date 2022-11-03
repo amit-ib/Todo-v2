@@ -7,6 +7,7 @@ import {
   SET_LOGIN_STATUS,
   SET_CATEGORIES,
   SET_STATUS,
+  SET_STATUS_COUNT,
 } from "./actionTypes";
 
 export const loginTodoAction = (data: boolean) => {
@@ -47,6 +48,13 @@ export const setCategoryAction = (data: CategoryModal[]) => {
 export const setStatusAction = (data: StatusModal[]) => {
   return {
     type: SET_STATUS,
+    payload: data,
+  };
+};
+
+export const setStatusCountAction = (data: TodoModal[]) => {
+  return {
+    type: SET_STATUS_COUNT,
     payload: data,
   };
 };
