@@ -1,7 +1,6 @@
 import Button from "../shared/form/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { setStatusCountAction, setTodoAction } from "../../store";
-import { StatusModal } from "../../models/status.model";
 import axiosInstance from "../../axiosConfig";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState, useEffect } from "react";
@@ -42,7 +41,7 @@ const TodoForm = ({
   editTask,
 }: Props) => {
   const dispatch = useDispatch();
-  const { todoConfig } = useSelector((state: statesModal) => state);
+  const { todoConfig, users } = useSelector((state: statesModal) => state);
   const statusList = [
     {
       id: 0,
@@ -164,7 +163,7 @@ const TodoForm = ({
             isActive ? "active" : ""
           }`}
         >
-          <div className="input-set me-2">
+          <div className="input-set">
             <label htmlFor="">Category</label>
             <Select
               register={register}
@@ -173,13 +172,22 @@ const TodoForm = ({
               selectedOption={editTask?.category}
             />
           </div>
-          <div className="input-set">
+          <div className="input-set mx-2">
             <label htmlFor="">Status</label>
             <Select
               register={register}
               name={"status"}
               optvalues={todoConfig.status}
               selectedOption={editTask?.status}
+            />
+          </div>
+          <div className="input-set">
+            <label htmlFor="">Assign to</label>
+            <Select
+              register={register}
+              name={"users"}
+              optvalues={users}
+              selectedOption={editTask?.createdBy}
             />
           </div>
         </div>

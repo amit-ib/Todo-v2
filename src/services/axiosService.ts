@@ -16,6 +16,10 @@ export const featchStatus = () => {
   return axiosInstance.get("/status");
 };
 
+export const featchUsers = () => {
+  return axiosInstance.get("/users");
+};
+
 export const updateToDos = (id: any, updateData: any) => {
   return axiosInstance.put(`/todo/${id}`, updateData);
 };

@@ -3,6 +3,7 @@ import {
   CategoryModal,
   StatusModal,
   StatusCountModal,
+  UsersModal,
   TodoConfigModal,
 } from "../models";
 import {
@@ -13,6 +14,7 @@ import {
   SET_CATEGORIES,
   SET_STATUS,
   SET_STATUS_COUNT,
+  SET_USERS,
   SET_TODO_CONFIG,
   EDIT_TODO,
 } from "./actionTypes";
@@ -22,6 +24,7 @@ export interface statesModal {
   isLogedin: boolean;
   categories: CategoryModal[] | [];
   status: StatusModal[] | [];
+  users: UsersModal[] | [];
   todoConfig: TodoConfigModal;
   editTask: TodoModal | null;
 }
@@ -31,6 +34,7 @@ const initialState = {
   isLogedin: false,
   categories: [],
   status: [],
+  users: [],
   todoConfig: {
     category: [],
     status: [],
@@ -72,6 +76,7 @@ const todoReducer = (state: statesModal = initialState, action: any) => {
     case EDIT_TODO:
     case SET_STATUS_COUNT:
     case SET_TODO_CONFIG:
+    case SET_USERS:
       return {
         ...state,
         [action.type]: action.payload,
