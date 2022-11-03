@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { featchToDos, featchTodoConfig } from "../../services/axiosService";
 import {
-  featchCategories,
-  featchStatus,
-  featchToDos,
-} from "../../services/axiosService";
-import {
-  setCategoryAction,
-  setStatusAction,
   setStatusCountAction,
   setTodoAction,
+  setTodoConfigAction,
 } from "../../store";
 import Loader from "../shared/Loader";
 import TodoForm from "./TodoForm";
@@ -21,7 +16,7 @@ import Tost from "../shared/Tost";
 import { TostType } from "../../models/toasts.model";
 const TodoAppContainer = () => {
   const [loading, setLoading] = useState(false);
-  const { tasks, status, statusCount, categories, editTask } = useSelector(
+  const { tasks, statusCount, editTask } = useSelector(
     (state: statesModal) => state
   );
   const dispatch = useDispatch();
@@ -37,10 +32,9 @@ const TodoAppContainer = () => {
       delete res.data.todos;
       dispatch(setStatusCountAction(res.data));
     });
-    await featchCategories().then((res) =>
-      dispatch(setCategoryAction(res.data))
+    await featchTodoConfig().then((res) =>
+      dispatch(setTodoConfigAction(res.data))
     );
-    await featchStatus().then((res) => dispatch(setStatusAction(res.data)));
     setLoading(false);
   };
 
@@ -71,7 +65,6 @@ const TodoAppContainer = () => {
       <div>
         <TodoForm
           todos={tasks}
-          status={status}
           statusCount={statusCount}
           setActiveId={setActiveId}
           activeId={activeId}
@@ -79,7 +72,6 @@ const TodoAppContainer = () => {
           setLoading={setLoading}
           setTost={setTost}
           editTask={editTask}
-          categories={categories}
         />
 
         <TodoList
