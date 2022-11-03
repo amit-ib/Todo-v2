@@ -1,5 +1,9 @@
 import axiosInstance from "../axiosConfig";
 
+export const featchTodoConfig = () => {
+  return axiosInstance.get("/config");
+};
+
 export const featchToDos = () => {
   return axiosInstance.get("/todos");
 };

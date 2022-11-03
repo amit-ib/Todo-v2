@@ -1,16 +1,17 @@
 import Button from "../shared/form/Button";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setStatusCountAction, setTodoAction } from "../../store";
 import { StatusModal } from "../../models/status.model";
 import axiosInstance from "../../axiosConfig";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState, useEffect } from "react";
-import { TodoModal, CategoryModal, StatusCountModal } from "../../models";
+import { TodoModal, StatusCountModal } from "../../models";
 import { TostType } from "../../models/toasts.model";
 import Select from "../shared/form/Select";
 import Input from "../shared/form/Input";
-import { dateConverter, dateConverterYMD } from "../../utils/helper";
+import { dateConverterYMD } from "../../utils/helper";
 import { featchToDos, updateToDos } from "../../services/axiosService";
+import { statesModal } from "../../store/todoReducer";
 
 export interface addTodoDataType {
   title: string;
@@ -21,10 +22,8 @@ export interface addTodoDataType {
 
 interface Props {
   todos: TodoModal[];
-  status: StatusModal[];
   statusCount: StatusCountModal | null;
   activeId: number;
-  categories: CategoryModal[];
   editTask: TodoModal | null;
   setTost: React.Dispatch<React.SetStateAction<TostType>>;
   setActiveId: React.Dispatch<React.SetStateAction<number>>;
@@ -34,24 +33,22 @@ interface Props {
 
 const TodoForm = ({
   todos,
-  status,
   statusCount,
   activeId,
   setActiveId,
   setFilter,
   setLoading,
   setTost,
-  categories,
   editTask,
 }: Props) => {
   const dispatch = useDispatch();
-
+  const { todoConfig } = useSelector((state: statesModal) => state);
   const statusList = [
     {
       id: 0,
       title: "All",
     },
-    ...status,
+    ...todoConfig.status,
   ];
 
   const {
@@ -64,7 +61,6 @@ const TodoForm = ({
 
   const [isActive, setActive] = useState(false);
   const [buttonDisabled, setbuttonDisabled] = useState(false);
-
   const handleAdd: SubmitHandler<addTodoDataType> = async (data) => {
     let addData = {
       title: data.title,
@@ -173,7 +169,7 @@ const TodoForm = ({
             <Select
               register={register}
               name={"category"}
-              optvalues={categories}
+              optvalues={todoConfig.category}
               selectedOption={editTask?.category}
             />
           </div>
@@ -182,7 +178,7 @@ const TodoForm = ({
             <Select
               register={register}
               name={"status"}
-              optvalues={status}
+              optvalues={todoConfig.status}
               selectedOption={editTask?.status}
             />
           </div>

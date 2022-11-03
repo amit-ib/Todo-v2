@@ -1,6 +1,6 @@
 interface Props {
   selectedOption: number | null | undefined;
-  optvalues: { id: number; title: string }[];
+  optvalues: { id: number; title?: string; name?: string }[];
   register: any;
   name: string;
   className?: string;
@@ -21,7 +21,7 @@ const Select = ({
           defaultValue={option.id === selectedOption ? option.id : 0}
           value={option.id}
         >
-          {option.title}
+          {option.title ? option.title : option.name}
         </option>
       ))}
     </select>
