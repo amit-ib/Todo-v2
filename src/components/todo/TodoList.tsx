@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { setStatusCountAction, setTodoAction } from "../../store";
 import { ToDoStatus } from "../../models/status.model";
 import { featchToDos, updateToDos } from "../../services/axiosService";
+import { loggedInUserData } from "../../utils/helper";
 export interface Props {
   todos: TodoModal[];
   setFilter?: React.Dispatch<React.SetStateAction<string>>; // copied from setTodos state
@@ -23,9 +24,9 @@ export interface Props {
 }
 
 const TodoList = ({ todos, setLoading, setTost }: Props) => {
-  const userData = window.localStorage.getItem("userData")
-    ? JSON.parse(window.localStorage.getItem("userData") || "{}")
-    : "";
+  // const userData = window.localStorage.getItem("userData")
+  //   ? JSON.parse(window.localStorage.getItem("userData") || "{}")
+  //   : "";
 
   const dispatch = useDispatch();
   const [swiperLabel, setSwiperLabel] = useState<string>();
@@ -99,7 +100,7 @@ const TodoList = ({ todos, setLoading, setTost }: Props) => {
           <SwipeableListItem
             trailingActions={trailingActions(todoItem)}
             leadingActions={
-              Number(todoItem.createdBy) === userData.id
+              Number(todoItem.createdBy) === loggedInUserData().id
                 ? leadingActions(todoItem)
                 : null
             }
@@ -115,7 +116,6 @@ const TodoList = ({ todos, setLoading, setTost }: Props) => {
               deleteTaskHandeler={deleteTaskHandeler}
               setLoading={setLoading}
               setTost={setTost}
-              userData={userData}
             />
           </SwipeableListItem>
         ))}

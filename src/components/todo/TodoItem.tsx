@@ -1,7 +1,7 @@
 import Button from "../shared/form/Button";
 import { TodoModal } from "../../models";
-import { dateConverter } from "../../utils/helper";
-import { useDispatch } from "react-redux";
+import { dateConverter, loggedInUserData } from "../../utils/helper";
+import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import {
   editTodoAction,
@@ -13,15 +13,13 @@ import axiosInstance from "../../axiosConfig";
 import { ToDoStatus } from "../../models/status.model";
 import { TostType } from "../../models/toasts.model";
 import { featchToDos, updateToDos } from "../../services/axiosService";
+import { statesModal } from "../../store/todoReducer";
 interface Props {
   todoItem: TodoModal;
   id: number;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setTost: React.Dispatch<React.SetStateAction<TostType>>;
   deleteTaskHandeler: Function;
-  userData: {
-    id: number;
-  };
 }
 
 const TodoItem = ({
@@ -29,11 +27,12 @@ const TodoItem = ({
   setLoading,
   setTost,
   deleteTaskHandeler,
-  userData,
 }: Props) => {
+  const { todoConfig } = useSelector((state: statesModal) => state);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
-  const [taskPriority, setTaskPriority] = useState(false);
+  const [showPriorityOptions, setShowPriorityOptions] = useState(false);
+  const [taskPriority, setTaskPriority] = useState<string>("low");
   var todoData = {
     id: todoItem.id,
     title: todoItem.title,
@@ -41,13 +40,33 @@ const TodoItem = ({
     category: todoItem.category,
     status: todoItem.status,
     createdBy: todoItem.createdBy,
+    priority: todoItem.priority,
   };
   useEffect(() => {
     if (todoItem) {
       setTodo(todoData);
+      todoConfig.priority.forEach((el) => {
+        if (el.id === Number(todoItem.priority)) {
+          setTaskPriority(el.title.toLocaleLowerCase());
+        }
+      });
     }
-  }, [todoItem]);
+  }, [todoItem, todoConfig.priority]);
+
   const [todo, setTodo] = useState(todoData);
+
+  const priorityHandler = async (priorityId: number) => {
+    let updateData = {
+      ...todoItem,
+      priority: priorityId,
+    };
+    await updateToDos(todo.id, updateData);
+    await featchToDos().then((res) => {
+      dispatch(setTodoAction(res.data.todos));
+      delete res.data.todos;
+      dispatch(setStatusCountAction(res.data));
+    });
+  };
 
   const toggleStatusHandler = async () => {
     let updateData = {
@@ -75,8 +94,12 @@ const TodoItem = ({
     setLoading(false);
   };
 
-  const toggleTaskPriority = () => {
-    setTaskPriority((prevtaskPriority) => !prevtaskPriority);
+  const toggleShowPriorityOptions = () => {
+    if (todo.status !== 3) {
+      setShowPriorityOptions((showPriorityOptions) => !showPriorityOptions);
+    } else {
+      alert("You can not change the priority of completed task ");
+    }
   };
 
   return (
@@ -97,18 +120,31 @@ const TodoItem = ({
       </div>
       <div className="action-icons">
         <span
-          className={`task-priority-indicator ${taskPriority ? "active" : ""}`}
-          onClick={toggleTaskPriority}
+          className={`task-priority-indicator priority-${taskPriority} ${
+            showPriorityOptions ? "active" : ""
+          }`}
+          onClick={toggleShowPriorityOptions}
         >
-          <span className="priority-high">High</span>{" "}
-          <span className="priority-mid">Medium</span>{" "}
-          <span className="priority-low">Low</span>
+          {todoConfig.priority.map((priorities, id) => {
+            return (
+              <span
+                key={priorities.id}
+                className={`priority-${priorities.title.toLowerCase()}`}
+                onClick={() => {
+                  setTaskPriority(priorities.title.toLowerCase());
+                  priorityHandler(priorities.id);
+                }}
+              >
+                {priorities.title}
+              </span>
+            );
+          })}
         </span>
         <Button
           label="Edit"
           className="link red"
           disabled={
-            Number(todoItem.createdBy) !== userData.id ||
+            Number(todoItem.createdBy) !== loggedInUserData().id ||
             todoItem.status === ToDoStatus.COMPLETED
               ? true
               : false
