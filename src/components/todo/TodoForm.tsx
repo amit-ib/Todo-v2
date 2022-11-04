@@ -8,7 +8,7 @@ import { TodoModal, StatusCountModal } from "../../models";
 import { TostType } from "../../models/toasts.model";
 import Select from "../shared/form/Select";
 import Input from "../shared/form/Input";
-import { dateConverterYMD } from "../../utils/helper";
+import { dateConverterYMD, loggedInUserData } from "../../utils/helper";
 import { featchToDos, updateToDos } from "../../services/axiosService";
 import { statesModal } from "../../store/todoReducer";
 
@@ -17,6 +17,8 @@ export interface addTodoDataType {
   dueDate: string;
   category: number;
   status: number;
+  priority: number;
+  assignee: number[];
 }
 
 interface Props {
@@ -55,25 +57,29 @@ const TodoForm = ({
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState: { errors },
-  } = useForm<addTodoDataType>({});
+  } = useForm<addTodoDataType>({
+    defaultValues: {
+      priority: 4,
+      category: 1,
+      status: 1,
+      dueDate: dateConverterYMD(new Date()),
+      assignee: [loggedInUserData().id],
+    },
+  });
 
   const [isActive, setActive] = useState(false);
   const [buttonDisabled, setbuttonDisabled] = useState(false);
   const handleAdd: SubmitHandler<addTodoDataType> = async (data) => {
-    let addData = {
-      title: data.title,
-      status: data.status,
-      dueDate: data.dueDate ? data.dueDate : new Date(),
-      category: data.category,
-    };
     setbuttonDisabled(true);
-    await axiosInstance.post("/todo", addData);
-    await axiosInstance.get("/todos").then((res) => {
-      reset();
+    await axiosInstance.post("/todo", data);
+    await featchToDos().then((res) => {
       dispatch(setTodoAction(res.data.todos));
+      delete res.data.todos;
+      dispatch(setStatusCountAction(res.data));
     });
-
+    reset();
     setbuttonDisabled(false);
   };
 
@@ -185,7 +191,7 @@ const TodoForm = ({
             <label htmlFor="">Assign to</label>
             <Select
               register={register}
-              name={"users"}
+              name={"assignee"}
               optvalues={users}
               selectedOption={editTask?.createdBy}
             />

@@ -7,3 +7,9 @@ export const dateConverter = (date: Date) => {
 export const dateConverterYMD = (date: Date) => {
   return moment(date).format("YYYY-MM-DD");
 };
+
+export const loggedInUserData = () => {
+  return window.localStorage.getItem("userData")
+    ? JSON.parse(window.localStorage.getItem("userData") || "{}")
+    : "";
+};

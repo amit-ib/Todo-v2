@@ -6,4 +6,5 @@ export interface TodoModal {
   status: number;
   statusCount: number;
   createdBy: number;
+  priority: number;
 }

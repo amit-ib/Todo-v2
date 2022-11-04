@@ -29,7 +29,7 @@
       display: flex;
       flex-wrap: wrap;
       align-items: flex-start;
-      width: 80%;
+      width: 79%;
       .todo-title {
         width: 90%;
       }
@@ -151,27 +151,53 @@
     border-radius: 10px;
     color: $white-color;
     opacity: 0;
-    &.priority-high {
+    margin-right: 3px;
+    cursor: pointer;
+    &.priority-highest {
       background: $red-color;
     }
-    &.priority-mid {
+    &.priority-high {
       background: $orange-color;
     }
-    &.priority-low {
+    &.priority-medium {
       background: $blue-color;
+    }
+    &.priority-low {
+      background: $gray-color;
     }
   }
   &.active span {
     opacity: 1;
     transition: all 0.3s;
   }
+
   &:after {
     content: "";
     width: 10px;
     height: 10px;
-    background: $red-color;
     border-radius: 100%;
     display: inline-block;
     margin-left: 10px;
+    cursor: pointer;
+  }
+  &.priority-low {
+    &:after {
+      background: $gray-color;
+    }
+  }
+  &.priority-medium {
+    &:after {
+      background: $blue-color;
+    }
+  }
+  &.priority-high {
+    &:after {
+      background: $orange-color;
+    }
+  }
+  &.priority-highest {
+    &:after {
+      background: $red-color;
+    }
   }
 }
