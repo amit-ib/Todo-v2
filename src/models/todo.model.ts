@@ -7,4 +7,5 @@ export interface TodoModal {
   statusCount: number;
   createdBy: number;
   priority: number;
+  assignee: number[];
 }

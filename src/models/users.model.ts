@@ -1,6 +1,8 @@
 export interface UsersModal {
   id: number;
   title: string;
+  name: string;
+  email: string;
 }
 
 export enum UserTitle {
