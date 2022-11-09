@@ -1,0 +1,26 @@
+.rmsc {
+  .dropdown-container {
+    border: solid 1px $gray-color;
+    padding: 2px 0px;
+    z-index: 98;
+    &:focus-within {
+      box-shadow: none;
+      border: solid 1px $gray-color;
+    }
+    .select-panel {
+      border-radius: 0px;
+      .search {
+        input {
+          margin-top: 0;
+          border-radius: 0px;
+        }
+      }
+      .item-renderer input {
+        width: auto;
+      }
+    }
+  }
+  .clear-selected-button {
+    height: auto;
+  }
+}

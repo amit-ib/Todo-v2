@@ -2,15 +2,16 @@ import Button from "../shared/form/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { setStatusCountAction, setTodoAction } from "../../store";
 import axiosInstance from "../../axiosConfig";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { useState, useEffect } from "react";
-import { TodoModal, StatusCountModal } from "../../models";
+import { TodoModal, StatusCountModal, UsersModal } from "../../models";
 import { TostType } from "../../models/toasts.model";
 import Select from "../shared/form/Select";
 import Input from "../shared/form/Input";
 import { dateConverterYMD, loggedInUserData } from "../../utils/helper";
 import { featchToDos, updateToDos } from "../../services/axiosService";
 import { statesModal } from "../../store/todoReducer";
+import { MultiSelect, Option } from "react-multi-select-component";
 
 export interface addTodoDataType {
   title: string;
@@ -18,7 +19,7 @@ export interface addTodoDataType {
   category: number;
   status: number;
   priority: number;
-  assignee: number[];
+  assignee: Option[];
 }
 
 interface Props {
@@ -58,6 +59,7 @@ const TodoForm = ({
     reset,
     setValue,
     watch,
+    control,
     formState: { errors },
   } = useForm<addTodoDataType>({
     defaultValues: {
@@ -65,15 +67,19 @@ const TodoForm = ({
       category: 1,
       status: 1,
       dueDate: dateConverterYMD(new Date()),
-      assignee: [loggedInUserData().id],
+      assignee: [
+        { value: loggedInUserData().id, label: loggedInUserData().name },
+      ],
     },
   });
 
   const [isActive, setActive] = useState(false);
   const [buttonDisabled, setbuttonDisabled] = useState(false);
   const handleAdd: SubmitHandler<addTodoDataType> = async (data) => {
+    let todoData = { ...data };
+    todoData.assignee = data.assignee.map((el) => el.value); //[1,2,3]
     setbuttonDisabled(true);
-    await axiosInstance.post("/todo", data);
+    await axiosInstance.post("/todo", todoData);
     await featchToDos().then((res) => {
       dispatch(setTodoAction(res.data.todos));
       delete res.data.todos;
@@ -85,14 +91,10 @@ const TodoForm = ({
 
   const updateTaskHandeler: SubmitHandler<addTodoDataType> = async (data) => {
     if (editTask) {
-      let updateData = {
-        title: data.title,
-        status: data.status,
-        dueDate: data.dueDate,
-        category: data.category,
-      };
+      let todoData = { ...data };
+      todoData.assignee = data.assignee.map((el) => el.value);
       setbuttonDisabled(true);
-      await updateToDos(editTask.id, updateData);
+      await updateToDos(editTask.id, todoData);
       await featchToDos().then((res) => {
         dispatch(setTodoAction(res.data.todos));
         delete res.data.todos;
@@ -121,6 +123,7 @@ const TodoForm = ({
       setValue("dueDate", dateConverterYMD(editTask.dueDate));
       setValue("category", editTask.category);
       setValue("status", editTask.status);
+      setValue("assignee", assignedUserList(editTask, users));
     }
   }, [editTask]);
 
@@ -131,6 +134,34 @@ const TodoForm = ({
   const toggleClass = () => {
     setActive(!isActive);
   };
+
+  const assignedUserList = (editTask: TodoModal, users: UsersModal[]) => {
+    let assignedUsers: any[] = [];
+    users.forEach((el) => {
+      editTask.assignee.forEach((id) => {
+        if (Number(id) === Number(el.id)) {
+          assignedUsers.push({
+            label: el.name,
+            value: Number(el.id),
+          });
+        }
+      });
+    });
+    return assignedUsers;
+  };
+
+  const assigneeList = (data: UsersModal[]) => {
+    const newArray: any[] = [];
+    data.forEach((el) => {
+      let obj = {
+        label: el.name,
+        value: el.id,
+      };
+      newArray.push(obj);
+    });
+    return newArray;
+  };
+
   return (
     <>
       <form
@@ -187,13 +218,21 @@ const TodoForm = ({
               selectedOption={editTask?.status}
             />
           </div>
+        </div>
+        <div>
           <div className="input-set">
             <label htmlFor="">Assign to</label>
-            <Select
-              register={register}
-              name={"assignee"}
-              optvalues={users}
-              selectedOption={editTask?.createdBy}
+            <Controller
+              control={control}
+              name="assignee"
+              render={({ field: { onChange, value } }) => (
+                <MultiSelect
+                  options={assigneeList(users)}
+                  value={value}
+                  onChange={onChange}
+                  labelledBy="Select"
+                />
+              )}
             />
           </div>
         </div>
